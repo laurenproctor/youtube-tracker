@@ -1,0 +1,27 @@
+%table.table.table-striped.table-bordered.sortable
+  %thead
+    %tr
+      %th= sortable TopVideo, 'this_week_rank', 'This Week Rank'
+      %th= sortable TopVideo, 'last_week_rank', 'Last Week Rank'
+      %th= sortable TopVideo, 'name', 'Video Name'
+
+      %th= sortable TopVideo, 'weeks_on_chart', 'Weeks on Chart'
+      %th= sortable TopVideo, 'total_aggregate_views', 'Total Aggregate Views'
+      %th= sortable TopVideo, 'this_week_views', 'This Week Views'
+      %th= sortable TopVideo, 'plus_minus_views', 'Plus or Minus Views'
+      %th= sortable TopVideo, 'time_since_upload', 'Time Since Upload'
+  %tbody
+    - @top_videos.each do |p|
+      %tr
+        %td= p.this_week_rank
+        %td= p.last_week_rank
+
+        %td= p.name
+        %td= p.weeks_on_chart
+        %td= p.total_aggregate_views
+        %td= p.this_week_views
+        %td= p.plus_minus_views
+        %td= p.time_since_upload
+
+.pagination-right
+

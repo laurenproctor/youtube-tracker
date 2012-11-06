@@ -1,0 +1,29 @@
+development: &development
+  adapter: mysql2
+  host: 127.0.0.1
+  username: root
+  password:
+  database: youtube_tracker_dev
+
+
+test: &test
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: youtube_tracker_test
+
+production: &production
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: youtube_tracker_production
+
+staging: &staging
+  adapter: mysql2
+  host: localhost
+  username: root
+  password:
+  database: youtube_tracker_staging
+

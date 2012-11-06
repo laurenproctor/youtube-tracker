@@ -1,0 +1,23 @@
+.container.pull-left= image_tag 'icon_user.png'
+.clear-both
+.pull-right
+  = text_field_tag :from, nil, :class => 'ui-date-picker'
+  = text_field_tag :to, nil, :class => 'ui-date-picker'
+  = link_to 'Download', "#", class: 'btn'
+.clear-both
+.table-title Top Videos
+#top_videos
+  = render 'top_videos'
+
+- content_for :javascript do
+  :javascript
+    $(document).ready(function(){
+      $('input.ui-date-picker').datepicker({
+        altField: $('input#from, input#to'),
+        altFormat: "yy-mm-dd",
+        dateFormat: "mm/dd/yy",
+        showOn: 'both',
+        buttonImageOnly: true,
+        buttonImage: "#{image_path('calendar.png')}" })
+    });
+
