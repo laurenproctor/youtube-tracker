@@ -13,6 +13,8 @@ class CreateTrackers < ActiveRecord::Migration
       t.string :time_since_upload
       t.integer :comments
       t.integer :shares
+      t.integer :videos_in_series
+      t.datetime :tracked_date
 
       t.timestamps
     end

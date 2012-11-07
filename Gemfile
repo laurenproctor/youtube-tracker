@@ -10,14 +10,14 @@ gem 'html5-rails'
 gem 'mysql2'
 gem 'simple_form'
 gem 'inherited_resources'
-gem 'youtube_it'
+gem 'youtube_it', :git => 'https://github.com/kylejginavan/youtube_it.git'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'coffee-rails'
   gem 'sass-rails'
-	gem "twitter-bootstrap-rails"
+	gem "twitter-bootstrap-rails", "2.1.5"
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platform => :ruby
 
