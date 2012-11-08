@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121108130818) do
+ActiveRecord::Schema.define(:version => 20121108144852) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -50,13 +50,13 @@ ActiveRecord::Schema.define(:version => 20121108130818) do
     t.integer  "favorite_count"
     t.integer  "likes"
     t.integer  "rater_count"
-    t.decimal  "rating_average", :precision => 8, :scale => 7
+    t.decimal  "rating_average", :precision => 28, :scale => 7
     t.string   "unique_id"
     t.integer  "playlist_id"
     t.integer  "view_count"
     t.integer  "video_count"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                    :null => false
+    t.datetime "updated_at",                                    :null => false
   end
 
   add_index "day_playlists", ["day_view_count"], :name => "index_day_playlists_on_day_view_count"
