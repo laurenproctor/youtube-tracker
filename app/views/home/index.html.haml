@@ -1,6 +1,7 @@
 .container.pull-left#channel_name
-  = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
-  = @channel.username_display.try(:titleize)
+  - if @channel
+    = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
+    = @channel.username_display.try(:titleize)
 .clear-both
 .pull-right
   = text_field_tag :from, nil, :class => 'ui-date-picker'

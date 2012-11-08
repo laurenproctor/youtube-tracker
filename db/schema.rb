@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121108100726) do
+ActiveRecord::Schema.define(:version => 20121108130818) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -92,6 +92,22 @@ ActiveRecord::Schema.define(:version => 20121108100726) do
   add_index "day_videos", ["unique_id"], :name => "index_day_videos_on_unique_id"
   add_index "day_videos", ["video_id"], :name => "index_day_videos_on_video_id"
   add_index "day_videos", ["view_count"], :name => "index_day_videos_on_view_count"
+
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "playlists", :force => true do |t|
     t.string   "title"

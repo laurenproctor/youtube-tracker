@@ -10,6 +10,9 @@ gem 'html5-rails'
 gem 'mysql2'
 gem 'simple_form'
 gem 'inherited_resources'
+# gem 'daemons'
+# gem 'delayed_job'
+gem 'delayed_job_active_record'
 gem 'youtube_it', :git => 'https://github.com/kylejginavan/youtube_it.git'
 
 # Gems used only for assets and not required
@@ -46,5 +49,9 @@ group :development, :test do
 	gem 'html2haml'
 	gem 'ruby_parser'
 	gem 'ruby-debug19'
+end
+
+group :production do
+  gem 'pg'
 end
 
