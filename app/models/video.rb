@@ -2,6 +2,8 @@ class Video < ActiveRecord::Base
   attr_accessible :categories, :description, :keywords, :player_url, :published_at
   attr_accessible:thumbnails, :title, :unique_id, :uploaded_at
 
+  has_many :day_videos
+
   class << self
     def search_import
         total_pages = 1

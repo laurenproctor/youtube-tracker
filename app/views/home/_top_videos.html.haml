@@ -1,15 +1,15 @@
 %table.table.table-striped.table-bordered.sortable
   %thead
     %tr
-      %th= sortable TopVideo, 'this_week_rank', 'This Week Rank'
-      %th= sortable TopVideo, 'last_week_rank', 'Last Week Rank'
-      %th= sortable TopVideo, 'name', 'Video Name'
+      %th= sortable DayVideoTracker, 'this_week_rank', 'This Week Rank'
+      %th= sortable DayVideoTracker, 'last_week_rank', 'Last Week Rank'
+      %th= sortable DayVideoTracker, 'name', 'Video Name'
 
-      %th= sortable TopVideo, 'weeks_on_chart', 'Weeks on Chart'
-      %th= sortable TopVideo, 'total_aggregate_views', 'Total Aggregate Views'
-      %th= sortable TopVideo, 'this_week_views', 'This Week Views'
-      %th= sortable TopVideo, 'plus_minus_views', 'Plus or Minus Views'
-      %th= sortable TopVideo, 'time_since_upload', 'Time Since Upload'
+      %th= sortable DayVideoTracker, 'weeks_on_chart', 'Weeks on Chart'
+      %th= sortable DayVideoTracker, 'total_aggregate_views', 'Total Aggregate Views'
+      %th= sortable DayVideoTracker, 'this_week_views', 'This Week Views'
+      %th= sortable DayVideoTracker, 'weekly_percent_views', '% Change (Weekly Views)'
+      %th= sortable DayVideoTracker, 'uploaded_at', 'Time Since Upload'
   %tbody
     - @top_videos.each do |p|
       %tr
@@ -17,11 +17,11 @@
         %td= p.last_week_rank
 
         %td= p.name
-        %td= p.weeks_on_chart
+        %td= pluralize(p.weeks_on_chart, 'week')
         %td= p.total_aggregate_views
         %td= p.this_week_views
-        %td= p.plus_minus_views
-        %td= p.time_since_upload
+        %td== #{ p.weekly_percent_views } %
+        %td= time_ago_in_words p.uploaded_at if p.uploaded_at
 
 .pagination-right
 

@@ -57,20 +57,21 @@ ActiveRecord::Schema.define(:version => 20121107172428) do
   create_table "trackers", :force => true do |t|
     t.string   "type"
     t.string   "unique_id"
-    t.string   "this_week_rank"
-    t.string   "last_week_rank"
+    t.integer  "this_week_rank"
+    t.integer  "last_week_rank"
     t.string   "name"
-    t.string   "weeks_on_chart"
+    t.integer  "weeks_on_chart"
     t.integer  "total_aggregate_views"
     t.integer  "this_week_views"
-    t.string   "plus_minus_views"
-    t.string   "time_since_upload"
+    t.string   "weekly_percent_views"
+    t.decimal  "time_since_upload",     :precision => 10, :scale => 0
     t.integer  "comments"
     t.integer  "shares"
     t.integer  "videos_in_series"
     t.datetime "tracked_date"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "uploaded_at"
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
   end
 
   create_table "videos", :force => true do |t|

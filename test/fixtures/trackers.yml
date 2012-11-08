@@ -9,7 +9,7 @@ one:
   weeks_on_chart: MyString
   total_aggregate_views: 1
   this_week_views: 1
-  plus_minus_views: MyString
+  weekly_percent_views: MyString
   time_since_upload: MyString
   comments: 1
   shares: 1
@@ -23,7 +23,7 @@ two:
   weeks_on_chart: MyString
   total_aggregate_views: 1
   this_week_views: 1
-  plus_minus_views: MyString
+  weekly_percent_views: MyString
   time_since_upload: MyString
   comments: 1
   shares: 1
