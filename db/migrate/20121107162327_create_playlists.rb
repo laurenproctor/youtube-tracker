@@ -4,7 +4,7 @@ class CreatePlaylists < ActiveRecord::Migration
       t.string :title
       t.text :description
       t.text :summary
-      t.string :playlist_id
+      t.string :unique_id
       t.text :xml
       t.datetime :published_at
       t.string :response_code
@@ -12,7 +12,7 @@ class CreatePlaylists < ActiveRecord::Migration
       t.timestamps
     end
     add_index :playlists, :title
-    add_index :playlists, :playlist_id
+    add_index :playlists, :unique_id
   end
 end
 

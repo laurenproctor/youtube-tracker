@@ -11,7 +11,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121107172428) do
+ActiveRecord::Schema.define(:version => 20121108072414) do
+
+  create_table "day_playlists", :force => true do |t|
+    t.integer  "comment_count"
+    t.integer  "day_view_count"
+    t.integer  "dislikes"
+    t.datetime "imported_date"
+    t.integer  "favorite_count"
+    t.integer  "likes"
+    t.integer  "rater_count"
+    t.decimal  "rating_average", :precision => 8, :scale => 7
+    t.string   "unique_id"
+    t.integer  "playlist_id"
+    t.integer  "view_count"
+    t.integer  "video_count"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+  end
+
+  add_index "day_playlists", ["day_view_count"], :name => "index_day_playlists_on_day_view_count"
+  add_index "day_playlists", ["imported_date"], :name => "index_day_playlists_on_imported_date"
+  add_index "day_playlists", ["playlist_id"], :name => "index_day_playlists_on_playlist_id"
+  add_index "day_playlists", ["rating_average"], :name => "index_day_playlists_on_rating_average"
+  add_index "day_playlists", ["unique_id"], :name => "index_day_playlists_on_unique_id"
+  add_index "day_playlists", ["video_count"], :name => "index_day_playlists_on_video_count"
+  add_index "day_playlists", ["view_count"], :name => "index_day_playlists_on_view_count"
 
   create_table "day_videos", :force => true do |t|
     t.integer  "video_id"
@@ -43,7 +68,7 @@ ActiveRecord::Schema.define(:version => 20121107172428) do
     t.string   "title"
     t.text     "description"
     t.text     "summary"
-    t.string   "playlist_id"
+    t.string   "unique_id"
     t.text     "xml"
     t.datetime "published_at"
     t.string   "response_code"
@@ -51,8 +76,8 @@ ActiveRecord::Schema.define(:version => 20121107172428) do
     t.datetime "updated_at",    :null => false
   end
 
-  add_index "playlists", ["playlist_id"], :name => "index_playlists_on_playlist_id"
   add_index "playlists", ["title"], :name => "index_playlists_on_title"
+  add_index "playlists", ["unique_id"], :name => "index_playlists_on_unique_id"
 
   create_table "trackers", :force => true do |t|
     t.string   "type"

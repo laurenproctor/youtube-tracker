@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  comment_count: 1
+  day_view_count: 1
+  dislikes: 1
+  imported_date: 2012-11-08 14:24:14
+  favorite_count: 1
+  likes: 1
+  rater_count: 1
+  rating_average: 9.99
+  unique_id: MyString
+  playlist_id: 1
+  view_count: 1
+
+two:
+  comment_count: 1
+  day_view_count: 1
+  dislikes: 1
+  imported_date: 2012-11-08 14:24:14
+  favorite_count: 1
+  likes: 1
+  rater_count: 1
+  rating_average: 9.99
+  unique_id: MyString
+  playlist_id: 1
+  view_count: 1

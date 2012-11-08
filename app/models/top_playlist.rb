@@ -1,3 +1,0 @@
-class TopPlaylist < Tracker
-end
-

@@ -1,0 +1,26 @@
+%table.table.table-striped.table-bordered.sortable
+  %thead
+    %tr
+      %th= sortable DayPlaylistTracker, 'this_week_rank', 'This Week Rank'
+      %th= sortable DayPlaylistTracker, 'name', 'Playlist Name'
+      %th= sortable DayPlaylistTracker, 'total_aggregate_views', 'Total Aggregate Views'
+      %th= sortable DayPlaylistTracker, 'this_week_views', 'This Week Views'
+      %th= sortable DayPlaylistTracker, 'weekly_percent_views', '% Change (Weekly Views)'
+      %th= sortable DayPlaylistTracker, 'videos_in_series', 'Videos in Series'
+      %th= sortable DayPlaylistTracker, 'last_week_rank', 'Last Week Rank'
+      %th= sortable DayPlaylistTracker, 'comments', 'Comments'
+      %th= sortable DayPlaylistTracker, 'shares', 'Shares'
+  %tbody
+    - @top_playlists.each do |p|
+      %tr
+        %td= p.this_week_rank
+        %td= p.name
+        %td= p.total_aggregate_views
+        %td= p.this_week_views
+        %td== #{ p.weekly_percent_views } %
+        %td= p.videos_in_series
+        %td= p.last_week_rank
+        %td= p.comments
+
+        %td= p.shares
+
