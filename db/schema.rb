@@ -11,7 +11,36 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121108072414) do
+ActiveRecord::Schema.define(:version => 20121108100726) do
+
+  create_table "channels", :force => true do |t|
+    t.string   "username"
+    t.string   "username_display"
+    t.string   "unique_id"
+    t.string   "location"
+    t.string   "avatar"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "channels", ["unique_id"], :name => "index_channels_on_unique_id"
+  add_index "channels", ["username"], :name => "index_channels_on_username"
+
+  create_table "day_channels", :force => true do |t|
+    t.integer  "channel_id"
+    t.string   "unique_id"
+    t.integer  "upload_count"
+    t.integer  "subscribers"
+    t.integer  "view_count"
+    t.integer  "upload_views"
+    t.datetime "imported_date"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "day_channels", ["channel_id"], :name => "index_day_channels_on_channel_id"
+  add_index "day_channels", ["imported_date"], :name => "index_day_channels_on_imported_date"
+  add_index "day_channels", ["unique_id"], :name => "index_day_channels_on_unique_id"
 
   create_table "day_playlists", :force => true do |t|
     t.integer  "comment_count"

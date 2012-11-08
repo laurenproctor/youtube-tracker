@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  channel_id: 1
+  unique_id: MyString
+  upload_count: 1
+  subscribers: 1
+  view_count: 1
+  upload_views: 1
+  imported_date: 2012-11-08 17:07:26
+
+two:
+  channel_id: 1
+  unique_id: MyString
+  upload_count: 1
+  subscribers: 1
+  view_count: 1
+  upload_views: 1
+  imported_date: 2012-11-08 17:07:26

@@ -1,6 +1,6 @@
 class Playlist < ActiveRecord::Base
   attr_accessible :description, :unique_id, :published_at, :response_code, :summary, :title, :xml
-  has_many :playlists
+  has_many :day_playlists
 
   class << self
     def search_import
