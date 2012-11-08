@@ -18,10 +18,10 @@ gem 'youtube_it', :git => 'https://github.com/kylejginavan/youtube_it.git'
 
 # Gems used only for assets and not required
 # in production environments by default.
+gem "twitter-bootstrap-rails", "2.1.5"
 group :assets do
   gem 'coffee-rails'
   gem 'sass-rails'
-	gem "twitter-bootstrap-rails", "2.1.5"
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platform => :ruby
 
