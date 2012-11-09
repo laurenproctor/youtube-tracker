@@ -27,9 +27,9 @@ class Video < ActiveRecord::Base
             :keywords => p.keywords.try(:to_json), :player_url => p.player_url,
             :published_at => p.published_at,:uploaded_at => p.uploaded_at,
             :thumbnails => p.thumbnails.try(:to_json) }
-        param2s = { :comment_count => p.comment_count, :imported_date => today,
-            :day_view_count => 0, :view_count => p.view_count,
-            :favorite_count => p.favorite_count, :unique_id => p.unique_id,
+        param2s = { :comment_count => p.comment_count || 0, :imported_date => today,
+            :day_view_count => 0, :view_count => p.view_count || 0,
+            :favorite_count => p.favorite_count || 0, :unique_id => p.unique_id,
             :state => p.state, :dislikes => p.rating.try(:dislikes) || 0, :likes => p.rating.try(:likes) || 0,
             :rater_count => p.rating.try(:rater_count) || 0,
             :rating_average => p.rating.try(:average) || 0,

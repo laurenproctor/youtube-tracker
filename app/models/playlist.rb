@@ -29,9 +29,9 @@ class Playlist < ActiveRecord::Base
             :dislikes => 0, :likes => 0
         }
         yt_playlist.videos.each do |vd|
-           dv[:view_count]      += vd.view_count
-           dv[:comment_count]   += vd.comment_count
-           dv[:favorite_count]  += vd.favorite_count
+           dv[:view_count]      += vd.view_count || 0
+           dv[:comment_count]   += vd.comment_count || 0
+           dv[:favorite_count]  += vd.favorite_count || 0
            dv[:dislikes]        += vd.rating.try(:dislikes) || 0
            dv[:likes]           += vd.rating.try(:likes) || 0
            dv[:rater_count]     += vd.rating.try(:rater_count) || 0

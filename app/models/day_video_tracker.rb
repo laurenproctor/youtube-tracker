@@ -33,9 +33,12 @@ class DayVideoTracker < Tracker
           end
           params[:this_week_views] = DayVideo.where(:unique_id => p.unique_id,
             :imported_date => this_week_days).sum('day_view_count')
-          if last_week_tracker && last_week_tracker.this_week_views != 0
-            params[:weekly_percent_views] =  ( params[:this_week_views] - last_week_tracker.this_week_views) *
-              100 / last_week_tracker.this_week_views
+
+          ago_7_day_tracker = DayVideoTracker.find_by_unique_id_and_tracked_date(p.unique_id,
+               today - 7.days)
+          if ago_7_day_tracker && ago_7_day_tracker.this_week_views != 0
+            params[:weekly_percent_views] =  ( params[:this_week_views] - ago_7_day_tracker.this_week_views) *
+              100 / ago_7_day_tracker.this_week_views
           else
             params[:weekly_percent_views] = 0
           end
