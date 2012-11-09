@@ -31,7 +31,7 @@ class DayPlaylistTracker < Tracker
           else
             params[:weeks_on_chart] = yesterday_tracker ? yesterday_tracker.weeks_on_chart : 0
           end
-          params[:this_week_views] = DayVideo.where(:unique_id => p.unique_id,
+          params[:this_week_views] = DayPlaylist.where(:unique_id => p.unique_id,
             :imported_date => this_week_days).sum('day_view_count')
           if last_week_tracker && last_week_tracker.this_week_views != 0
             params[:weekly_percent_views] =  ( params[:this_week_views] - last_week_tracker.this_week_views) *

@@ -23,13 +23,7 @@ class Playlist < ActiveRecord::Base
           :description => yt_playlist.description, :published_at => yt_playlist.published,
           :summary => yt_playlist.summary, :xml => yt_playlist.xml, :response_code => yt_playlist.response_code
         }
-        json_list = ActiveSupport::JSON.decode (
-          DayVideo.where(:unique_id => yt_playlist.videos.map(&:unique_id), :imported_date => today).
-          select('sum(comment_count) as comment_count, sum(favorite_count) as favorite_count').
-          select('sum(dislikes) as dislikes, sum(likes) as likes').
-          select('sum(rater_count) as rater_count, sum(rating_average) as rating_average').
-          select('sum(view_count) as view_count, sum(day_view_count) as day_view_count').to_json
-        )
+
         dv = {:day_view_count => 0, :view_count => 0, :rater_count => 0,
             :comment_count => 0, :favorite_count => 0, :rating_average => 0,
             :dislikes => 0, :likes => 0
