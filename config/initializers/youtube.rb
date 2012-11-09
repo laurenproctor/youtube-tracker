@@ -3,3 +3,13 @@ YOUTUBE = {
   :user_id => 'officialcomedy'
 }
 
+FACEBOOK = {
+  :api_url => 'http://graph.facebook.com/?ids=',
+  :user_id => 'OfficialComedy'
+}
+
+TWITTER = {
+  :api_url => 'https://api.twitter.com/1/users/show.json?screen_name=',
+  :user_id => 'officialcomedy'
+}
+

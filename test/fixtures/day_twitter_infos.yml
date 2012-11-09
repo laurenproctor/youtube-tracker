@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  twitter_info_id: 1
+  unique_id: MyString
+  imported_date: 2012-11-09 20:59:05
+  followers_count: 1
+  friends_count: 1
+  listed_count: 1
+  favourites_count: 1
+  statuses_count: 1
+
+two:
+  twitter_info_id: 1
+  unique_id: MyString
+  imported_date: 2012-11-09 20:59:05
+  followers_count: 1
+  friends_count: 1
+  listed_count: 1
+  favourites_count: 1
+  statuses_count: 1

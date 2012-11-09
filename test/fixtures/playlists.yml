@@ -4,7 +4,6 @@ one:
   title: MyString
   description: MyText
   summary: MyText
-  playlist_id: MyString
   xml: MyText
   published_at: 2012-11-07 23:23:27
   response_code: MyString
@@ -13,7 +12,7 @@ two:
   title: MyString
   description: MyText
   summary: MyText
-  playlist_id: MyString
   xml: MyText
   published_at: 2012-11-07 23:23:27
   response_code: MyString
+

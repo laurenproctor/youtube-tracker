@@ -209,6 +209,7 @@ DEPENDENCIES
   inherited_resources
   jquery-rails
   jquery-ui-rails
+  json
   mysql2
   pg
   rails (= 3.2.8)

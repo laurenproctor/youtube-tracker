@@ -36,6 +36,8 @@ class Playlist < ActiveRecord::Base
            dv[:likes]           += vd.rating.try(:likes) || 0
            dv[:rater_count]     += vd.rating.try(:rater_count) || 0
            dv[:rating_average]  += vd.rating.try(:average) || 0
+
+           import_video(vd, today, yt_playlist.playlist_id)
         end
         param2s = { :unique_id => yt_playlist.playlist_id, :imported_date => today,
             :day_view_count => dv[:day_view_count], :view_count => dv[:view_count],
@@ -62,5 +64,27 @@ class Playlist < ActiveRecord::Base
         end
     end
 
+    def self.import_video(youtube_video, today, playlist_unique_id)
+      param2s = {
+          :playlist_unique_id => playlist_unique_id,
+          :comment_count  => youtube_video.comment_count || 0, :imported_date => today,
+          :day_view_count => 0, :view_count => youtube_video.view_count || 0,
+          :favorite_count => youtube_video.favorite_count || 0, :video_unique_id => youtube_video.unique_id,
+          :dislikes => youtube_video.rating.try(:dislikes) || 0, :likes => youtube_video.rating.try(:likes) || 0,
+          :rater_count => youtube_video.rating.try(:rater_count) || 0,
+          :rating_average => youtube_video.rating.try(:average) || 0,
+          :author_name    => youtube_video.author.try(:name),
+          :author_uri     => youtube_video.author.try(:uri)
+      }
+      yesterday_video = PlaylistVideo.find_by_video_unique_id_and_playlist_unique_id_and_imported_date(
+          youtube_video.unique_id, playlist_unique_id, today - 1.day)
+      param2s.merge!(:day_view_count => youtube_video.view_count - yesterday_video.view_count) if yesterday_video
+      unless playlist_video = PlaylistVideo.find_by_video_unique_id_and_playlist_unique_id_and_imported_date(
+          youtube_video.unique_id, playlist_unique_id, today)
+        PlaylistVideo.create param2s
+      else
+        playlist_video.update_attributes param2s
+      end
+    end
 end
 

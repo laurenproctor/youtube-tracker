@@ -6,5 +6,8 @@ task :import_youtube => :environment do
 
    Playlist.search_import
    DayPlaylistTracker.track
+
+   FacebookInfo.search_import
+   TwitterInfo.search_import
 end
 

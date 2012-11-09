@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121108144852) do
+ActiveRecord::Schema.define(:version => 20121109143029) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -42,6 +42,20 @@ ActiveRecord::Schema.define(:version => 20121108144852) do
   add_index "day_channels", ["imported_date"], :name => "index_day_channels_on_imported_date"
   add_index "day_channels", ["unique_id"], :name => "index_day_channels_on_unique_id"
 
+  create_table "day_facebook_infos", :force => true do |t|
+    t.integer  "facebook_info_id"
+    t.string   "unique_id"
+    t.datetime "imported_date"
+    t.integer  "likes"
+    t.integer  "talking_about_count"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
+  add_index "day_facebook_infos", ["facebook_info_id"], :name => "index_day_facebook_infos_on_facebook_info_id"
+  add_index "day_facebook_infos", ["imported_date"], :name => "index_day_facebook_infos_on_imported_date"
+  add_index "day_facebook_infos", ["unique_id"], :name => "index_day_facebook_infos_on_unique_id"
+
   create_table "day_playlists", :force => true do |t|
     t.integer  "comment_count"
     t.integer  "day_view_count"
@@ -66,6 +80,23 @@ ActiveRecord::Schema.define(:version => 20121108144852) do
   add_index "day_playlists", ["unique_id"], :name => "index_day_playlists_on_unique_id"
   add_index "day_playlists", ["video_count"], :name => "index_day_playlists_on_video_count"
   add_index "day_playlists", ["view_count"], :name => "index_day_playlists_on_view_count"
+
+  create_table "day_twitter_infos", :force => true do |t|
+    t.integer  "twitter_info_id"
+    t.string   "unique_id"
+    t.datetime "imported_date"
+    t.integer  "followers_count"
+    t.integer  "friends_count"
+    t.integer  "listed_count"
+    t.integer  "favourites_count"
+    t.integer  "statuses_count"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "day_twitter_infos", ["imported_date"], :name => "index_day_twitter_infos_on_imported_date"
+  add_index "day_twitter_infos", ["twitter_info_id"], :name => "index_day_twitter_infos_on_twitter_info_id"
+  add_index "day_twitter_infos", ["unique_id"], :name => "index_day_twitter_infos_on_unique_id"
 
   create_table "day_videos", :force => true do |t|
     t.integer  "video_id"
@@ -109,6 +140,47 @@ ActiveRecord::Schema.define(:version => 20121108144852) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "facebook_infos", :force => true do |t|
+    t.string   "unique_id"
+    t.string   "username"
+    t.string   "name"
+    t.string   "category"
+    t.string   "cover_id"
+    t.string   "website"
+    t.string   "link"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "facebook_infos", ["unique_id"], :name => "index_facebook_infos_on_unique_id"
+  add_index "facebook_infos", ["username"], :name => "index_facebook_infos_on_username"
+
+  create_table "playlist_videos", :force => true do |t|
+    t.string   "playlist_unique_id"
+    t.string   "video_unique_id"
+    t.integer  "comment_count"
+    t.integer  "dislikes"
+    t.integer  "likes"
+    t.integer  "favorite_count"
+    t.integer  "rater_count"
+    t.integer  "rating_average"
+    t.integer  "view_count"
+    t.integer  "day_view_count"
+    t.datetime "imported_date"
+    t.string   "author_name"
+    t.string   "author_uri"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "playlist_videos", ["day_view_count"], :name => "index_playlist_videos_on_day_view_count"
+  add_index "playlist_videos", ["imported_date"], :name => "index_playlist_videos_on_imported_date"
+  add_index "playlist_videos", ["playlist_unique_id"], :name => "index_playlist_videos_on_playlist_unique_id"
+  add_index "playlist_videos", ["rating_average"], :name => "index_playlist_videos_on_rating_average"
+  add_index "playlist_videos", ["video_unique_id"], :name => "index_playlist_videos_on_video_unique_id"
+  add_index "playlist_videos", ["view_count"], :name => "index_playlist_videos_on_view_count"
+
   create_table "playlists", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -143,6 +215,20 @@ ActiveRecord::Schema.define(:version => 20121108144852) do
     t.datetime "created_at",                                           :null => false
     t.datetime "updated_at",                                           :null => false
   end
+
+  create_table "twitter_infos", :force => true do |t|
+    t.string   "unique_id"
+    t.string   "screen_name"
+    t.string   "name"
+    t.string   "location"
+    t.string   "url"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "twitter_infos", ["screen_name"], :name => "index_twitter_infos_on_screen_name"
+  add_index "twitter_infos", ["unique_id"], :name => "index_twitter_infos_on_unique_id"
 
   create_table "videos", :force => true do |t|
     t.string   "unique_id"

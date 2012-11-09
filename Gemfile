@@ -11,9 +11,8 @@ gem 'mysql2'
 gem 'simple_form'
 gem 'inherited_resources'
 gem 'thin'
-# gem 'daemons'
-# gem 'delayed_job'
 gem 'delayed_job_active_record'
+gem 'json'
 gem 'youtube_it', :git => 'https://github.com/kylejginavan/youtube_it.git'
 
 # Gems used only for assets and not required
