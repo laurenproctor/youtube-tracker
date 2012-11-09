@@ -12,7 +12,7 @@ class ImportJob
       error_msg = "#{Time.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
       puts error_msg
     ensure
-      Delayed::Job.enqueue ImportJob.new, 5 # , Time.now.beginning_of_day + 1.day
+      Delayed::Job.enqueue ImportJob.new, 2, Time.now.beginning_of_day + 1.day + 30.minutes
     end
   end
 end
