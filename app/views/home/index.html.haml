@@ -1,3 +1,6 @@
+#subscribers_chart_div
+#facebook_info_chart_div
+#twitter_info_chart_div
 .container.pull-left#channel_name
   - if @channel
     = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
@@ -28,4 +31,87 @@
         buttonImageOnly: true,
         buttonImage: "#{image_path('calendar.png')}" })
     });
+
+
+
+- content_for :javascript do
+  :erb
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var grouped_by_date = <%= @subscribers.to_json.html_safe %>
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Subscribers');
+
+        var dates = <%= @keys.to_json.html_safe %>
+        data.addRows(dates.length);
+        for(var i = 0; i < dates.length; i++) {
+          data.setValue(i, 0, dates[i] );
+          data.setValue(i, 1, +grouped_by_date[dates[i]]);
+        }
+
+        var options = {
+          title: 'Subscribers', width: 500
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('subscribers_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var grouped_by_date = <%= @facebook_info_json.to_json.html_safe %>
+        var like_by_date = <%= @facebook_likes_json.to_json.html_safe %>
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Likes');
+        data.addColumn('number', 'Talking About');
+
+        var dates = <%= @facebook_info_keys.to_json.html_safe %>
+        data.addRows(dates.length);
+        for(var i = 0; i < dates.length; i++) {
+          data.setValue(i, 0, dates[i] );
+          data.setValue(i, 1, +like_by_date[dates[i]]);
+          data.setValue(i, 2, +grouped_by_date[dates[i]]);
+        }
+
+        var options = {
+          title: 'Facebook Likes & Talking About', width: 500
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('facebook_info_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var grouped_by_date = <%= @twitter_info_json.to_json.html_safe %>
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Followers Count');
+
+        var dates = <%= @twitter_info_keys.to_json.html_safe %>
+        data.addRows(dates.length);
+        for(var i = 0; i < dates.length; i++) {
+          data.setValue(i, 0, dates[i] );
+          data.setValue(i, 1, +grouped_by_date[dates[i]]);
+        }
+
+        var options = {
+          title: 'Twitter Followers', width: 500
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('twitter_info_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
 
