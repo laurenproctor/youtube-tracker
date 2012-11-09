@@ -50,15 +50,14 @@ class Playlist < ActiveRecord::Base
           playlist.update_attributes(params)
           param2s.merge!(:playlist_id => playlist.id)
         end
-
+        yesterday_playlist = DayPlaylist.find_by_unique_id_and_imported_date(
+          yt_playlist.playlist_id, today - 1.day)
+        if yesterday_playlist
+          param2s.merge!(:day_view_count => param2s[:view_count] - yesterday_playlist.view_count)
+        end
         unless day_playlist = DayPlaylist.find_by_unique_id_and_imported_date(yt_playlist.playlist_id, today)
           DayPlaylist.create param2s
         else
-          yesterday_playlist = DayPlaylist.find_by_unique_id_and_imported_date(
-            yt_playlist.playlist_id, today - 1.day)
-          if yesterday_playlist
-            param2s.merge!(:day_view_count => param2s[:view_count] - yesterday_playlist.view_count)
-          end
           day_playlist.update_attributes param2s
         end
     end

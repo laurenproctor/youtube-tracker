@@ -42,12 +42,11 @@ class Video < ActiveRecord::Base
           video.update_attributes(params)
           param2s.merge!(:video_id => video.id)
         end
-
+        yesterday_video = DayVideo.find_by_unique_id_and_imported_date(p.unique_id, today - 1.day)
+        param2s.merge!(:day_view_count => p.view_count - yesterday_video.view_count) if yesterday_video
         unless day_video = DayVideo.find_by_unique_id_and_imported_date(p.unique_id, today)
           DayVideo.create param2s
         else
-          yesterday_video = DayVideo.find_by_unique_id_and_imported_date(p.unique_id, today - 1.day)
-          param2s.merge!(:day_view_count => p.view_count - yesterday_video.view_count) if yesterday_video
           day_video.update_attributes param2s
         end
       end
