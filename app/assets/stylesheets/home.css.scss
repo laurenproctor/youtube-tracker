@@ -8,11 +8,22 @@
 .btn {
   margin-bottom:8px;
 }
-
+#top-videos-title {
+  margin-top:70px;
+}
+#form-download {
+  margin-bottom:50px;
+}
 #top_videos {
   margin-bottom:70px;
 }
 #channel_name{
   font-size:30px;
+}
+#avg_views_chart_div,
+#subscribers_chart_div,
+#facebook_info_chart_div,
+#twitter_info_chart_div {
+  float:left;
 }
 
