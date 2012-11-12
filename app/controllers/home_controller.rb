@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+
   def index
     today = Time.now.beginning_of_day
     @channel = Channel.find_by_username(YOUTUBE[:user_id])
@@ -50,6 +51,13 @@ class HomeController < ApplicationController
       key = p.imported_date.strftime('%m/%d')
       @twitter_info_json.merge!( key => p.likes )
       @twitter_info_keys << key
+    end
+  end
+
+  def export_csv
+    @videos = DayVideo.limit 3
+    respond_to do |format|
+      format.csv
     end
   end
 end

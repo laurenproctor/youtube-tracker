@@ -3,5 +3,6 @@ class DayVideo < ActiveRecord::Base
   attr_accessible :favorite_count, :likes, :rater_count, :rating_average, :rating_max, :rating_min
   attr_accessible :state, :unique_id, :video_id, :view_count
   belongs_to :video
+  has_one :video_tracker
 end
 

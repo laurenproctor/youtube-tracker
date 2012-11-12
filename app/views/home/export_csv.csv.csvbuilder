@@ -1,0 +1,36 @@
+csv << [ "Video Name",
+         "Ranking",
+         "Views",
+         "Avg Views Per Day - First 7 Days",
+         "Avg Views Per Day - First 30 Days",
+         "Avg Views Per Day - First 60 Days",
+         "Comments",
+         "Subscribers Gained",
+         "Subscribers Lost",
+         "Favorites Added",
+         "Favorites Removed",
+         "Likes",
+         "Dislikes",
+         "Shares",
+         "Upload Date"
+         ]
+
+@videos.each do |p|
+  csv << [p.video.title,
+         "Ranking",
+          p.view_count,
+          "Avg Views Per Day - First 7 Days",
+         "Avg Views Per Day - First 30 Days",
+         "Avg Views Per Day - First 60 Days",
+         p.comment_count, # "Comments",
+         "",               # Subscribers Gained
+         "",               # Subscribers Lost
+         "",               # Favorites Added
+         "",               # Favorites Removed
+         p.likes, # "Likes",
+         p.dislikes, # "Dislikes",
+         "",               # Shares
+         p.video.uploaded_at
+         ]
+end
+

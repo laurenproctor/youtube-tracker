@@ -4,9 +4,11 @@
     = @channel.username_display.try(:titleize)
 .clear-both
 .pull-right#form-download
-  = text_field_tag :from, nil, :class => 'ui-date-picker'
-  = text_field_tag :to, nil, :class => 'ui-date-picker'
-  = link_to 'Download', "#", class: 'btn'
+  = form_tag(export_csv_path(:format => :csv), :class => :form) do |f|
+    = text_field_tag :from, nil, :class => 'ui-date-picker'
+    = text_field_tag :to, nil, :class => 'ui-date-picker'
+    /= link_to 'Download', "#", class: 'btn'
+    %button.button{:type => "submit"} Download
 .clear-both
 #avg_views_chart_div
 #subscribers_chart_div

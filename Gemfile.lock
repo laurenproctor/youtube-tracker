@@ -52,6 +52,8 @@ GEM
     coffee-script-source (1.4.0)
     columnize (0.3.6)
     commonjs (0.2.6)
+    csv_builder (2.1.1)
+      actionpack (>= 3.0.0)
     daemons (1.1.9)
     delayed_job (3.0.3)
       activesupport (~> 3.0)
@@ -201,6 +203,7 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails
+  csv_builder
   delayed_job_active_record
   haml
   haml-rails
