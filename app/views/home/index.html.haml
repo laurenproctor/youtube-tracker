@@ -5,9 +5,11 @@
 .clear-both
 .pull-right#form-download
   = form_tag(export_csv_path(:format => :csv), :class => :form) do |f|
-    = text_field_tag :from, nil, :class => 'ui-date-picker'
-    = text_field_tag :to, nil, :class => 'ui-date-picker'
-    /= link_to 'Download', "#", class: 'btn'
+    = select_tag 'type', options_for_select(["Video","Playlist","Channel"])
+    = text_field_tag :from_copy, nil, :class => 'ui-date-picker'
+    = text_field_tag :to_copy, nil, :class => 'ui-date-picker'
+    = hidden_field_tag :from, nil
+    = hidden_field_tag :to, nil
     %button.button{:type => "submit"} Download
 .clear-both
 #avg_views_chart_div
@@ -27,13 +29,21 @@
 - content_for :javascript do
   :javascript
     $(document).ready(function(){
-      $('input.ui-date-picker').datepicker({
-        altField: $('input#from, input#to'),
+      $('input#from_copy.ui-date-picker').datepicker({
+        altField: $('input#from'),
         altFormat: "yy-mm-dd",
         dateFormat: "mm/dd/yy",
         showOn: 'both',
         buttonImageOnly: true,
-        buttonImage: "#{image_path('calendar.png')}" })
+        buttonImage: "#{image_path('calendar.png')}" });
+
+      $('input#to_copy.ui-date-picker').datepicker({
+        altField: $('input#to'),
+        altFormat: "yy-mm-dd",
+        dateFormat: "mm/dd/yy",
+        showOn: 'both',
+        buttonImageOnly: true,
+        buttonImage: "#{image_path('calendar.png')}" });
     });
 
 

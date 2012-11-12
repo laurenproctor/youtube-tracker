@@ -42,6 +42,7 @@ class DayPlaylistTracker < Tracker
           else
             params[:weekly_percent_views] = 0
           end
+          params[:trackable] = p
           params[:videos_in_series] = p.video_count
           unless tracker = DayPlaylistTracker.find_by_unique_id_and_tracked_date(p.unique_id, today)
             DayPlaylistTracker.create params

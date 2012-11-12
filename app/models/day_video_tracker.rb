@@ -42,6 +42,7 @@ class DayVideoTracker < Tracker
           else
             params[:weekly_percent_views] = 0
           end
+          params[:trackable] = p
           unless tracker = DayVideoTracker.find_by_unique_id_and_tracked_date(p.unique_id, today)
             DayVideoTracker.create params
           else

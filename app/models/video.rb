@@ -5,6 +5,7 @@ class Video < ActiveRecord::Base
   has_many :day_videos
 
   class << self
+
     def search_import
         total_pages = 1
         page = 1
@@ -16,6 +17,10 @@ class Video < ActiveRecord::Base
         end while page <= find.total_pages
         logger.info "import successfully #{ page -1 } / #{ total_pages}"
       end
+  end
+
+  def last_info
+    DayVideo.find_by_unique_id_and_imported_date(self.unique_id, Time.now.beginning_of_day)
   end
 
   private

@@ -55,9 +55,29 @@ class HomeController < ApplicationController
   end
 
   def export_csv
-    @videos = DayVideo.limit 3
+    to = params[:to].try(:to_date)
+    from = params[:from].try(:to_date)
+    if params[:type] == 'Video'
+      if to && from
+        @videos = Video.where('uploaded_at >= ? AND uploaded_at <= ?', from, to)
+      elsif from
+        @videos = Video.where('uploaded_at >= ?', from)
+      elsif to
+        @videos = Video.where('uploaded_at <= ?', to)
+      else
+        @videos = Video.where('id > 0')
+      end
+      @videos = @videos.order(:title)
+    elsif params[:type] == 'Channel'
+    end
     respond_to do |format|
-      format.csv
+      format.csv {
+        if params[:type] == 'Video'
+          render
+        elsif params[:type] == 'Channel'
+          render 'export_csv_channel'
+        end
+      }
     end
   end
 end
