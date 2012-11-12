@@ -68,12 +68,36 @@ class HomeController < ApplicationController
         @videos = Video.where('id > 0')
       end
       @videos = @videos.order(:title)
+    elsif params[:type] == 'Playlist'
+      if to && from
+        @playlists = Playlist.where('uploaded_at >= ? AND uploaded_at <= ?', from, to)
+      elsif from
+        @playlists = Playlist.where('uploaded_at >= ?', from)
+      elsif to
+        @playlists = Playlist.where('uploaded_at <= ?', to)
+      else
+        @playlists = Playlist.where('id > 0')
+      end
+      @playlists = @playlists.order(:title)
     elsif params[:type] == 'Channel'
+      if to && from
+        @day_channels = DayChannel.where('imported_date >= ? AND imported_date <= ?', from, to)
+      elsif from
+        @day_channels = DayChannel.where('imported_date >= ?', from)
+      elsif to
+        @day_channels = DayChannel.where('imported_date <= ?', to)
+      else
+        @day_channels = DayChannel.where('id > 0')
+      end
+      @day_channels = @day_channels.order(:imported_date)
     end
+
     respond_to do |format|
       format.csv {
         if params[:type] == 'Video'
           render
+        elsif params[:type] == 'Playlist'
+          render 'export_csv_playlist'
         elsif params[:type] == 'Channel'
           render 'export_csv_channel'
         end

@@ -22,9 +22,9 @@ csv << [ "Video Name",
   csv << [p.title,
          last_info.tracker.this_week_rank,
          last_info.view_count,
-         last_info.avg_views_per_day(today - 7.days  .. today).first[:day_view_count],
-         last_info.avg_views_per_day(today - 30.days .. today).first[:day_view_count],
-         last_info.avg_views_per_day(today - 60.days .. today).first[:day_view_count],
+         p.avg_views_per_day(today - 7.days  .. today).first[:day_view_count],
+         p.avg_views_per_day(today - 30.days .. today).first[:day_view_count],
+         p.avg_views_per_day(today - 60.days .. today).first[:day_view_count],
          last_info.comment_count, # "Comments",
          "",               # Subscribers Gained
          "",               # Subscribers Lost

@@ -5,10 +5,5 @@ class DayVideo < ActiveRecord::Base
   belongs_to :video
   has_one :tracker, :as => :trackable
 
-  def avg_views_per_day imported_date_range
-    DayVideo.where(:unique_id=> self.unique_id,:imported_date => imported_date_range).
-      select('avg(day_view_count) as day_view_count')
-  end
-
 end
 

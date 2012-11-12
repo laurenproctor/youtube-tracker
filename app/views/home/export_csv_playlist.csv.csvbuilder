@@ -1,0 +1,25 @@
+csv << [ "Playlist Name",
+         "Views",
+         "Avg Views Per Video",
+         "Avg Views Per Day",
+         "Subscriber Net Change",
+         "Subscribers Gained",
+         "Subscribers Lost",
+         "Number of Videos",
+         "Playlist Age"
+   ]
+@playlists.each do |p|
+  next unless last_info = p.last_info
+
+  csv << [p.title,
+         last_info[:view_count],
+         p.avg_views[:view_count],
+         p.avg_views[:day_view_count],
+         "",
+         "",                               # Subscribers Gained
+         "",                               # Subscribers Lost
+         last_info[:video_count],
+         ""                                # Playlist Age
+    ]
+end
+

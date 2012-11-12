@@ -1,39 +1,37 @@
-today = Time.now.beginning_of_day
-
-csv << [ "Video Name",
-         "Ranking",
-         "Views",
-         "Avg Views Per Day - First 7 Days",
-         "Avg Views Per Day - First 30 Days",
-         "Avg Views Per Day - First 60 Days",
-         "Comments",
+csv << [ "Date",
+         "Views Today",
+         "Aggregate Views",
+         "Number of Videos",
+         "Average Views Per Video",
+         "Subscriber Net Change",
          "Subscribers Gained",
          "Subscribers Lost",
-         "Favorites Added",
-         "Favorites Removed",
-         "Likes",
-         "Dislikes",
-         "Shares",
-         "Upload Date"
+         "Aggregate Subscribers",
+         "VSCR (%)",
+         "Facebook Likes",
+         "Facebook Talking About",
+         "Twitter Followers"
          ]
 
-@videos.each do |p|
-  next unless last_info = p.last_info
-  csv << [p.title,
-         last_info.tracker.this_week_rank,
-         last_info.view_count,
-         last_info.avg_views_per_day(today - 7.days  .. today).first[:day_view_count],
-         last_info.avg_views_per_day(today - 30.days .. today).first[:day_view_count],
-         last_info.avg_views_per_day(today - 60.days .. today).first[:day_view_count],
-         last_info.comment_count, # "Comments",
-         "",               # Subscribers Gained
-         "",               # Subscribers Lost
-         "",               # Favorites Added
-         "",               # Favorites Removed
-         last_info.likes,
-         last_info.dislikes,
-         "",               # Shares
-         p.uploaded_at
-         ]
+@day_channels.each do |p|
+  video_info = DayVideo.where(:imported_date => p.imported_date).select('sum(view_count) as view_count').
+    select('count(id) as num_videos, avg(view_count) as avg_views').first
+
+  day_fb_info = DayFacebookInfo.where(:imported_date => p.imported_date).first
+  day_twitter_info = DayTwitterInfo.where(:imported_date => p.imported_date).first
+  csv << [p.imported_date,
+         video_info[:view_count],
+         '',                               # Aggregate Views
+         video_info[:num_videos],
+         video_info[:avg_views],
+         "",                               # Subscribers Gained
+         "",                               # Subscribers Lost
+         "",
+         "",
+         "",                               # VSCR (%)
+         day_fb_info.try(:likes),
+         day_fb_info.try(:talking_about_count),
+         day_twitter_info.try(:followers_count)
+    ]
 end
 

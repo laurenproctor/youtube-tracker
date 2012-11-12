@@ -23,6 +23,11 @@ class Video < ActiveRecord::Base
     DayVideo.find_by_unique_id_and_imported_date(self.unique_id, Time.now.beginning_of_day)
   end
 
+  def avg_views_per_day imported_date_range
+    DayVideo.where(:unique_id=> self.unique_id,:imported_date => imported_date_range).
+      select('avg(day_view_count) as day_view_count')
+  end
+
   private
     def self.import(youtube_videos)
       today = Time.now.beginning_of_day
