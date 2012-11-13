@@ -1,5 +1,5 @@
 class Playlist < ActiveRecord::Base
-  attr_accessible :description, :unique_id, :published_at, :response_code, :summary, :title, :xml
+  attr_accessible :description, :unique_id, :published_at, :response_code, :summary, :title, :xml, :age_from
   has_many :day_playlists
 
   class << self
@@ -25,18 +25,15 @@ class Playlist < ActiveRecord::Base
       select('avg(view_count) as view_count').first
   end
 
-  def first_uploaded_video
-    PlaylistVideo.where(:playlist_unique_id=> self.unique_id,:imported_date => Time.now.beginning_of_day).
-      where('uploaded_at is not null').order('uploaded_at asc').limit(1).first
-  end
-
   private
 
     def self.import(yt_playlist)
        today = Time.now.beginning_of_day
         params = { :title => yt_playlist.title, :unique_id => yt_playlist.playlist_id,
           :description => yt_playlist.description, :published_at => yt_playlist.published,
-          :summary => yt_playlist.summary, :xml => yt_playlist.xml, :response_code => yt_playlist.response_code
+          :summary => yt_playlist.summary, :xml => nil,
+          :response_code => yt_playlist.response_code,
+          :age_from => yt_playlist.videos.map(&:uploaded_at).compact.min
         }
 
         dv = {:day_view_count => 0, :view_count => 0, :rater_count => 0,
@@ -51,19 +48,20 @@ class Playlist < ActiveRecord::Base
            dv[:likes]           += vd.rating.try(:likes) || 0
            dv[:rater_count]     += vd.rating.try(:rater_count) || 0
            dv[:rating_average]  += vd.rating.try(:average) || 0
-
-           import_video(vd, today, yt_playlist.playlist_id)
         end
         param2s = { :unique_id => yt_playlist.playlist_id, :imported_date => today,
             :day_view_count => dv[:day_view_count], :view_count => dv[:view_count],
             :comment_count => dv[:comment_count], :favorite_count => dv[:favorite_count],
             :dislikes => dv[:dislikes], :likes => dv[:likes], :rater_count => dv[:rater_count],
-            :rating_average => dv[:rating_average], :video_count => yt_playlist.videos.size
+            :rating_average => dv[:rating_average], :video_count => yt_playlist.videos.size,
+            :video_unique_ids => yt_playlist.videos.map(&:unique_id)
         }
+
         unless playlist = Playlist.find_by_unique_id(yt_playlist.playlist_id)
           p = Playlist.create( params)
           param2s.merge!(:playlist_id => p.id)
         else
+          params[:age_from] = playlist.age_from if playlist.age_from
           playlist.update_attributes(params)
           param2s.merge!(:playlist_id => playlist.id)
         end

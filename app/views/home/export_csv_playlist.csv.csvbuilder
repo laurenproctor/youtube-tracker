@@ -19,7 +19,7 @@ csv << [ "Playlist Name",
          "",                               # Subscribers Gained
          "",                               # Subscribers Lost
          last_info[:video_count],
-         p.first_uploaded_video.uploaded_at ? time_ago_in_words(p.first_uploaded_video.uploaded_at) : ''    # Playlist Age
+         p.age_from ? time_ago_in_words(p.age_from) : ''    # Playlist Age
     ]
 end
 
