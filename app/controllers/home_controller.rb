@@ -15,11 +15,22 @@ class HomeController < ApplicationController
     facebook_info_chart seven_days
 
     twitter_info_chart seven_days
+
   end
 
   def export_csv
-    to = params[:to].try(:to_date)
-    from = params[:from].try(:to_date)
+    to = params[:to].try(:to_date) unless  params[:to_copy].blank?
+    from = params[:from].try(:to_date)  unless  params[:from_copy].blank?
+    if to && from
+      @filename = "export-csv-#{ from.strftime('%Y-%m-%d')}-#{ to.strftime('%Y-%m-%d')}.csv"
+    elsif from
+      @filename = "export-csv-#{ from.strftime('%Y-%m-%d')}.csv"
+    elsif to
+      @filename = "export-csv-#{ to.strftime('%Y-%m-%d')}.csv"
+    else
+      @filename = "export-csv.csv"
+    end
+
     if params[:type] == 'Video'
       export_csv_videos  from, to
     elsif params[:type] == 'Playlist'
@@ -42,7 +53,7 @@ class HomeController < ApplicationController
         @day_channels = DayChannel.where('id > 0')
       end
       @day_channels = @day_channels.order(:imported_date)
-      @filename = 'report.csv'
+
       respond_to do |format|
         format.csv { render 'export_csv_channel' }
       end
