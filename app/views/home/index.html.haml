@@ -56,15 +56,18 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var grouped_by_date = <%= @avg_views_json.to_json.html_safe %>
+        var last_week_grouped_by_date = <%= @last_week_avg_views_json.to_json.html_safe %>
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Date');
         data.addColumn('number', 'Average Views');
+        data.addColumn('number', 'Last Week Average Views');
 
         var dates = <%= @avg_views_keys.to_json.html_safe %>
         data.addRows(dates.length);
         for(var i = 0; i < dates.length; i++) {
           data.setValue(i, 0, dates[i] );
           data.setValue(i, 1, grouped_by_date[dates[i]]);
+          data.setValue(i, 2, last_week_grouped_by_date[dates[i]]);
         }
 
         var options = {
@@ -80,15 +83,17 @@
       google.setOnLoadCallback(drawChart2);
       function drawChart2() {
         var grouped_by_date = <%= @subscribers.to_json.html_safe %>
+        var last_week_grouped_by_date = <%= @last_week_subscribers.to_json.html_safe %>
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Date');
         data.addColumn('number', 'Subscribers');
-
+        data.addColumn('number', 'Last Week Subscribers');
         var dates = <%= @keys.to_json.html_safe %>
         data.addRows(dates.length);
         for(var i = 0; i < dates.length; i++) {
           data.setValue(i, 0, dates[i] );
           data.setValue(i, 1, grouped_by_date[dates[i]]);
+          data.setValue(i, 2, last_week_grouped_by_date[dates[i]]);
         }
 
         var options = {
@@ -133,15 +138,18 @@
       google.setOnLoadCallback(drawChart4);
       function drawChart4() {
         var grouped_by_date = <%= @twitter_info_json.to_json.html_safe %>
+        var last_week_grouped_by_date = <%= @last_week_twitter_info_json.to_json.html_safe %>
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Date');
         data.addColumn('number', 'Followers Count');
+        data.addColumn('number', 'Last Week Followers Count');
 
         var dates = <%= @twitter_info_keys.to_json.html_safe %>
         data.addRows(dates.length);
         for(var i = 0; i < dates.length; i++) {
           data.setValue(i, 0, dates[i] );
           data.setValue(i, 1, grouped_by_date[dates[i]]);
+          data.setValue(i, 2, last_week_grouped_by_date[dates[i]]);
         }
 
         var options = {

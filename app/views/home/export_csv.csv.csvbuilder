@@ -21,19 +21,19 @@ csv << [ "Video Name",
   next unless last_info = p.last_info
   csv << [p.title,
          last_info.tracker.this_week_rank,
-         last_info.view_count,
-         p.avg_views_per_day(today - 7.days  .. today).first[:day_view_count],
-         p.avg_views_per_day(today - 30.days .. today).first[:day_view_count],
-         p.avg_views_per_day(today - 60.days .. today).first[:day_view_count],
-         last_info.comment_count, # "Comments",
+         number_with_delimiter(last_info.view_count),
+         number_with_delimiter(p.avg_views_per_day(today - 7.days  .. today).first[:day_view_count]),
+         number_with_delimiter(p.avg_views_per_day(today - 30.days .. today).first[:day_view_count]),
+         number_with_delimiter(p.avg_views_per_day(today - 60.days .. today).first[:day_view_count]),
+         number_with_delimiter(last_info.comment_count), # "Comments",
          "",               # Subscribers Gained
          "",               # Subscribers Lost
          "",               # Favorites Added
          "",               # Favorites Removed
-         last_info.likes,
-         last_info.dislikes,
+         number_with_delimiter(last_info.likes),
+         number_with_delimiter(last_info.dislikes),
          "",               # Shares
-         p.uploaded_at
-         ]
+         p.uploaded_at.try(:strftime, '%Y-%m-%d')
+    ]
 end
 

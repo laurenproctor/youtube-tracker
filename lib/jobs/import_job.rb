@@ -1,13 +1,17 @@
 class ImportJob
   def perform
     begin
-       Channel.search_import
+      Channel.search_import
 
-       Video.search_import
-       DayVideoTracker.track
+      Video.search_import
+      DayVideoTracker.track
 
-       Playlist.search_import
-       DayPlaylistTracker.track
+      Playlist.search_import
+      DayPlaylistTracker.track
+
+      FacebookInfo.search_import
+      TwitterInfo.search_import
+
     rescue Exception => e
       error_msg = "#{Time.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
       puts error_msg

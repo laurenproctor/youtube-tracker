@@ -25,9 +25,14 @@ class Playlist < ActiveRecord::Base
       select('avg(view_count) as view_count').first
   end
 
+  def first_uploaded_video
+    PlaylistVideo.where(:playlist_unique_id=> self.unique_id,:imported_date => Time.now.beginning_of_day).
+      where('uploaded_at is not null').order('uploaded_at asc').limit(1).first
+  end
+
   private
 
-  def self.import(yt_playlist)
+    def self.import(yt_playlist)
        today = Time.now.beginning_of_day
         params = { :title => yt_playlist.title, :unique_id => yt_playlist.playlist_id,
           :description => yt_playlist.description, :published_at => yt_playlist.published,
@@ -84,7 +89,9 @@ class Playlist < ActiveRecord::Base
           :rater_count => youtube_video.rating.try(:rater_count) || 0,
           :rating_average => youtube_video.rating.try(:average) || 0,
           :author_name    => youtube_video.author.try(:name),
-          :author_uri     => youtube_video.author.try(:uri)
+          :author_uri     => youtube_video.author.try(:uri),
+          :published_at   => youtube_video.published_at,
+          :uploaded_at    => youtube_video.uploaded_at
       }
       yesterday_video = PlaylistVideo.find_by_video_unique_id_and_playlist_unique_id_and_imported_date(
           youtube_video.unique_id, playlist_unique_id, today - 1.day)

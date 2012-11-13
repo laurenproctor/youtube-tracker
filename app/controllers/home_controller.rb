@@ -10,29 +10,33 @@ class HomeController < ApplicationController
       order(sort_column(DayPlaylistTracker) + " " + sort_direction).limit(25)
 
     seven_days = Time.now - 7.days .. Time.now
-    last_week_seven_days = Time.now - 14.days .. Time.now - 7.days
     rows = DayChannel.where(:imported_date => seven_days)
-    last_week_rows = DayChannel.where(:imported_date => last_week_seven_days)
     @subscribers = {}
+    @last_week_subscribers = {}
     @keys = []
     rows.each do |p|
       key = p.imported_date.strftime('%m/%d')
       @subscribers.merge!( key => p.subscribers )
+      if at_last_7_days = DayChannel.where(:imported_date => p.imported_date - 7.days).first
+        @last_week_subscribers.merge!( key => at_last_7_days.subscribers )
+      end
       @keys << key
     end
 
-    avg_views_rows=DayVideo.where(:imported_date => seven_days).select('imported_date, avg(day_view_count) as day_view_count').group(:imported_date)
-    last_week_avg_views_rows=DayVideo.where(:imported_date => last_week_seven_days).select('imported_date, avg(day_view_count) as day_view_count').group(:imported_date)
+    avg_views_rows=DayVideo.where(:imported_date => seven_days).select('imported_date, avg(view_count) as view_count').group(:imported_date)
     @avg_views_json = {}
+    @last_week_avg_views_json = {}
     @avg_views_keys = []
     avg_views_rows.each do |p|
       key = p[:imported_date].strftime('%m/%d')
-      @avg_views_json.merge!( key => p[:day_view_count] )
+      @avg_views_json.merge!( key => p[:view_count] )
+      if at_last_7_days = DayVideo.where(:imported_date => p[:imported_date] - 7.days).select('avg(view_count) as view_count').first
+        @last_week_avg_views_json.merge!( key => at_last_7_days[:view_count] )
+      end
       @avg_views_keys << key
     end
 
     facebook_info_rows = DayFacebookInfo.where(:imported_date => seven_days)
-    last_week_facebook_info_rows = DayFacebookInfo.where(:imported_date => last_week_seven_days)
     @facebook_info_json = {}
     @facebook_info_keys = []
     @facebook_likes_json = {}
@@ -44,12 +48,15 @@ class HomeController < ApplicationController
     end
 
     twitter_info_rows = DayTwitterInfo.where(:imported_date => seven_days)
-    last_week_twitter_info_rows = DayTwitterInfo.where(:imported_date => last_week_seven_days)
     @twitter_info_json = {}
+    @last_week_twitter_info_json = {}
     @twitter_info_keys = []
-    facebook_info_rows.each do |p|
+    twitter_info_rows.each do |p|
       key = p.imported_date.strftime('%m/%d')
-      @twitter_info_json.merge!( key => p.likes )
+      @twitter_info_json.merge!( key => p.followers_count )
+      if at_last_7_days = DayTwitterInfo.where(:imported_date => p.imported_date - 7.days).first
+        @last_week_twitter_info_json.merge!( key => at_last_7_days.followers_count )
+      end
       @twitter_info_keys << key
     end
   end

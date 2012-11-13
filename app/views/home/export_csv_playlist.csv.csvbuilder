@@ -12,14 +12,14 @@ csv << [ "Playlist Name",
   next unless last_info = p.last_info
 
   csv << [p.title,
-         last_info[:view_count],
-         p.avg_views[:view_count],
-         p.avg_views[:day_view_count],
+         number_with_delimiter(last_info[:view_count]),
+         number_with_delimiter(p.avg_views[:view_count]),
+         number_with_delimiter(p.avg_views[:day_view_count]),
          "",
          "",                               # Subscribers Gained
          "",                               # Subscribers Lost
          last_info[:video_count],
-         ""                                # Playlist Age
+         p.first_uploaded_video.uploaded_at ? time_ago_in_words(p.first_uploaded_video.uploaded_at) : ''    # Playlist Age
     ]
 end
 

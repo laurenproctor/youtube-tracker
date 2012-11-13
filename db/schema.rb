@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121112131239) do
+ActiveRecord::Schema.define(:version => 20121113024139) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -172,6 +172,8 @@ ActiveRecord::Schema.define(:version => 20121112131239) do
     t.string   "author_uri"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.datetime "published_at"
+    t.datetime "uploaded_at"
   end
 
   add_index "playlist_videos", ["day_view_count"], :name => "index_playlist_videos_on_day_view_count"
