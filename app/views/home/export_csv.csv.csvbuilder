@@ -33,7 +33,7 @@ csv << [ "Video Name",
          number_with_delimiter(last_info.likes),
          number_with_delimiter(last_info.dislikes),
          "",               # Shares
-         p.uploaded_at.try(:strftime, '%Y-%m-%d')
+         p.uploaded_at.try(:strftime, '%m/%d/%Y')
     ]
 end
 

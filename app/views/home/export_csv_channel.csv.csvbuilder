@@ -19,7 +19,7 @@ csv << [ "Date",
 
   day_fb_info = DayFacebookInfo.where(:imported_date => p.imported_date).first
   day_twitter_info = DayTwitterInfo.where(:imported_date => p.imported_date).first
-  csv << [p.imported_date,
+  csv << [(p.imported_date.getlocal - 1.day).try(:strftime, '%m/%d/%Y'),
          number_with_delimiter(video_info[:view_count]),
          '',                               # Aggregate Views
          number_with_delimiter(video_info[:num_videos]),
@@ -29,9 +29,9 @@ csv << [ "Date",
          "",
          "",
          "",                               # VSCR (%)
-         number_with_delimiter(day_fb_info.try(:likes) || 0),
-         number_with_delimiter(day_fb_info.try(:talking_about_count) || 0),
-         number_with_delimiter(day_twitter_info.try(:followers_count) || 0)
+         day_fb_info.try(:likes) ? number_with_delimiter(day_fb_info.try(:likes)) :  '',
+         day_fb_info.try(:talking_about_count)  ? number_with_delimiter(day_fb_info.try(:talking_about_count)) : '',
+         day_twitter_info.try(:followers_count) ? number_with_delimiter(day_twitter_info.try(:followers_count)) : ''
     ]
 end
 

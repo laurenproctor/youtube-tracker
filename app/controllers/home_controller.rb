@@ -15,7 +15,7 @@ class HomeController < ApplicationController
     @last_week_subscribers = {}
     @keys = []
     rows.each do |p|
-      key = p.imported_date.strftime('%m/%d')
+      key = (p.imported_date.getlocal - 1.day).strftime('%m/%d')
       @subscribers.merge!( key => p.subscribers )
       if at_last_7_days = DayChannel.where(:imported_date => p.imported_date - 7.days).first
         @last_week_subscribers.merge!( key => at_last_7_days.subscribers )
@@ -28,7 +28,7 @@ class HomeController < ApplicationController
     @last_week_avg_views_json = {}
     @avg_views_keys = []
     avg_views_rows.each do |p|
-      key = p[:imported_date].strftime('%m/%d')
+      key = (p[:imported_date].getlocal() - 1.day).strftime('%m/%d')
       @avg_views_json.merge!( key => p[:view_count] )
       if at_last_7_days = DayVideo.where(:imported_date => p[:imported_date] - 7.days).select('avg(view_count) as view_count').first
         @last_week_avg_views_json.merge!( key => at_last_7_days[:view_count] )
@@ -41,7 +41,7 @@ class HomeController < ApplicationController
     @facebook_info_keys = []
     @facebook_likes_json = {}
     facebook_info_rows.each do |p|
-      key = p.imported_date.strftime('%m/%d')
+      key = (p.imported_date.getlocal - 1.day).strftime('%m/%d')
       @facebook_info_json.merge!( key => p.talking_about_count )
       @facebook_likes_json.merge!( key => p.likes )
       @facebook_info_keys << key
@@ -52,7 +52,7 @@ class HomeController < ApplicationController
     @last_week_twitter_info_json = {}
     @twitter_info_keys = []
     twitter_info_rows.each do |p|
-      key = p.imported_date.strftime('%m/%d')
+      key = (p.imported_date.getlocal - 1.day).strftime('%m/%d')
       @twitter_info_json.merge!( key => p.followers_count )
       if at_last_7_days = DayTwitterInfo.where(:imported_date => p.imported_date - 7.days).first
         @last_week_twitter_info_json.merge!( key => at_last_7_days.followers_count )
