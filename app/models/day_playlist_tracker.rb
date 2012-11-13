@@ -1,5 +1,9 @@
 class DayPlaylistTracker < Tracker
   class << self
+      def top date
+        DayPlaylistTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date)
+      end
+
       def track
         today = Time.now.beginning_of_day
         day_playlists = DayPlaylist.where(:imported_date => today).order('view_count desc')

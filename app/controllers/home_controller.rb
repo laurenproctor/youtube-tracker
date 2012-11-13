@@ -2,12 +2,9 @@ class HomeController < ApplicationController
 
   def index
     today = Time.now.beginning_of_day
-    @channel = Channel.find_by_username(YOUTUBE[:user_id])
-    @top_videos = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => today).
-      order(sort_column(DayVideoTracker) + " " + sort_direction).limit(25) # .page(params[:page])
-
-    @top_playlists = DayPlaylistTracker.where(:this_week_rank => 1 .. 25, :tracked_date => today).
-      order(sort_column(DayPlaylistTracker) + " " + sort_direction).limit(25)
+    @channel = Channel.find_by_username YOUTUBE[:user_id]
+    @top_videos = DayVideoTracker.top(today).order('this_week_rank asc')
+    @top_playlists = DayPlaylistTracker.top(today).order('this_week_rank asc')
 
     seven_days = Time.now - 7.days .. Time.now
     rows = DayChannel.where(:imported_date => seven_days)
@@ -15,7 +12,7 @@ class HomeController < ApplicationController
     @last_week_subscribers = {}
     @keys = []
     rows.each do |p|
-      key = (p.imported_date.getlocal - 1.day).strftime('%m/%d')
+      key = p.data_date.strftime('%m/%d')
       @subscribers.merge!( key => p.subscribers )
       if at_last_7_days = DayChannel.where(:imported_date => p.imported_date - 7.days).first
         @last_week_subscribers.merge!( key => at_last_7_days.subscribers )
@@ -41,7 +38,7 @@ class HomeController < ApplicationController
     @facebook_info_keys = []
     @facebook_likes_json = {}
     facebook_info_rows.each do |p|
-      key = (p.imported_date.getlocal - 1.day).strftime('%m/%d')
+      key = p.data_date.strftime('%m/%d')
       @facebook_info_json.merge!( key => p.talking_about_count )
       @facebook_likes_json.merge!( key => p.likes )
       @facebook_info_keys << key
@@ -52,7 +49,7 @@ class HomeController < ApplicationController
     @last_week_twitter_info_json = {}
     @twitter_info_keys = []
     twitter_info_rows.each do |p|
-      key = (p.imported_date.getlocal - 1.day).strftime('%m/%d')
+      key = p.data_date.strftime('%m/%d')
       @twitter_info_json.merge!( key => p.followers_count )
       if at_last_7_days = DayTwitterInfo.where(:imported_date => p.imported_date - 7.days).first
         @last_week_twitter_info_json.merge!( key => at_last_7_days.followers_count )
@@ -65,28 +62,16 @@ class HomeController < ApplicationController
     to = params[:to].try(:to_date)
     from = params[:from].try(:to_date)
     if params[:type] == 'Video'
-      if to && from
-        @videos = Video.where('uploaded_at >= ? AND uploaded_at <= ?', from, to)
-      elsif from
-        @videos = Video.where('uploaded_at >= ?', from)
-      elsif to
-        @videos = Video.where('uploaded_at <= ?', to)
-      else
-        @videos = Video.where('id > 0')
-      end
-      @videos = @videos.order(:title)
+      export_csv_videos  from, to
     elsif params[:type] == 'Playlist'
-      if to && from
-        @playlists = Playlist.where('uploaded_at >= ? AND uploaded_at <= ?', from, to)
-      elsif from
-        @playlists = Playlist.where('uploaded_at >= ?', from)
-      elsif to
-        @playlists = Playlist.where('uploaded_at <= ?', to)
-      else
-        @playlists = Playlist.where('id > 0')
-      end
-      @playlists = @playlists.order(:title)
+      export_csv_playlists  from, to
     elsif params[:type] == 'Channel'
+      export_csv_channel from, to
+    end
+  end
+
+  private
+    def export_csv_channel from, to
       if to && from
         @day_channels = DayChannel.where('imported_date >= ? AND imported_date <= ?', from, to)
       elsif from
@@ -97,19 +82,42 @@ class HomeController < ApplicationController
         @day_channels = DayChannel.where('id > 0')
       end
       @day_channels = @day_channels.order(:imported_date)
+      respond_to do |format|
+        format.csv { render 'export_csv_channel' }
+      end
     end
 
-    respond_to do |format|
-      format.csv {
-        if params[:type] == 'Video'
-          render
-        elsif params[:type] == 'Playlist'
-          render 'export_csv_playlist'
-        elsif params[:type] == 'Channel'
-          render 'export_csv_channel'
-        end
-      }
+
+    def export_csv_playlists from, to
+      if to && from
+        @playlists = Playlist.where('published_at >= ? AND published_at <= ?', from, to)
+      elsif from
+        @playlists = Playlist.where('published_at >= ?', from)
+      elsif to
+        @playlists = Playlist.where('published_at <= ?', to)
+      else
+        @playlists = Playlist.where('id > 0')
+      end
+      @playlists = @playlists.order(:title)
+      respond_to do |format|
+        format.csv { render 'export_csv_playlist' }
+      end
     end
-  end
+
+    def export_csv_videos from, to
+      if to && from
+        @videos = Video.where('uploaded_at >= ? AND uploaded_at <= ?', from, to)
+      elsif from
+        @videos = Video.where('uploaded_at >= ?', from)
+      elsif to
+        @videos = Video.where('uploaded_at <= ?', to)
+      else
+        @videos = Video.where('id > 0')
+      end
+      @videos = @videos.order(:title)
+      respond_to do |format|
+        format.csv { render 'export_csv' }
+      end
+    end
 end
 

@@ -1,5 +1,9 @@
 class DayVideoTracker < Tracker
   class << self
+      def top date
+        DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date)
+      end
+
       def track
         today = Time.now.beginning_of_day
         day_videos = DayVideo.where(:imported_date => today).order('view_count desc')
@@ -52,5 +56,6 @@ class DayVideoTracker < Tracker
       end
 
   end
+
 end
 
