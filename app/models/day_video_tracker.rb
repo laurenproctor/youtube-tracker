@@ -1,7 +1,12 @@
 class DayVideoTracker < Tracker
   class << self
+      # param date: beginning_of_day
       def top date
-        DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date)
+        trackers = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date)
+        if trackers.blank?
+          trackers = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date - 1.day)
+        end
+        trackers
       end
 
       def track
