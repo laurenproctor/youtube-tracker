@@ -93,7 +93,7 @@ class HomeController < ApplicationController
     end
 
     def subscribers_chart days_range
-      rows = DayChannel.where(:imported_date => days_range)
+      rows = DayChannel.where(:imported_date => days_range).order('imported_date')
       @subscribers = {}
       @last_week_subscribers = {}
       @keys = []
@@ -109,7 +109,7 @@ class HomeController < ApplicationController
 
     def avg_views_chart days_range
       avg_views_rows=DayVideo.where(:imported_date => days_range).
-        select('imported_date, avg(view_count) as view_count').group(:imported_date)
+        select('imported_date, avg(view_count) as view_count').order('imported_date').group(:imported_date)
       @avg_views_json = {}
       @last_week_avg_views_json = {}
       @avg_views_keys = []
@@ -125,7 +125,7 @@ class HomeController < ApplicationController
     end
 
     def facebook_info_chart days_range
-      facebook_info_rows = DayFacebookInfo.where(:imported_date => days_range)
+      facebook_info_rows = DayFacebookInfo.where(:imported_date => days_range).order('imported_date')
       @facebook_info_json = {}
       @facebook_info_keys = []
       @facebook_likes_json = {}
@@ -138,7 +138,7 @@ class HomeController < ApplicationController
     end
 
     def twitter_info_chart days_range
-      twitter_info_rows = DayTwitterInfo.where(:imported_date => days_range)
+      twitter_info_rows = DayTwitterInfo.where(:imported_date => days_range).order('imported_date')
       @twitter_info_json = {}
       @last_week_twitter_info_json = {}
       @twitter_info_keys = []
