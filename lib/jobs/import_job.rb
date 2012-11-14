@@ -1,5 +1,6 @@
 class ImportJob
   def perform
+
     begin
       Channel.search_import
 
@@ -13,10 +14,16 @@ class ImportJob
       TwitterInfo.search_import
 
     rescue Exception => e
+      failure = true
       error_msg = "#{Time.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
       puts error_msg
     ensure
-      Delayed::Job.enqueue ImportJob.new, 2, Time.now.beginning_of_day + 1.day + 30.minutes
+      if failure
+        Delayed::Job.enqueue ImportJob.new, 2, Time.now + 20.minutes
+      else
+        Delayed::Job.enqueue ImportJob.new, 2, Time.now.beginning_of_day + 1.day + 30.minutes
+      end
+
     end
   end
 end
