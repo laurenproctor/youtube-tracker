@@ -13,3 +13,9 @@ TWITTER = {
   :user_id => 'officialcomedy'
 }
 
+GOOGLE = {
+  :api_key => 'AIzaSyBZHFyqC634ks7MRyatl1sgDldumOJ3bzQ',
+  :api_url => 'https://www.googleapis.com/plus/v1/people',
+  :user_id = '105766123436167186675'
+}
+

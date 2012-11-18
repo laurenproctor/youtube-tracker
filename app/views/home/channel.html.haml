@@ -1,0 +1,162 @@
+.container.pull-left#channel_name
+  - if @channel
+    = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
+    = @channel.username_display.try(:titleize)
+.clear-both
+.pull-right#form-download
+  = form_tag(export_csv_path(:format => :csv), :class => :form) do |f|
+    = select_tag 'type', options_for_select(["Video","Playlist","Channel"])
+    = text_field_tag :from_copy, nil, :class => 'ui-date-picker'
+    = text_field_tag :to_copy, nil, :class => 'ui-date-picker'
+    = hidden_field_tag :from, nil
+    = hidden_field_tag :to, nil
+    %button.button{:type => "submit"} Download
+.clear-both
+#status-box
+  %ul.unstyled
+    %li adafaf
+.clear-both
+#avg_views_chart_div
+#subscribers_chart_div
+#facebook_info_chart_div
+#twitter_info_chart_div
+.clear-both
+.table-title#top-videos-title Top Videos
+#top_videos
+  = render 'top_videos'
+
+- content_for :javascript do
+  :javascript
+    $(document).ready(function(){
+      $('input#from_copy.ui-date-picker').datepicker({
+        altField: $('input#from'),
+        altFormat: "yy-mm-dd",
+        dateFormat: "mm/dd/yy",
+        showOn: 'both',
+        buttonImageOnly: true,
+        buttonImage: "#{image_path('calendar.png')}" });
+
+      $('input#to_copy.ui-date-picker').datepicker({
+        altField: $('input#to'),
+        altFormat: "yy-mm-dd",
+        dateFormat: "mm/dd/yy",
+        showOn: 'both',
+        buttonImageOnly: true,
+        buttonImage: "#{image_path('calendar.png')}" });
+    });
+
+
+
+- content_for :javascript do
+  :erb
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var grouped_by_date = <%= @avg_views_json.to_json.html_safe %>
+        var last_week_grouped_by_date = <%= @last_week_avg_views_json.to_json.html_safe %>
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Average Views');
+        data.addColumn('number', 'Last Week Average Views');
+
+        var dates = <%= @avg_views_keys.to_json.html_safe %>
+        data.addRows(dates.length);
+        for(var i = 0; i < dates.length; i++) {
+          data.setValue(i, 0, dates[i] );
+          data.setValue(i, 1, grouped_by_date[dates[i]]);
+          data.setValue(i, 2, last_week_grouped_by_date[dates[i]]);
+        }
+
+        var options = {
+          title: 'Average Views Per Video', width: 570, height: 350
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('avg_views_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart2);
+      function drawChart2() {
+        var grouped_by_date = <%= @subscribers.to_json.html_safe %>
+        var last_week_grouped_by_date = <%= @last_week_subscribers.to_json.html_safe %>
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Subscribers');
+        data.addColumn('number', 'Last Week Subscribers');
+        var dates = <%= @keys.to_json.html_safe %>
+        data.addRows(dates.length);
+        for(var i = 0; i < dates.length; i++) {
+          data.setValue(i, 0, dates[i] );
+          data.setValue(i, 1, grouped_by_date[dates[i]]);
+          data.setValue(i, 2, last_week_grouped_by_date[dates[i]]);
+        }
+
+        var options = {
+          title: 'Subscribers', width: 570, height: 350
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('subscribers_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart3);
+      function drawChart3() {
+        var grouped_by_date = <%= @facebook_info_json.to_json.html_safe %>
+        var like_by_date = <%= @facebook_likes_json.to_json.html_safe %>
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Likes');
+        data.addColumn('number', 'Talking About');
+
+        var dates = <%= @facebook_info_keys.to_json.html_safe %>
+        data.addRows(dates.length);
+        for(var i = 0; i < dates.length; i++) {
+          data.setValue(i, 0, dates[i] );
+          data.setValue(i, 1, +like_by_date[dates[i]]);
+          data.setValue(i, 2, grouped_by_date[dates[i]]);
+        }
+
+        var options = {
+          title: 'Facebook Likes & Talking About', width: 570, height: 350
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('facebook_info_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart4);
+      function drawChart4() {
+        var grouped_by_date = <%= @twitter_info_json.to_json.html_safe %>
+        var last_week_grouped_by_date = <%= @last_week_twitter_info_json.to_json.html_safe %>
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', 'Followers Count');
+        data.addColumn('number', 'Last Week Followers Count');
+
+        var dates = <%= @twitter_info_keys.to_json.html_safe %>
+        data.addRows(dates.length);
+        for(var i = 0; i < dates.length; i++) {
+          data.setValue(i, 0, dates[i] );
+          data.setValue(i, 1, grouped_by_date[dates[i]]);
+          data.setValue(i, 2, last_week_grouped_by_date[dates[i]]);
+        }
+
+        var options = {
+          title: 'Twitter Followers', width: 570, height: 350
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('twitter_info_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+

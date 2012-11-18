@@ -18,6 +18,23 @@ class HomeController < ApplicationController
 
   end
 
+  def channel
+    today = Time.now.beginning_of_day
+    @channel = Channel.find_by_username YOUTUBE[:user_id]
+    @top_videos = DayVideoTracker.top(today).order('this_week_rank asc')
+
+    seven_days = Time.now - 7.days .. Time.now
+
+    subscribers_chart seven_days
+
+    avg_views_chart seven_days
+
+    facebook_info_chart seven_days
+
+    twitter_info_chart seven_days
+
+  end
+
   def export_csv
     to = params[:to].try(:to_date) unless  params[:to_copy].blank?
     from = params[:from].try(:to_date)  unless  params[:from_copy].blank?

@@ -14,6 +14,7 @@ gem 'thin'
 gem 'csv_builder'
 gem 'delayed_job_active_record'
 gem 'json'
+gem 'google-api-client'
 gem 'youtube_it', :git => 'https://github.com/kylejginavan/youtube_it.git'
 
 # Gems used only for assets and not required
