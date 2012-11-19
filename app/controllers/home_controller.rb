@@ -33,7 +33,8 @@ class HomeController < ApplicationController
 
     twitter_info_chart seven_days
 
-    config = YOUTUBE_ANALYTICS[:NetworkA]
+    params[:user_id] = 'NetworkA' unless params[:user_id]
+    config = YOUTUBE_ANALYTICS[params[:user_id].to_sym]
     client = Google::APIClient.new
 
     # Request authorization
@@ -43,9 +44,8 @@ class HomeController < ApplicationController
     client.authorization.redirect_uri = config[:redirect_uri]
 
     #uri = client.authorization.authorization_uri
-
-    client.authorization.refresh_token = config[:authorization_refresh_token]
     client.authorization.code = config[:authorization_code]
+    client.authorization.refresh_token = config[:authorization_refresh_token]
 
     begin
       client.authorization.fetch_access_token!
@@ -63,7 +63,7 @@ class HomeController < ApplicationController
     analytics  = client.discovered_api('youtubeAnalytics','v1')
     startDate  = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
     endDate    = '2013-01-01' # DateTime.now.strftime("%Y-%m-%d")
-    channelId  = 'UCsert8exifX1uUnqaoY3dqA'
+    channelId  = YOUTUBE[params[:user_id].to_sym][:channel_id]
     videoId    = 'CFu4htAIoBI'
     visitCount = client.execute(:api_method => analytics.reports.query, :parameters => {
       'start-date' => startDate,
@@ -73,10 +73,10 @@ class HomeController < ApplicationController
       metrics: 'views,subscribersGained'
       # filters: 'video==' + videoId
     })
-    @twitter_followers = JSON.parse(open(TWITTER[:api_url] + TWITTER[:NetworkA][:user_id]).read)['followers_count']
-    @facebook_likes    = JSON.parse(open(FACEBOOK[:api_url] + FACEBOOK[:NetworkA][:user_id]).read)[FACEBOOK[:NetworkA][:user_id]]['likes']
+    @twitter_followers = JSON.parse(open(TWITTER[:api_url] + TWITTER[params[:user_id].to_sym][:user_id]).read)['followers_count']
+    @facebook_likes    = JSON.parse(open(FACEBOOK[:api_url] + FACEBOOK[params[:user_id].to_sym][:user_id]).read)[FACEBOOK[params[:user_id].to_sym][:user_id]]['likes']
 
-    @plus_followers = JSON.parse(open("#{GOOGLE[:api_url]}/#{GOOGLE[:NetworkA][:user_id]}?key=#{GOOGLE[:NetworkA][:api_key]}").read)['plusOneCount']
+    @plus_followers = JSON.parse(open("#{GOOGLE[:api_url]}/#{GOOGLE[params[:user_id].to_sym][:user_id]}?key=#{GOOGLE[params[:user_id].to_sym][:api_key]}").read)['plusOneCount']
 
     @lifetime_views    = 0
     @subscribersGained = 0

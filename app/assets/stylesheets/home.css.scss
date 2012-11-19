@@ -2,6 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#header-wrapper {
+  border-bottom: 1px solid;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  li {
+    float: left;
+    margin-left: 20px;
+  }
+}
 .table-title {
   margin-bottom: 20px;
 }

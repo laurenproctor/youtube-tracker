@@ -2,6 +2,7 @@ YoutubeTracker::Application.routes.draw do
   root :to => "home#index"
 
   match 'channel' => 'home#channel'
+  match 'channel/:user_id' => 'home#channel', :via => :get, :as => "channel"
   match 'export_csv' => 'home#export_csv', :via => [:get, :post]
 
   # The priority is based upon order of creation:

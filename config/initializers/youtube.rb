@@ -1,19 +1,31 @@
 OAUTH_SCOPE = ["https://www.googleapis.com/auth/yt-analytics.readonly", "https://gdata.youtube.com"]
 YOUTUBE = {
-  :dev_key => 'AI39si4wNpuwLhab21bgqpB7PxF-IJlDHvNLQC0anVc11yzqEQLoouGHtFU1_Q4I_Q5PbjfUbUY12MyCCF73D0Ce2TFtIeO5CQ',
-  :user_id => 'officialcomedy',
+  :dev_key  => 'AI39si4wNpuwLhab21bgqpB7PxF-IJlDHvNLQC0anVc11yzqEQLoouGHtFU1_Q4I_Q5PbjfUbUY12MyCCF73D0Ce2TFtIeO5CQ',
+  :user_id  => 'officialcomedy',
   :NetworkA => {
-    :user_id => 'NetworkA'
+    :user_id      => 'NetworkA',
+    :channel_id   => 'UCsert8exifX1uUnqaoY3dqA'
+  },
+  :officialcomedy => {
+    :user_id      => 'officialcomedy',
+    :channel_id   => 'UC6EoCuxf5Vk80xU5iHbHqjA'
   }
 }
 
 YOUTUBE_ANALYTICS = {
   :NetworkA => {
-    :client_id => "336238439913-h808gc6ja3sqpmq1k336k7sqn8crahs3.apps.googleusercontent.com",
+    :client_id     => "336238439913-h808gc6ja3sqpmq1k336k7sqn8crahs3.apps.googleusercontent.com",
     :client_secret => "CQa4O4jm8Y4r2GGid-5OJx1A",
-    :redirect_uri => "urn:ietf:wg:oauth:2.0:oob",
-    :authorization_refresh_token => "1/r-vvKR6IHMn20sbdUiweGFdRnOw4zA1sQhqt2HLzVJo",
-    :authorization_code => "4/neoRfblSPJuFA29A17XE2mq8aCBg.giMb7NJsUYYWXE-sT2ZLcbRHJCAtdgI"
+    :redirect_uri  => "urn:ietf:wg:oauth:2.0:oob",
+    :authorization_code => "4/neoRfblSPJuFA29A17XE2mq8aCBg.giMb7NJsUYYWXE-sT2ZLcbRHJCAtdgI",
+    :authorization_refresh_token => "1/r-vvKR6IHMn20sbdUiweGFdRnOw4zA1sQhqt2HLzVJo"
+  },
+  :officialcomedy  => {
+    :client_id     => "830429700985.apps.googleusercontent.com",
+    :client_secret => "uTmMaVeQCDezllW8hCcX1EvW",
+    :redirect_uri  => "urn:ietf:wg:oauth:2.0:oob",
+    :authorization_code => "4/_IZ_faG2FK_dUFl_V3tcNf47pDXa.crIKbBWIVuMWXE-sT2ZLcbS12pQzdgI",
+    :authorization_refresh_token => "1/SO3T6NyTUGb6-uqZlYU-UGuHBg713m1dY-5TouVINQ0"
   }
 }
 
@@ -22,6 +34,9 @@ FACEBOOK = {
   :user_id => 'OfficialComedy',
   :NetworkA => {
     :user_id => 'OfficialComedy'
+  },
+  :officialcomedy => {
+    :user_id => 'officialcomedy'
   }
 }
 
@@ -30,6 +45,9 @@ TWITTER = {
   :user_id => 'officialcomedy',
   :NetworkA => {
     :user_id => 'networka'
+  },
+  :officialcomedy => {
+    :user_id => 'officialcomedy'
   }
 }
 
@@ -39,6 +57,10 @@ GOOGLE = {
   :NetworkA => {
     :user_id => '110891927986073292971',
     :api_key => 'AIzaSyAcH-mB5I7KyMabpODQ0SylpdpE6gmHwco'
+  },
+  :officialcomedy => {
+    :user_id => '105766123436167186675',
+    :api_key => 'AIzaSyBTwY3nxDC_YeqSmD7tlnU9-edSa3YjBXk'
   }
 }
 
