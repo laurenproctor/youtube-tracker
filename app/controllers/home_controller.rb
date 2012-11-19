@@ -33,6 +33,59 @@ class HomeController < ApplicationController
 
     twitter_info_chart seven_days
 
+    config = YOUTUBE_ANALYTICS[:NetworkA]
+    client = Google::APIClient.new
+
+    # Request authorization
+    client.authorization.client_id = config[:client_id]
+    client.authorization.client_secret = config[:client_secret]
+    client.authorization.scope = OAUTH_SCOPE
+    client.authorization.redirect_uri = config[:redirect_uri]
+
+    #uri = client.authorization.authorization_uri
+
+    client.authorization.refresh_token = config[:authorization_refresh_token]
+    client.authorization.code = config[:authorization_code]
+    puts "re" + client.authorization.refresh_token
+    puts client.authorization.code
+    begin
+      client.authorization.fetch_access_token!
+    rescue
+      data = {
+        :client_id => config[:client_id],
+        :client_secret => config[:client_secret],
+        :refresh_token => client.authorization.refresh_token,
+        :grant_type => "refresh_token"
+      }
+      response = JSON.parse(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
+      client.authorization.access_token = response["access_token"]
+    end
+
+    analytics = client.discovered_api('youtubeAnalytics','v1')
+    startDate = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
+    endDate = '2013-01-01' # DateTime.now.strftime("%Y-%m-%d")
+    channelId = 'UCsert8exifX1uUnqaoY3dqA'
+    videoId = 'CFu4htAIoBI'
+    visitCount = client.execute(:api_method => analytics.reports.query, :parameters => {
+      'start-date' => startDate,
+      'end-date' => endDate,
+      ids: 'channel==' + channelId,
+      dimensions: 'day',
+      metrics: 'views,subscribersGained'
+      # filters: 'video==' + videoId
+    })
+    @lifetime_views = 0
+    @subscribersGained = 0
+    print visitCount.data.column_headers.map { |c|
+      c.name
+    }.join("\t")
+    puts "-----------------"
+    visitCount.data.rows.each do |r|
+      print r.join("\t"), "\n"
+      @lifetime_views += r[1]
+      @subscribersGained += r[2]
+    end
+
   end
 
   def export_csv

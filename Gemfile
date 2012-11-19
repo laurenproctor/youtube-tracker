@@ -14,7 +14,7 @@ gem 'thin'
 gem 'csv_builder'
 gem 'delayed_job_active_record'
 gem 'json'
-gem 'google-api-client'
+gem 'google-api-client', require: 'google/api_client'
 gem 'rest-client'
 gem 'youtube_it', :git => 'https://github.com/kylejginavan/youtube_it.git'
 

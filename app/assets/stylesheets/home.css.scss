@@ -27,4 +27,31 @@
 #twitter_info_chart_div {
   float:left;
 }
+#status-box {
+  width:1024px;
+  margin: 0 auto;
+  display:table;
+  border: 1px solid;
+  margin-top:10px;
+  ul{
+    display: table;
+    margin-bottom: 45px;
+    li {
+      text-align:center;
+      width:250px;
+      height:50px;
+      float:left;
+      margin-top:50px;
+    }
+    li:nth-child(4n + 1) {
+      margin-left: 0px;
+    }
+  }
+
+}
+.line {
+  border: 1px  solid;
+  width:500px;
+  margin: 0 auto;
+}
 
