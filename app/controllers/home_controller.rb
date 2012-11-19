@@ -46,8 +46,7 @@ class HomeController < ApplicationController
 
     client.authorization.refresh_token = config[:authorization_refresh_token]
     client.authorization.code = config[:authorization_code]
-    puts "re" + client.authorization.refresh_token
-    puts client.authorization.code
+
     begin
       client.authorization.fetch_access_token!
     rescue
@@ -61,11 +60,11 @@ class HomeController < ApplicationController
       client.authorization.access_token = response["access_token"]
     end
 
-    analytics = client.discovered_api('youtubeAnalytics','v1')
-    startDate = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
-    endDate = '2013-01-01' # DateTime.now.strftime("%Y-%m-%d")
-    channelId = 'UCsert8exifX1uUnqaoY3dqA'
-    videoId = 'CFu4htAIoBI'
+    analytics  = client.discovered_api('youtubeAnalytics','v1')
+    startDate  = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
+    endDate    = '2013-01-01' # DateTime.now.strftime("%Y-%m-%d")
+    channelId  = 'UCsert8exifX1uUnqaoY3dqA'
+    videoId    = 'CFu4htAIoBI'
     visitCount = client.execute(:api_method => analytics.reports.query, :parameters => {
       'start-date' => startDate,
       'end-date' => endDate,
@@ -74,7 +73,12 @@ class HomeController < ApplicationController
       metrics: 'views,subscribersGained'
       # filters: 'video==' + videoId
     })
-    @lifetime_views = 0
+    @twitter_followers = JSON.parse(open(TWITTER[:api_url] + TWITTER[:NetworkA][:user_id]).read)['followers_count']
+    @facebook_likes    = JSON.parse(open(FACEBOOK[:api_url] + FACEBOOK[:NetworkA][:user_id]).read)[FACEBOOK[:NetworkA][:user_id]]['likes']
+
+    @plus_followers = JSON.parse(open("#{GOOGLE[:api_url]}/#{GOOGLE[:NetworkA][:user_id]}?key=#{GOOGLE[:NetworkA][:api_key]}").read)['plusOneCount']
+
+    @lifetime_views    = 0
     @subscribersGained = 0
     print visitCount.data.column_headers.map { |c|
       c.name

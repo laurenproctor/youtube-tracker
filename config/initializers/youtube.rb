@@ -21,7 +21,7 @@ FACEBOOK = {
   :api_url => 'http://graph.facebook.com/?ids=',
   :user_id => 'OfficialComedy',
   :NetworkA => {
-    :user_id => 'NetworkA'
+    :user_id => 'OfficialComedy'
   }
 }
 
@@ -29,16 +29,16 @@ TWITTER = {
   :api_url => 'https://api.twitter.com/1/users/show.json?screen_name=',
   :user_id => 'officialcomedy',
   :NetworkA => {
-    :user_id => 'NetworkA'
+    :user_id => 'networka'
   }
 }
 
 GOOGLE = {
-  :api_key => 'AIzaSyBZHFyqC634ks7MRyatl1sgDldumOJ3bzQ',
   :api_url => 'https://www.googleapis.com/plus/v1/people',
   :user_id => '105766123436167186675',
   :NetworkA => {
-    :user_id => 'NetworkA'
+    :user_id => '110891927986073292971',
+    :api_key => 'AIzaSyAcH-mB5I7KyMabpODQ0SylpdpE6gmHwco'
   }
 }
 
