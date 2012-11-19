@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'json'
 require 'google/api_client'
 require 'date'
@@ -50,11 +51,11 @@ visitCount = client.execute(:api_method => analytics.reports.query, :parameters 
   # filters: 'video==' + videoId
 })
 puts visitCount.inspect
-print visitCount.data.column_headers.map { |c|
+puts visitCount.data.column_headers.map { |c|
   c.name
 }.join("\t")
 puts "-----------------"
-visitCount.data.rows.each do |r|
-  print r.join("\t"), "\n"
+visitCount.data.rows.sort_by{|a,b| Date.parse(a)}.each do |r|
+  puts r.inspect
 end
 
