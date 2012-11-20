@@ -26,7 +26,8 @@ class Sync
 		      response = JSON.parse(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
 		      @client.authorization.access_token = response["access_token"]
 		    end
-				@youtube = @client.discovered_api('youtube','v3')
+				# @youtube = @client.discovered_api('youtube','v3')
+		    @analytics  = client.discovered_api('youtubeAnalytics','v1')
 		    return true
 		  rescue Exception => ex
 		  	Rails.logger.error("!!! AUTHORIZE exception: #{ex.message}")
@@ -41,12 +42,39 @@ class Sync
       page = 1
       videos = []
       begin
-        results = YoutubeClient.youtube_client.videos_by(:user => channel.unique_id, :page => page)
-        videos += results.videos
-        page += 1
-        total_pages = results.total_pages if total_pages == 1
+      	begin
+        	results = YoutubeClient.youtube_client.videos_by(:user => channel.unique_id, :page => page)
+        	videos += (results.videos rescue [])
+        	total_pages = results.total_pages if total_pages == 1
+      	rescue Exception => ex
+      		Rails.logger.error("Import videos error: #{ex.message}")
+      	end
+      	page += 1
       end while page <= results.total_pages
-      logger.info "import successfully #{ page -1 } / #{ total_pages}"
+			videos      
+		end
+
+		def import_videos(yvideos, channel)
+      today = Time.now.beginning_of_day
+			yvideos.each do |v|
+				video = channel.videos.find_or_create_by_unique_id(v.unique_id)
+        attrs = { 	:title => v.title, 
+        						:unique_id => v.unique_id,
+            				:categories => v.categories.try(:to_json), :description => v.description,
+				            :keywords => v.keywords.try(:to_json), 
+				            :player_url => v.player_url,
+				            :published_at => v.published_at,
+				            :uploaded_at => v.uploaded_at,
+				            :thumbnails => v.thumbnails.try(:to_json) 
+				          }
+				unless video.update_attributes(attrs)
+					Rails.logger.info("Could not sync video##{v.unique_id}")
+				end
+			end
+		end
+
+		def sync(channel)
+			videos(channel)
 		end
 
 	end

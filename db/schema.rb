@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121120041351) do
+ActiveRecord::Schema.define(:version => 20121120092130) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -266,6 +266,7 @@ ActiveRecord::Schema.define(:version => 20121120041351) do
     t.datetime "uploaded_at"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.integer  "channel_id"
   end
 
   add_index "videos", ["title"], :name => "index_videos_on_title"

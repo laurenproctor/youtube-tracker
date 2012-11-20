@@ -1,7 +1,10 @@
 class Video < ActiveRecord::Base
-  attr_accessible :categories, :description, :keywords, :player_url, :published_at
-  attr_accessible:thumbnails, :title, :unique_id, :uploaded_at
+  attr_accessible :categories, :description, :keywords, 
+                  :player_url, :published_at,
+                  :thumbnails, :title, :unique_id, 
+                  :uploaded_at, :channel_id
 
+  belongs_to :channel
   has_many :day_videos
 
   class << self

@@ -1,6 +1,7 @@
 class Channel < ActiveRecord::Base
   attr_accessible :avatar, :location, :unique_id, :username, :username_display
   has_many :day_channels
+  has_many :videos
 
   class << self
     def search_import
