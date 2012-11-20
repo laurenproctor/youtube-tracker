@@ -7,12 +7,15 @@ class Sync
 			begin
 		    @client ||= Google::APIClient.new
 		    config = YOUTUBE_ANALYTICS[channel.username_display.to_sym]
+	      Rails.logger.info(config.inspect)
+
 		    @client.authorization.client_id = config[:client_id]
 		    @client.authorization.client_secret = config[:client_secret]
 		    @client.authorization.scope = OAUTH_SCOPE
 		    @client.authorization.redirect_uri = config[:redirect_uri]
 		    @client.authorization.code = config[:authorization_code]
 		    @client.authorization.refresh_token = config[:authorization_refresh_token]
+		      Rails.logger.info(@client.inspect)
 
 		    begin
 		      @client.authorization.fetch_access_token!
@@ -26,10 +29,9 @@ class Sync
 		      response = JSON.parse(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
 		      @client.authorization.access_token = response["access_token"]
 		    end
-				# @youtube = @client.discovered_api('youtube','v3')
 		    return true
 		  rescue Exception => ex
-		  	Rails.logger.error("!!! AUTHORIZE exception: #{ex.message}")
+		  	Rails.logger.error("!!! AUTHORIZE exception: #{ex.message} --#{ex.inspect}")
 		  	return false
 		  end
 
@@ -60,11 +62,18 @@ class Sync
 			return false if video.try(:channel).blank?
 			return false unless authorize!(video.channel)
 	    @analytics  = @client.discovered_api('youtubeAnalytics','v1')
-	    startDate  = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
+	    startDate  = '2006-01-01'
 	    endDate    = Time.now.strftime("%Y-%m-%d")
-	    # channelId  = YOUTUBE[params[:user_id].to_sym][:channel_id]
+	    channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
+	    visitCount = client.execute(:api_method => analytics.reports.query, :parameters => {
+	      'start-date' => startDate,
+	      'end-date' => endDate,
+	      ids: 'channel==' + channelId,
+	      dimensions: 'day',
+	      metrics: 'views,comments,favoritesAdded,likes,dislikes,shares,subscribersGained'
+	    })
 
-			@analytics
+	    puts visitCount.data.collect { |col| c.name }
 		end
 		# END-DEF sync_detail_video
 
