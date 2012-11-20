@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  lifetime_views: 9.99
+  avg_views: 9.99
+  minutes_watched: 9.99
+  avg_view_duration: 9.99
+  subscribers: 9.99
+  vscr: 9.99
+  fb_likes: 1
+  twitter_followers: 1
+  plus_followers: 1
+  tumblr_followers: 1
+  instagram_followers: 1
+
+two:
+  lifetime_views: 9.99
+  avg_views: 9.99
+  minutes_watched: 9.99
+  avg_view_duration: 9.99
+  subscribers: 9.99
+  vscr: 9.99
+  fb_likes: 1
+  twitter_followers: 1
+  plus_followers: 1
+  tumblr_followers: 1
+  instagram_followers: 1
