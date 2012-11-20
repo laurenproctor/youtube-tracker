@@ -62,16 +62,15 @@ class HomeController < ApplicationController
 
     analytics  = client.discovered_api('youtubeAnalytics','v1')
     startDate  = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
-    endDate    = '2013-01-01' # DateTime.now.strftime("%Y-%m-%d")
+    endDate    = Time.now.strftime("%Y-%m-%d")
     channelId  = YOUTUBE[params[:user_id].to_sym][:channel_id]
-    videoId    = 'CFu4htAIoBI'
+
     visitCount = client.execute(:api_method => analytics.reports.query, :parameters => {
       'start-date' => startDate,
       'end-date' => endDate,
       ids: 'channel==' + channelId,
       dimensions: 'day',
       metrics: 'views,subscribersGained'
-      # filters: 'video==' + videoId
     })
     @twitter_followers = JSON.parse(open(TWITTER[:api_url] + TWITTER[params[:user_id].to_sym][:user_id]).read)['followers_count']
     @facebook_likes    = JSON.parse(open(FACEBOOK[:api_url] + FACEBOOK[params[:user_id].to_sym][:user_id]).read)[FACEBOOK[params[:user_id].to_sym][:user_id]]['likes']
@@ -80,6 +79,8 @@ class HomeController < ApplicationController
 
     @lifetime_views    = 0
     @subscribersGained = 0
+    @averageViewDuration = 0
+    @estimatedMinutesWatched = 0
     print visitCount.data.column_headers.map { |c|
       c.name
     }.join("\t")
