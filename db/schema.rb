@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121120092130) do
+ActiveRecord::Schema.define(:version => 20121120094605) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -116,6 +116,7 @@ ActiveRecord::Schema.define(:version => 20121120092130) do
     t.integer  "dislikes"
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
+    t.date     "report_date"
   end
 
   add_index "day_videos", ["day_view_count"], :name => "index_day_videos_on_day_view_count"

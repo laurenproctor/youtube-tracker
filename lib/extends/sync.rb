@@ -1,12 +1,12 @@
 class Sync
 
 	class << self
-		attr :client, :youtube, :playlists, :listItems, :videos
+		attr :client, :analytics, :youtube, :playlists, :listItems, :videos
 
 		def authorize!(channel)
 			begin
 		    @client ||= Google::APIClient.new
-		    config = YOUTUBE_ANALYTICS[channel]
+		    config = YOUTUBE_ANALYTICS[channel.username_display.to_sym]
 		    @client.authorization.client_id = config[:client_id]
 		    @client.authorization.client_secret = config[:client_secret]
 		    @client.authorization.scope = OAUTH_SCOPE
@@ -20,14 +20,13 @@ class Sync
 		      data = {
 		        :client_id => config[:client_id],
 		        :client_secret => config[:client_secret],
-		        :refresh_token => client.authorization.refresh_token,
+		        :refresh_token => @client.authorization.refresh_token,
 		        :grant_type => "refresh_token"
 		      }
 		      response = JSON.parse(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
 		      @client.authorization.access_token = response["access_token"]
 		    end
 				# @youtube = @client.discovered_api('youtube','v3')
-		    @analytics  = client.discovered_api('youtubeAnalytics','v1')
 		    return true
 		  rescue Exception => ex
 		  	Rails.logger.error("!!! AUTHORIZE exception: #{ex.message}")
@@ -37,24 +36,8 @@ class Sync
 		end
 		# END authorize!
 
-		def videos(channel)
-      total_pages = 1
-      page = 1
-      videos = []
-      begin
-      	begin
-        	results = YoutubeClient.youtube_client.videos_by(:user => channel.unique_id, :page => page)
-        	videos += (results.videos rescue [])
-        	total_pages = results.total_pages if total_pages == 1
-      	rescue Exception => ex
-      		Rails.logger.error("Import videos error: #{ex.message}")
-      	end
-      	page += 1
-      end while page <= results.total_pages
-			videos      
-		end
-
-		def import_videos(yvideos, channel)
+		def sync_videos(channel)
+			yvideos = videos(channel)
       today = Time.now.beginning_of_day
 			yvideos.each do |v|
 				video = channel.videos.find_or_create_by_unique_id(v.unique_id)
@@ -73,9 +56,42 @@ class Sync
 			end
 		end
 
-		def sync(channel)
-			videos(channel)
+		def sync_detail_video(video)
+			return false if video.try(:channel).blank?
+			return false unless authorize!(video.channel)
+	    @analytics  = @client.discovered_api('youtubeAnalytics','v1')
+	    startDate  = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
+	    endDate    = Time.now.strftime("%Y-%m-%d")
+	    # channelId  = YOUTUBE[params[:user_id].to_sym][:channel_id]
+
+			@analytics
 		end
+		# END-DEF sync_detail_video
+
+		def sync(channel)
+			sync_videos(channel)
+		end
+
+
+		private
+		def videos(channel)
+      total_pages = 1
+      page = 1
+      videos = []
+      begin
+      	begin
+        	results = YoutubeClient.youtube_client.videos_by(:user => channel.unique_id, :page => page)
+        	videos += (results.videos rescue [])
+        	total_pages = results.total_pages if total_pages == 1
+	      	page += 1
+	      	rescue "Exception"
+  	    end while page <= results.total_pages
+    	rescue Exception => ex
+    		Rails.logger.error("Import videos error: #{ex.message}")
+    	end
+			videos      
+		end
+
 
 	end
 end
