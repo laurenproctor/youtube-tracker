@@ -9,6 +9,10 @@ YOUTUBE = {
   :officialcomedy => {
     :user_id      => 'officialcomedy',
     :channel_id   => 'UC6EoCuxf5Vk80xU5iHbHqjA'
+  },
+  :look => {
+    :user_id      => 'look',
+    :channel_id   => 'UCKRXi7JVEQIKMrdN_PA--gQ'
   }
 }
 
@@ -26,6 +30,13 @@ YOUTUBE_ANALYTICS = {
     :redirect_uri  => "urn:ietf:wg:oauth:2.0:oob",
     :authorization_code => "4/_IZ_faG2FK_dUFl_V3tcNf47pDXa.crIKbBWIVuMWXE-sT2ZLcbS12pQzdgI",
     :authorization_refresh_token => "1/SO3T6NyTUGb6-uqZlYU-UGuHBg713m1dY-5TouVINQ0"
+  },
+  :look  => {
+    :client_id     => "1006982442785.apps.googleusercontent.com",
+    :client_secret => "ZFF1RyD0YM7J3lLMtHGc1TTO",
+    :redirect_uri  => "urn:ietf:wg:oauth:2.0:oob",
+    :authorization_code => "4/Ez9FX-y0EaAM-wpCDvkjwNRToWvI.UoOiODJxeKUfXE-sT2ZLcbQhoaU3dgI",
+    :authorization_refresh_token => "1/_ZTIwfKirgTNzKnTuNBw3wWus2m2992l57tNzmx6Afo"
   }
 }
 
@@ -36,6 +47,9 @@ FACEBOOK = {
     :user_id => 'OfficialComedy'
   },
   :officialcomedy => {
+    :user_id => 'officialcomedy'
+  },
+  :look => {
     :user_id => 'officialcomedy'
   }
 }
@@ -48,6 +62,9 @@ TWITTER = {
   },
   :officialcomedy => {
     :user_id => 'officialcomedy'
+  },
+  :look => {
+    :user_id => 'looktv'
   }
 }
 
@@ -61,6 +78,10 @@ GOOGLE = {
   :officialcomedy => {
     :user_id => '105766123436167186675',
     :api_key => 'AIzaSyBTwY3nxDC_YeqSmD7tlnU9-edSa3YjBXk'
+  },
+  :look => {
+    :user_id => '111278662546255064367',
+    :api_key => 'AIzaSyAif_DxXqxGvYHMW0oYMQco7aVk6bS938k'
   }
 }
 
