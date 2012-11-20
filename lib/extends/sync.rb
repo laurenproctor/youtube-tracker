@@ -74,7 +74,7 @@ class Sync
 	      metrics: 'views,comments,favoritesAdded,likes,dislikes,shares,subscribersGained'
 	    })
 
-	    puts visitCount.data. { |col| c.name }
+	    puts visitCount.data.columnHeaders.inspect
 		end
 		# END-DEF sync_detail_video
 

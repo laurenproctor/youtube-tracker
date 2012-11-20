@@ -13,7 +13,8 @@
     %button.button{:type => "submit", :disabled => true } Download
 .clear-both
 #status-box
-  = render 'status_box'
+  - if @status
+    = render 'status_box'
 .clear-both
 #avg_views_chart_div
 #subscribers_chart_div
