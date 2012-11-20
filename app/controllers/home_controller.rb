@@ -21,7 +21,7 @@ class HomeController < ApplicationController
   def channel
     today = Time.now.beginning_of_day
     params[:user_id] = 'NetworkA' unless params[:user_id]
-    @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id]
+    @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
     @top_videos = DayVideoTracker.top(today).order('this_week_rank asc')
     @top_video = @top_videos.first
     @top_in_day = DayVideo.where(:imported_date => today.beginning_of_week .. today).
