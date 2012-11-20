@@ -20,9 +20,12 @@ class HomeController < ApplicationController
 
   def channel
     today = Time.now.beginning_of_day
-    @channel = Channel.find_by_username YOUTUBE[:user_id]
+    params[:user_id] = 'NetworkA' unless params[:user_id]
+    @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
     @top_videos = DayVideoTracker.top(today).order('this_week_rank asc')
-
+    @top_video = @top_videos.first
+    @top_in_day = DayVideo.where(:imported_date => today.beginning_of_week .. today).
+      order('day_view_count desc').first
     seven_days = Time.now - 7.days .. Time.now
 
     subscribers_chart seven_days
@@ -33,64 +36,7 @@ class HomeController < ApplicationController
 
     twitter_info_chart seven_days
 
-    params[:user_id] = 'NetworkA' unless params[:user_id]
-    config = YOUTUBE_ANALYTICS[params[:user_id].to_sym]
-    client = Google::APIClient.new
-
-    # Request authorization
-    client.authorization.client_id = config[:client_id]
-    client.authorization.client_secret = config[:client_secret]
-    client.authorization.scope = OAUTH_SCOPE
-    client.authorization.redirect_uri = config[:redirect_uri]
-
-    #uri = client.authorization.authorization_uri
-    client.authorization.code = config[:authorization_code]
-    client.authorization.refresh_token = config[:authorization_refresh_token]
-
-    begin
-      client.authorization.fetch_access_token!
-    rescue
-      data = {
-        :client_id => config[:client_id],
-        :client_secret => config[:client_secret],
-        :refresh_token => client.authorization.refresh_token,
-        :grant_type => "refresh_token"
-      }
-      response = JSON.parse(RestClient.post "https://accounts.google.com/o/oauth2/token", data)
-      client.authorization.access_token = response["access_token"]
-    end
-
-    analytics  = client.discovered_api('youtubeAnalytics','v1')
-    startDate  = '2006-01-01'  # DateTime.now.prev_month.strftime("%Y-%m-%d")
-    endDate    = Time.now.strftime("%Y-%m-%d")
-    channelId  = YOUTUBE[params[:user_id].to_sym][:channel_id]
-
-    visitCount = client.execute(:api_method => analytics.reports.query, :parameters => {
-      'start-date' => startDate,
-      'end-date' => endDate,
-      ids: 'channel==' + channelId,
-      dimensions: 'day',
-      metrics: 'views,subscribersGained'
-    })
-    @twitter_followers = JSON.parse(open(TWITTER[:api_url] + TWITTER[params[:user_id].to_sym][:user_id]).read)['followers_count']
-    @facebook_likes    = JSON.parse(open(FACEBOOK[:api_url] + FACEBOOK[params[:user_id].to_sym][:user_id]).read)[FACEBOOK[params[:user_id].to_sym][:user_id]]['likes']
-
-    @plus_followers = JSON.parse(open("#{GOOGLE[:api_url]}/#{GOOGLE[params[:user_id].to_sym][:user_id]}?key=#{GOOGLE[params[:user_id].to_sym][:api_key]}").read)['plusOneCount']
-
-    @lifetime_views    = 0
-    @subscribersGained = 0
-    @averageViewDuration = 0
-    @estimatedMinutesWatched = 0
-    print visitCount.data.column_headers.map { |c|
-      c.name
-    }.join("\t")
-    puts "-----------------"
-    visitCount.data.rows.each do |r|
-      print r.join("\t"), "\n"
-      @lifetime_views += r[1]
-      @subscribersGained += r[2]
-    end
-
+    @status = Status.where(:user_id => params[:user_id], :imported_date => today - 1.day .. today).order('imported_date desc').first
   end
 
   def export_csv

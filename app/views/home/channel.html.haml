@@ -10,7 +10,7 @@
     = text_field_tag :to_copy, nil, :class => 'ui-date-picker'
     = hidden_field_tag :from, nil
     = hidden_field_tag :to, nil
-    %button.button{:type => "submit"} Download
+    %button.button{:type => "submit", :disabled => true } Download
 .clear-both
 #status-box
   = render 'status_box'

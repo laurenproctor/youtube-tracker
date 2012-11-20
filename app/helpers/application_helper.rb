@@ -15,5 +15,9 @@ module ApplicationHelper
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
+
+  def seconds_in_human seconds
+    (Time.mktime(0) + seconds).strftime("%H:%M")
+  end
 end
 

@@ -5,5 +5,8 @@ class DayVideo < ActiveRecord::Base
   belongs_to :video
   has_one :tracker, :as => :trackable
 
+  def data_date
+    self.imported_date.getlocal - 1.day
+  end
 end
 
