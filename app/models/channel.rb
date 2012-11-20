@@ -1,10 +1,10 @@
 class Channel < ActiveRecord::Base
-  attr_accessible :avatar, :location, :unique_id, :username, :username_display
+  attr_accessible :avatar, :location, :unique_id, :username, :username_display, :join_date
   has_many :day_channels
 
   class << self
-    def search_import
-        import YoutubeClient.youtube_client.profile(YOUTUBE[:user_id])
+    def search_import (user_id = YOUTUBE[:officialcomedy][:user_id])
+        import YoutubeClient.youtube_client.profile(user_id)
     end
   end
 
@@ -12,7 +12,7 @@ class Channel < ActiveRecord::Base
     def self.import(channel)
       today = Time.now.beginning_of_day
       params = { :unique_id => channel.user_id, :username => channel.username,
-          :username_display => channel.username_display,
+          :username_display => channel.username_display, :join_date => channel.join_date,
           :location => channel.location, :avatar => channel.avatar
       }
       param2s = { :unique_id => channel.user_id, :imported_date => today,

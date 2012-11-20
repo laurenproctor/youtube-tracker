@@ -1,45 +1,46 @@
 %ul.unstyled
   %li
-    = number_with_delimiter @lifetime_views
+    = number_with_delimiter @status.lifetime_views
     %br
     Lifetime Views
   %li
-    Not Available
+    = number_with_delimiter number_with_precision(@status.avg_views, :precision => 0)
     %br
     AVG Views Per Video
   %li
-    = @estimatedMinutesWatched
+    = number_with_delimiter @status.minutes_watched
     %br
     Total Minutes Watched
   %li
-    = @averageViewDuration
+    = seconds_in_human @status.avg_view_duration
     %br
     AVG View Duration
   %li
-    = number_with_delimiter @subscribersGained
+    = number_with_delimiter @status.subscribers
     %br
     Total Subscribers
   %li
-    Not Available
+    = @status.vscr
+    \%
     %br
     VSCR (%)
   %li
-    Not Available
+    = @top_in_day.data_date.strftime('%A')
     %br
     Top Day of Week - Views
   %li
-    Not Available
+    = @top_video.trackable.video.title
     %br
     Top Video - Views
 
 .line
 %ul.unstyled
   %li
-    = number_with_delimiter @facebook_likes
+    = number_with_delimiter @status.fb_likes
     %br
     Facebook Likes
   %li
-    = number_with_delimiter @twitter_followers
+    = number_with_delimiter @status.twitter_followers
     %br
     Twitter Followers
   %li
@@ -51,7 +52,7 @@
     %br
     Instagram Followers
   %li
-    = number_with_delimiter @plus_followers
+    = number_with_delimiter @status.plus_followers
     %br
     Google+ Followers
 

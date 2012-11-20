@@ -4,14 +4,17 @@ YOUTUBE = {
   :user_id  => 'officialcomedy',
   :NetworkA => {
     :user_id      => 'NetworkA',
+    :user_unique  => 'sert8exifX1uUnqaoY3dqA',
     :channel_id   => 'UCsert8exifX1uUnqaoY3dqA'
   },
   :officialcomedy => {
     :user_id      => 'officialcomedy',
+    :user_unique  => '6EoCuxf5Vk80xU5iHbHqjA',
     :channel_id   => 'UC6EoCuxf5Vk80xU5iHbHqjA'
   },
   :look => {
     :user_id      => 'look',
+    :user_unique  => 'KRXi7JVEQIKMrdN_PA--gQ',
     :channel_id   => 'UCKRXi7JVEQIKMrdN_PA--gQ'
   }
 }

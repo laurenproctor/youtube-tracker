@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121120041351) do
+ActiveRecord::Schema.define(:version => 20121120092214) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20121120041351) do
     t.string   "avatar"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.datetime "join_date"
   end
 
   add_index "channels", ["unique_id"], :name => "index_channels_on_unique_id"
@@ -202,11 +203,11 @@ ActiveRecord::Schema.define(:version => 20121120041351) do
 
   create_table "statuses", :force => true do |t|
     t.decimal  "lifetime_views",      :precision => 10, :scale => 0
-    t.decimal  "avg_views",           :precision => 10, :scale => 0
+    t.decimal  "avg_views",           :precision => 10, :scale => 4
     t.decimal  "minutes_watched",     :precision => 10, :scale => 0
-    t.decimal  "avg_view_duration",   :precision => 10, :scale => 0
+    t.decimal  "avg_view_duration",   :precision => 10, :scale => 4
     t.decimal  "subscribers",         :precision => 10, :scale => 0
-    t.decimal  "vscr",                :precision => 10, :scale => 0
+    t.decimal  "vscr",                :precision => 10, :scale => 4
     t.integer  "fb_likes"
     t.integer  "twitter_followers"
     t.integer  "plus_followers"
@@ -253,6 +254,14 @@ ActiveRecord::Schema.define(:version => 20121120041351) do
 
   add_index "twitter_infos", ["screen_name"], :name => "index_twitter_infos_on_screen_name"
   add_index "twitter_infos", ["unique_id"], :name => "index_twitter_infos_on_unique_id"
+
+  create_table "users", :force => true do |t|
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "videos", :force => true do |t|
     t.string   "unique_id"
