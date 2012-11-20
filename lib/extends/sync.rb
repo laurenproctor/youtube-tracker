@@ -59,8 +59,9 @@ class Sync
 		end
 
 		def sync_detail_video(video)
-			return false if video.try(:channel).blank?
-			return false unless authorize!(video.channel)
+			channel = video.channel
+			return false if channel.blank?
+			return false unless authorize!(channel)
 	    @analytics  = @client.discovered_api('youtubeAnalytics','v1')
 	    startDate  = '2006-01-01'
 	    endDate    = Time.now.strftime("%Y-%m-%d")
@@ -73,7 +74,7 @@ class Sync
 	      metrics: 'views,comments,favoritesAdded,likes,dislikes,shares,subscribersGained'
 	    })
 
-	    puts visitCount.data.collect { |col| c.name }
+	    puts visitCount.data. { |col| c.name }
 		end
 		# END-DEF sync_detail_video
 
