@@ -66,15 +66,19 @@ class Sync
 	    startDate  = '2006-01-01'
 	    endDate    = Time.now.strftime("%Y-%m-%d")
 	    channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
-	    visitCount = client.execute(:api_method => analytics.reports.query, :parameters => {
-	      'start-date' => startDate,
-	      'end-date' => endDate,
-	      ids: 'channel==' + channelId,
-	      dimensions: 'day',
-	      metrics: 'views,comments,favoritesAdded,likes,dislikes,shares,subscribersGained'
+	    visitCount = client.execute(:api_method => analytics.reports.query, 
+	    	:parameters => {
+	      	'start-date' => startDate,
+	      	'end-date' => endDate,
+	      	ids: 'channel==' + channelId,
+	      	dimensions: 'day',
+	      	metrics: 'views,comments,favoritesAdded,likes,dislikes,shares,subscribersGained'
 	    })
 
-	    puts visitCount.data.columnHeaders.inspect
+	    puts visitCount.data.inspect
+	    visitCount.data.rows.sort_by{|d,v| Date.parse(d)}.each do |r|
+				puts r.inspect
+		  end
 		end
 		# END-DEF sync_detail_video
 
