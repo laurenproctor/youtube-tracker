@@ -58,21 +58,20 @@ class Sync
 			end
 		end
 
-		def sync_detail_video(video)
+		def sync_detail_video(video, start_date='2006-01-01', end_date=Date.today.to_s)
 			channel = video.channel
 			return false if channel.blank?
 			return false unless authorize!(channel)
 	    @analytics  = @client.discovered_api('youtubeAnalytics','v1')
-	    startDate  = '2006-01-01'
-	    endDate    = Time.now.strftime("%Y-%m-%d")
-	    channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
+	    channelId  = YOUTUBE[channel.username_display.to_sym][:channel_id]
 	    visitCount = client.execute(:api_method => analytics.reports.query, 
 	    	:parameters => {
-	      	'start-date' => startDate,
-	      	'end-date' => endDate,
+	      	'start-date' => start_date,
+	      	'end-date' => end_date,
 	      	ids: 'channel==' + channelId,
 	      	dimensions: 'day',
-	      	metrics: 'views,comments,favoritesAdded,likes,dislikes,shares,subscribersGained'
+	      	metrics: 'views,comments,favoritesAdded,likes,dislikes,shares',
+	      	filters: "video=="+video.unique_id
 	    })
 
 	    puts visitCount.data.inspect

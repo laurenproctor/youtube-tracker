@@ -1,5 +1,6 @@
 class Channel < ActiveRecord::Base
-  attr_accessible :avatar, :location, :unique_id, :username, :username_display, :join_date
+  attr_accessible :avatar, :location, :unique_id, :username, 
+                  :username_display, :join_date
   has_many :day_channels
   has_many :videos
 

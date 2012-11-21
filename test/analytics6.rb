@@ -48,7 +48,7 @@ visitCount = client.execute(:api_method => analytics.reports.query, :parameters 
   ids: 'channel==' + channelId,
   dimensions: 'day',
   metrics: 'estimatedMinutesWatched'
-  # filters: 'video==' + videoId
+  filters: 'video==' + videoId
 })
 puts visitCount.inspect
 puts visitCount.data.column_headers.map { |c|
