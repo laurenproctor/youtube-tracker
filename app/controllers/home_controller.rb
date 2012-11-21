@@ -23,20 +23,21 @@ class HomeController < ApplicationController
     params[:user_id] = 'networka' unless params[:user_id]
 
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
+=begin
     @top_videos = DayVideoTracker.
       top(today).order('this_week_rank asc')
     @top_video = @top_videos.first
     @top_in_day = DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
       where(:imported_date => today.beginning_of_week .. today).
       order('day_view_count desc').first
-=begin
+=end
     @top_videos = DayVideoTracker.joins(:video).where('videos.channel_id =?', @channel.id).
       top(today).order('this_week_rank asc')
     @top_video = @top_videos.first
     @top_in_day = DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
       where(:imported_date => today.beginning_of_week .. today).
       order('day_view_count desc').first
-=end
+
     seven_days = Time.now - 7.days .. Time.now
 
     subscribers_chart seven_days
@@ -125,14 +126,14 @@ class HomeController < ApplicationController
     end
 
     def subscribers_chart days_range
-      rows = DayChannel.where(:imported_date => days_range).order('imported_date')
+      rows = @channel.day_channels.where(:imported_date => days_range).order('imported_date')
       @subscribers = {}
       @last_week_subscribers = {}
       @keys = []
       rows.each do |p|
         key = p.data_date.strftime('%m/%d')
         @subscribers.merge!( key => p.subscribers )
-        if at_last_7_days = DayChannel.where(:imported_date => p.imported_date - 7.days).first
+        if at_last_7_days = @channel.day_channels.where(:imported_date => p.imported_date - 7.days).first
           @last_week_subscribers.merge!( key => at_last_7_days.subscribers )
         end
         @keys << key
@@ -140,7 +141,8 @@ class HomeController < ApplicationController
     end
 
     def avg_views_chart days_range
-      avg_views_rows=DayVideo.where(:imported_date => days_range).
+      avg_views_rows=DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
+        where(:imported_date => days_range).
         select('imported_date, avg(view_count) as view_count').order('imported_date').group(:imported_date)
       @avg_views_json = {}
       @last_week_avg_views_json = {}
@@ -148,7 +150,8 @@ class HomeController < ApplicationController
       avg_views_rows.each do |p|
         key = (p[:imported_date].getlocal() - 1.day).strftime('%m/%d')
         @avg_views_json.merge!( key => p[:view_count] )
-        if at_last_7_days = DayVideo.where(:imported_date => p[:imported_date] - 7.days).
+        if at_last_7_days = DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
+            where(:imported_date => p[:imported_date] - 7.days).
             select('avg(view_count) as view_count').first
           @last_week_avg_views_json.merge!( key => at_last_7_days[:view_count] )
         end
@@ -157,7 +160,8 @@ class HomeController < ApplicationController
     end
 
     def facebook_info_chart days_range
-      facebook_info_rows = DayFacebookInfo.where(:imported_date => days_range).order('imported_date')
+      facebook_info_rows = DayFacebookInfo.joins(:facebook_info).where('facebook_infos.channel_id =?', @channel.id).
+        where(:imported_date => days_range).order('imported_date')
       @facebook_info_json = {}
       @facebook_info_keys = []
       @facebook_likes_json = {}
@@ -170,7 +174,7 @@ class HomeController < ApplicationController
     end
 
     def twitter_info_chart days_range
-      twitter_info_rows = DayTwitterInfo.where(:imported_date => days_range).order('imported_date')
+      twitter_info_rows = DayTwitterInfo.joins(:twitter_info).where('twitter_infos.channel_id =?', @channel.id).where(:imported_date => days_range).order('imported_date')
       @twitter_info_json = {}
       @last_week_twitter_info_json = {}
       @twitter_info_keys = []

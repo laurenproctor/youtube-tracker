@@ -12,6 +12,20 @@ namespace :db do
       p.video_id = video.id
       p.save
     end
+
+    FacebookInfo.find_each() do |p|
+      unless p.channel_id
+        p.channel_id = channel.id
+        p.save
+      end
+    end
+
+    TwitterInfo.find_each() do |p|
+      unless p.channel_id
+        p.channel_id = channel.id
+        p.save
+      end
+    end
   end
 
 end

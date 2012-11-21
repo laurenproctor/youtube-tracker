@@ -4,12 +4,15 @@ class DayVideoTracker < Tracker
       # param date: beginning_of_day
       def top date
         trackers = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date - 3.day .. date).
-          order('tracked_date desc').limit(25)
+          order('tracked_date desc, this_week_rank ').limit(25)
       end
 
-      def track(channel = 'officialcomedy')
+      def track(username = 'officialcomedy')
+        channel = Channel.find_by_username username
         today = Date.today.to_datetime
-        day_videos = DayVideo.where(:imported_date => today).order('view_count desc')
+        today = today - 1.day
+        day_videos = DayVideo.joins(:video).where('videos.channel_id =?', channel.id).
+          where(:imported_date => today).order('view_count desc')
         day_videos.each_with_index do |p, index|
           params = {
               :unique_id => p.video.unique_id, :name => p.video.title, :this_week_rank => index + 1,

@@ -47,7 +47,7 @@ FACEBOOK = {
   :api_url => 'http://graph.facebook.com/?ids=',
   :user_id => 'OfficialComedy',
   :networka => {
-    :user_id => 'OfficialComedy'
+    :user_id => 'officialcomedy'
   },
   :officialcomedy => {
     :user_id => 'officialcomedy'

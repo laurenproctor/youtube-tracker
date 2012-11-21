@@ -1,9 +1,9 @@
 task :import_statuses => :environment do
   today = Date.today.to_datetime
-  %w(officialcomedy NetworkA look).each do |p|
+  %w(officialcomedy networka look).each do |p|
     Channel.search_import YOUTUBE[p.to_sym][:user_id]
   end
-  %w(officialcomedy NetworkA look).each do |p|
+  %w(officialcomedy networka look).each do |p|
     channel = p.to_sym
     unless day_channel = DayChannel.find_by_unique_id_and_imported_date(YOUTUBE[channel][:user_unique], today)
       next

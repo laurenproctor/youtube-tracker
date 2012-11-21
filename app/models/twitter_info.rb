@@ -1,22 +1,25 @@
 class TwitterInfo < ActiveRecord::Base
-  attr_accessible :description, :location, :name, :screen_name, :unique_id, :url
+  attr_accessible :description, :location, :name, :screen_name, :unique_id, :url, :channel_id
+
+  belongs_to :channel
   has_many :day_twitter_infos
 
   class << self
-    def search_import
-        json = JSON.parse(open(TWITTER[:api_url] + TWITTER[:user_id]).read)
-        import json
+    def search_import(username = 'officialcomedy')
+        json = JSON.parse(open(TWITTER[:api_url] + TWITTER[username.to_sym][:user_id]).read)
+        import json, username
     end
   end
 
   private
 
-    def self.import(user)
+    def self.import(user, username)
+      channel = Channel.find_by_username username
       today = Date.today.to_datetime
       params = {
           :unique_id => "#{user['screen_name']}_#{user['id']}", :location => user['location'],
           :screen_name => user['screen_name'], :description => user['description'],
-          :url => user['url'], :name => user['name']
+          :url => user['url'], :name => user['name'], :channel_id => channel.id
       }
       param2s = {
           :unique_id => params[:unique_id], :imported_date => today,

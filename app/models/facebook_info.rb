@@ -1,23 +1,27 @@
 class FacebookInfo < ActiveRecord::Base
-  attr_accessible :category, :cover_id, :description, :link, :name, :unique_id, :username, :website
+  attr_accessible :category, :cover_id, :description, :link, :name,
+                  :unique_id, :username, :website, :channel_id
+
+  belongs_to :channel
   has_many :day_facebook_infos
 
   class << self
-    def search_import
-        json = JSON.parse(open(FACEBOOK[:api_url] + FACEBOOK[:user_id]).read)
-        import json[FACEBOOK[:user_id]]
+    def search_import(username = 'officialcomedy')
+        json = JSON.parse(open(FACEBOOK[:api_url] + FACEBOOK[username.to_sym][:user_id]).read)
+        import json[FACEBOOK[username.to_sym][:user_id]], username
     end
   end
 
   private
 
-    def self.import(user)
+    def self.import(user, username)
       today = Date.today.to_datetime
+      channel = Channel.find_by_username username
       params = {
           :unique_id => "#{user['username']}_#{user['id']}", :cover_id => user['cover']['cover_id'],
           :category => user['category'], :description => user['description'],
           :link => user['link'], :name => user['name'],
-          :username => user['username'], :website => user['website'],
+          :username => user['username'], :website => user['website'], :channel_id => channel.id
       }
       param2s = {
           :unique_id => params[:unique_id], :imported_date => today,
