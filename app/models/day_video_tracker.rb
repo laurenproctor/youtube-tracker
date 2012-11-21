@@ -1,22 +1,20 @@
 class DayVideoTracker < Tracker
+  belongs_to :video
   class << self
       # param date: beginning_of_day
       def top date
-        trackers = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date)
-        if trackers.blank?
-          trackers = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date - 1.day)
-        end
-        trackers
+        trackers = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date - 3.day .. date).
+          order('tracked_date desc').limit(25)
       end
 
       def track
-        today = Time.now.beginning_of_day
+        today = Date.today.to_datetime
         day_videos = DayVideo.where(:imported_date => today).order('view_count desc')
         day_videos.each_with_index do |p, index|
           params = {
               :unique_id => p.video.unique_id, :name => p.video.title, :this_week_rank => index + 1,
               :total_aggregate_views => p.view_count, :uploaded_at => p.video.uploaded_at,
-              :comments => p.comment_count, :shares => 0, :tracked_date => today
+              :comments => p.comment_count, :shares => 0, :tracked_date => today, :video_id => p.video.id
             }
           this_week_days = today.beginning_of_week .. today
           last_week_tracker = DayVideoTracker.find_by_unique_id_and_tracked_date(p.unique_id,

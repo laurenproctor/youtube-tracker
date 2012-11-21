@@ -10,7 +10,7 @@ class DayPlaylistTracker < Tracker
       end
 
       def track
-        today = Time.now.beginning_of_day
+        today = Date.today.to_datetime
         day_playlists = DayPlaylist.where(:imported_date => today).order('view_count desc')
         day_playlists.each_with_index do |p, index|
           params = {

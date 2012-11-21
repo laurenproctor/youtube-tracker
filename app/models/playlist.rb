@@ -16,11 +16,11 @@ class Playlist < ActiveRecord::Base
   end
 
   def last_info
-    DayPlaylist.find_by_unique_id_and_imported_date(self.unique_id, Time.now.beginning_of_day)
+    DayPlaylist.find_by_unique_id_and_imported_date(self.unique_id, Date.today.to_datetime)
   end
 
   def avg_views
-    DayPlaylist.where(:unique_id=> self.unique_id,:imported_date => Time.now.beginning_of_day).
+    DayPlaylist.where(:unique_id=> self.unique_id,:imported_date => Date.today.to_datetime).
       select('avg(day_view_count) as day_view_count').
       select('avg(view_count) as view_count').first
   end
@@ -28,7 +28,7 @@ class Playlist < ActiveRecord::Base
   private
 
     def self.import(yt_playlist)
-       today = Time.now.beginning_of_day
+       today = Date.today.to_datetime
         params = { :title => yt_playlist.title, :unique_id => yt_playlist.playlist_id,
           :description => yt_playlist.description, :published_at => yt_playlist.published,
           :summary => yt_playlist.summary, :xml => nil,

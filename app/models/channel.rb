@@ -1,5 +1,5 @@
 class Channel < ActiveRecord::Base
-  attr_accessible :avatar, :location, :unique_id, :username, 
+  attr_accessible :avatar, :location, :unique_id, :username,
                   :username_display, :join_date
   has_many :day_channels
   has_many :videos
@@ -12,7 +12,7 @@ class Channel < ActiveRecord::Base
 
   private
     def self.import(channel)
-      today = Time.now.beginning_of_day
+      today = Date.today.to_datetime
       params = { :unique_id => channel.user_id, :username => channel.username,
           :username_display => channel.username_display, :join_date => channel.join_date,
           :location => channel.location, :avatar => channel.avatar

@@ -1,7 +1,7 @@
 class Sync
 
 	class << self
-		attr :client, :analytics, :youtube, :playlists, :listItems, :videos
+		# attr :client, :analytics, :youtube, :playlists, :listItems, :videos
 
 		def authorize!(channel)
 			begin
@@ -40,17 +40,17 @@ class Sync
 
 		def sync_videos(channel)
 			yvideos = videos(channel)
-      today = Time.now.beginning_of_day
+      today = Date.today.to_datetime
 			yvideos.each do |v|
 				video = channel.videos.find_or_create_by_unique_id(v.unique_id)
-        attrs = { 	:title => v.title, 
+        attrs = { 	:title => v.title,
         						:unique_id => v.unique_id,
             				:categories => v.categories.try(:to_json), :description => v.description,
-				            :keywords => v.keywords.try(:to_json), 
+				            :keywords => v.keywords.try(:to_json),
 				            :player_url => v.player_url,
 				            :published_at => v.published_at,
 				            :uploaded_at => v.uploaded_at,
-				            :thumbnails => v.thumbnails.try(:to_json) 
+				            :thumbnails => v.thumbnails.try(:to_json)
 				          }
 				unless video.update_attributes(attrs)
 					Rails.logger.info("Could not sync video##{v.unique_id}")
@@ -61,23 +61,39 @@ class Sync
 		def sync_detail_video(video, start_date='2006-01-01', end_date=Date.today.to_s)
 			channel = video.channel
 			return false if channel.blank?
-			return false unless authorize!(channel)
-	    @analytics  = @client.discovered_api('youtubeAnalytics','v1')
-	    channelId  = YOUTUBE[channel.username_display.to_sym][:channel_id]
-	    visitCount = client.execute(:api_method => analytics.reports.query, 
+			client = GoogleApiClient.youtube_analytics_client channel.username
+	    analytics  = client.discovered_api('youtubeAnalytics','v1')
+	    channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
+	    visitCount = client.execute(:api_method => analytics.reports.query,
 	    	:parameters => {
 	      	'start-date' => start_date,
 	      	'end-date' => end_date,
 	      	ids: 'channel==' + channelId,
 	      	dimensions: 'day',
 	      	metrics: 'views,comments,favoritesAdded,likes,dislikes,shares',
-	      	filters: "video=="+video.unique_id
+	      	filters: "video==" + video.unique_id
 	    })
-
-	    puts visitCount.data.inspect
+      total_view_count = 0;
+	    # puts visitCount.data.inspect
 	    visitCount.data.rows.sort_by{|d,v| Date.parse(d)}.each do |r|
 				puts r.inspect
+        next_date = r[0].to_datetime + 1.day
+
+        day_video = video.day_videos.find_or_create_by_imported_date(next_date)
+        attrs = {
+            :unique_id => video.unique_id, :imported_date => next_date,
+            :report_date    => r[0].to_date,
+            :day_view_count => r[1], :view_count => total_view_count += r[1],
+            :comment_count  => r[2],
+            :favorite_count => r[3],
+            :likes    => r[4],
+            :dislikes => r[5]
+        }
+        unless day_video.update_attributes(attrs)
+					Rails.logger.info("Could not sync detail for video##{v.unique_id} on #{r[0]}")
+				end
 		  end
+
 		end
 		# END-DEF sync_detail_video
 
@@ -92,19 +108,16 @@ class Sync
       page = 1
       videos = []
       begin
-      	begin
-        	results = YoutubeClient.youtube_client.videos_by(:user => channel.unique_id, :page => page)
-        	videos += (results.videos rescue [])
-        	total_pages = results.total_pages if total_pages == 1
-	      	page += 1
-	      	rescue "Exception"
-  	    end while page <= results.total_pages
-    	rescue Exception => ex
-    		Rails.logger.error("Import videos error: #{ex.message}")
-    	end
-			videos      
+        results = YoutubeClient.youtube_client.videos_by(:user => channel.unique_id, :page => page)
+        videos += (results.videos rescue [])
+        page += 1
+        total_pages = results.total_pages if total_pages == 1
+      end while page <= results.total_pages
+      puts "import successfully #{ page -1 } / #{ total_pages}"
+			videos
 		end
 
 
 	end
 end
+

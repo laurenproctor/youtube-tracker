@@ -1,4 +1,4 @@
-today = Time.now.beginning_of_day
+today = Date.today.to_datetime
 
 csv << [ "Video Name",
          "Ranking",

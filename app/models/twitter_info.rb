@@ -12,7 +12,7 @@ class TwitterInfo < ActiveRecord::Base
   private
 
     def self.import(user)
-      today = Time.now.beginning_of_day
+      today = Date.today.to_datetime
       params = {
           :unique_id => "#{user['screen_name']}_#{user['id']}", :location => user['location'],
           :screen_name => user['screen_name'], :description => user['description'],

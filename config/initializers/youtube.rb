@@ -2,7 +2,7 @@ OAUTH_SCOPE = ["https://www.googleapis.com/auth/yt-analytics.readonly", "https:/
 YOUTUBE = {
   :dev_key  => 'AI39si4wNpuwLhab21bgqpB7PxF-IJlDHvNLQC0anVc11yzqEQLoouGHtFU1_Q4I_Q5PbjfUbUY12MyCCF73D0Ce2TFtIeO5CQ',
   :user_id  => 'officialcomedy',
-  :NetworkA => {
+  :networka => {
     :user_id      => 'NetworkA',
     :user_unique  => 'sert8exifX1uUnqaoY3dqA',
     :channel_id   => 'UCsert8exifX1uUnqaoY3dqA'
@@ -20,7 +20,7 @@ YOUTUBE = {
 }
 
 YOUTUBE_ANALYTICS = {
-  :NetworkA => {
+  :networka => {
     :client_id     => "336238439913-h808gc6ja3sqpmq1k336k7sqn8crahs3.apps.googleusercontent.com",
     :client_secret => "CQa4O4jm8Y4r2GGid-5OJx1A",
     :redirect_uri  => "urn:ietf:wg:oauth:2.0:oob",
@@ -46,7 +46,7 @@ YOUTUBE_ANALYTICS = {
 FACEBOOK = {
   :api_url => 'http://graph.facebook.com/?ids=',
   :user_id => 'OfficialComedy',
-  :NetworkA => {
+  :networka => {
     :user_id => 'OfficialComedy'
   },
   :officialcomedy => {
@@ -60,7 +60,7 @@ FACEBOOK = {
 TWITTER = {
   :api_url => 'https://api.twitter.com/1/users/show.json?screen_name=',
   :user_id => 'officialcomedy',
-  :NetworkA => {
+  :networka => {
     :user_id => 'networka'
   },
   :officialcomedy => {
@@ -74,7 +74,7 @@ TWITTER = {
 GOOGLE = {
   :api_url => 'https://www.googleapis.com/plus/v1/people',
   :user_id => '105766123436167186675',
-  :NetworkA => {
+  :networka => {
     :user_id => '110891927986073292971',
     :api_key => 'AIzaSyAcH-mB5I7KyMabpODQ0SylpdpE6gmHwco'
   },

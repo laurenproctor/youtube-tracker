@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    today = Time.now.beginning_of_day
+    today = Date.today.to_datetime
     @channel = Channel.find_by_username YOUTUBE[:user_id]
     @top_videos = DayVideoTracker.top(today).order('this_week_rank asc')
     @top_playlists = DayPlaylistTracker.top(today).order('this_week_rank asc')
@@ -19,13 +19,24 @@ class HomeController < ApplicationController
   end
 
   def channel
-    today = Time.now.beginning_of_day
-    params[:user_id] = 'NetworkA' unless params[:user_id]
+    today = Date.today.to_datetime
+    params[:user_id] = 'networka' unless params[:user_id]
+
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
-    @top_videos = DayVideoTracker.top(today).order('this_week_rank asc')
+    @top_videos = DayVideoTracker.
+      top(today).order('this_week_rank asc')
     @top_video = @top_videos.first
-    @top_in_day = DayVideo.where(:imported_date => today.beginning_of_week .. today).
+    @top_in_day = DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
+      where(:imported_date => today.beginning_of_week .. today).
       order('day_view_count desc').first
+=begin
+    @top_videos = DayVideoTracker.joins(:video).where('videos.channel_id =?', @channel.id).
+      top(today).order('this_week_rank asc')
+    @top_video = @top_videos.first
+    @top_in_day = DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
+      where(:imported_date => today.beginning_of_week .. today).
+      order('day_view_count desc').first
+=end
     seven_days = Time.now - 7.days .. Time.now
 
     subscribers_chart seven_days

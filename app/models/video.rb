@@ -1,7 +1,7 @@
 class Video < ActiveRecord::Base
-  attr_accessible :categories, :description, :keywords, 
+  attr_accessible :categories, :description, :keywords,
                   :player_url, :published_at,
-                  :thumbnails, :title, :unique_id, 
+                  :thumbnails, :title, :unique_id,
                   :uploaded_at, :channel_id
 
   belongs_to :channel
@@ -23,7 +23,7 @@ class Video < ActiveRecord::Base
   end
 
   def last_info
-    DayVideo.find_by_unique_id_and_imported_date(self.unique_id, Time.now.beginning_of_day)
+    DayVideo.find_by_unique_id_and_imported_date(self.unique_id, Date.today.to_datetime)
   end
 
   def avg_views_per_day imported_date_range
@@ -33,7 +33,7 @@ class Video < ActiveRecord::Base
 
   private
     def self.import(youtube_videos)
-      today = Time.now.beginning_of_day
+      today = Date.today.to_datetime
       youtube_videos.each_with_index do |p, index|
         params = { :title => p.title, :unique_id => p.unique_id,
             :categories => p.categories.try(:to_json), :description => p.description,

@@ -1,5 +1,5 @@
 task :import_statuses => :environment do
-  today = Time.now.beginning_of_day
+  today = Date.today.to_datetime
   %w(officialcomedy NetworkA look).each do |p|
     Channel.search_import YOUTUBE[p.to_sym][:user_id]
   end

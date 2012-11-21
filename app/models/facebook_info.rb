@@ -12,7 +12,7 @@ class FacebookInfo < ActiveRecord::Base
   private
 
     def self.import(user)
-      today = Time.now.beginning_of_day
+      today = Date.today.to_datetime
       params = {
           :unique_id => "#{user['username']}_#{user['id']}", :cover_id => user['cover']['cover_id'],
           :category => user['category'], :description => user['description'],
