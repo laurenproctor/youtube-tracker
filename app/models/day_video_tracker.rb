@@ -7,7 +7,7 @@ class DayVideoTracker < Tracker
           order('tracked_date desc').limit(25)
       end
 
-      def track
+      def track(channel = 'officialcomedy')
         today = Date.today.to_datetime
         day_videos = DayVideo.where(:imported_date => today).order('view_count desc')
         day_videos.each_with_index do |p, index|

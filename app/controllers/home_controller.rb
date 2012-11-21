@@ -47,7 +47,7 @@ class HomeController < ApplicationController
 
     twitter_info_chart seven_days
 
-    @status = Status.where(:user_id => params[:user_id], :imported_date => today - 1.day .. today).order('imported_date desc').first
+    @status = Status.where(:user_id => YOUTUBE[params[:user_id].to_sym][:user_id], :imported_date => today - 1.day .. today).order('imported_date desc').first
   end
 
   def export_csv
