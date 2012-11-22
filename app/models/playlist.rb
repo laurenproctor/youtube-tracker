@@ -1,16 +1,22 @@
 class Playlist < ActiveRecord::Base
-  attr_accessible :description, :unique_id, :published_at, :response_code, :summary, :title, :xml, :age_from
+  attr_accessible :description, :unique_id, :published_at,
+                  :response_code, :summary, :title, :xml,
+                  :age_from, :channel_id
+
+  belongs_to :channel
   has_many :day_playlists
 
   class << self
-    def search_import
-        playlists = YoutubeClient.youtube_client.all_playlists(YOUTUBE[:user_id])
+    def search_import(channel)
+        client = YoutubeClient.youtube_client(channel.username)
+        playlists = client.all_playlists(channel.username)
         total = 1
         playlists.each_with_index do |p, index|
-          playlist = YoutubeClient.youtube_client.playlist(p.playlist_id)
-          import playlist
+          playlist = client.playlist(p.playlist_id)
+          import(playlist, channel)
           total = index
         end
+        puts "Import for #{channel} ..................finished"
         logger.info "import successfully #{total + 1} / #{ playlists.size } playlists"
     end
   end
@@ -27,9 +33,10 @@ class Playlist < ActiveRecord::Base
 
   private
 
-    def self.import(yt_playlist)
+    def self.import(yt_playlist, channel)
        today = Date.today.to_datetime
-        params = { :title => yt_playlist.title, :unique_id => yt_playlist.playlist_id,
+        params = { :channel_id => channel.id,
+          :title => yt_playlist.title, :unique_id => yt_playlist.playlist_id,
           :description => yt_playlist.description, :published_at => yt_playlist.published,
           :summary => yt_playlist.summary, :xml => nil,
           :response_code => yt_playlist.response_code,
@@ -57,7 +64,7 @@ class Playlist < ActiveRecord::Base
             :video_unique_ids => yt_playlist.videos.map(&:unique_id)
         }
 
-        unless playlist = Playlist.find_by_unique_id(yt_playlist.playlist_id)
+        unless playlist = channel.playlists.find_by_unique_id(yt_playlist.playlist_id)
           p = Playlist.create( params)
           param2s.merge!(:playlist_id => p.id)
         else
@@ -65,18 +72,19 @@ class Playlist < ActiveRecord::Base
           playlist.update_attributes(params)
           param2s.merge!(:playlist_id => playlist.id)
         end
-        yesterday_playlist = DayPlaylist.find_by_unique_id_and_imported_date(
+        yesterday_playlist = channel.day_playlists.find_by_unique_id_and_imported_date(
           yt_playlist.playlist_id, today - 1.day)
         if yesterday_playlist
           param2s.merge!(:day_view_count => param2s[:view_count] - yesterday_playlist.view_count)
         end
-        unless day_playlist = DayPlaylist.find_by_unique_id_and_imported_date(yt_playlist.playlist_id, today)
-          DayPlaylist.create param2s
+        unless day_playlist = channel.day_playlists.find_by_unique_id_and_imported_date(yt_playlist.playlist_id, today)
+          day_playlist = DayPlaylist.create param2s
         else
           day_playlist.update_attributes param2s
         end
     end
 
+=begin
     def self.import_video(youtube_video, today, playlist_unique_id)
       param2s = {
           :playlist_unique_id => playlist_unique_id,
@@ -101,5 +109,6 @@ class Playlist < ActiveRecord::Base
         playlist_video.update_attributes param2s
       end
     end
+=end
 end
 

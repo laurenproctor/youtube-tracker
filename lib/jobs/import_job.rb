@@ -2,17 +2,13 @@ class ImportJob
   def perform
 
     begin
-      Channel.search_import
+      SyncChannel.import_channels
+      SyncFacebookInfo.import_facebook_infos
+      SyncTwitterInfo.import_twitter_infos
 
-      Video.search_import
-      DayVideoTracker.track
-
-      Playlist.search_import
-      DayPlaylistTracker.track
-
-      FacebookInfo.search_import
-      TwitterInfo.search_import
-
+      SyncStatus.import_statuses
+      SyncPlaylist.import_playlists
+      Delayed::Job.enqueue ImportVideoJob.new
     rescue Exception => e
       failure = true
       error_msg = "#{Time.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"

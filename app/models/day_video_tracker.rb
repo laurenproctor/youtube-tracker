@@ -7,11 +7,10 @@ class DayVideoTracker < Tracker
           order('tracked_date desc, this_week_rank ').limit(25)
       end
 
-      def track(username = 'officialcomedy')
-        channel = Channel.find_by_username username
-        today = Date.today.to_datetime
-        today = today - 1.day
-        day_videos = DayVideo.joins(:video).where('videos.channel_id =?', channel.id).
+      def track channel
+        # today = Date.today.to_datetime
+        today = DayVideo.select('max(imported_date) as imported_date').map(&:imported_date).first
+        day_videos = channel.day_videos.
           where(:imported_date => today).order('view_count desc')
         day_videos.each_with_index do |p, index|
           params = {
@@ -20,7 +19,7 @@ class DayVideoTracker < Tracker
               :comments => p.comment_count, :shares => 0, :tracked_date => today, :video_id => p.video.id
             }
           this_week_days = today.beginning_of_week .. today
-          last_week_tracker = DayVideoTracker.find_by_unique_id_and_tracked_date(p.unique_id,
+          last_week_tracker = channel.day_video_trackers.find_by_unique_id_and_tracked_date(p.unique_id,
                today.beginning_of_week - 1.day)
           if today.wday == Date::DAYS_INTO_WEEK[:sunday]
             params[:last_week_rank] = params[:this_week_rank]
@@ -28,7 +27,7 @@ class DayVideoTracker < Tracker
             params[:last_week_rank] = last_week_tracker.try(:this_week_rank)
           end
 
-          yesterday_tracker = DayVideoTracker.find_by_unique_id_and_tracked_date(p.unique_id,
+          yesterday_tracker = channel.day_video_trackers.find_by_unique_id_and_tracked_date(p.unique_id,
                today - 1.day)
           if params[:this_week_rank] <= 25
             if last_week_tracker.nil? || yesterday_tracker.nil?
@@ -41,10 +40,10 @@ class DayVideoTracker < Tracker
           else
             params[:weeks_on_chart] = yesterday_tracker ? yesterday_tracker.weeks_on_chart : 0
           end
-          params[:this_week_views] = DayVideo.where(:unique_id => p.unique_id,
+          params[:this_week_views] = channel.day_videos.where(:unique_id => p.unique_id,
             :imported_date => this_week_days).sum('day_view_count')
 
-          ago_7_day_tracker = DayVideoTracker.find_by_unique_id_and_tracked_date(p.unique_id,
+          ago_7_day_tracker = channel.day_video_trackers.find_by_unique_id_and_tracked_date(p.unique_id,
                today - 7.days)
           if ago_7_day_tracker && ago_7_day_tracker.this_week_views != 0
             params[:weekly_percent_views] =  ( params[:this_week_views] - ago_7_day_tracker.this_week_views) *
@@ -53,7 +52,7 @@ class DayVideoTracker < Tracker
             params[:weekly_percent_views] = 0
           end
           params[:trackable] = p
-          unless tracker = DayVideoTracker.find_by_unique_id_and_tracked_date(p.unique_id, today)
+          unless tracker = channel.day_video_trackers.find_by_unique_id_and_tracked_date(p.unique_id, today)
             DayVideoTracker.create params
           else
             tracker.update_attributes  params

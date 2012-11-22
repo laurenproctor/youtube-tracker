@@ -3,10 +3,21 @@ class Channel < ActiveRecord::Base
                   :username_display, :join_date
   has_many :day_channels
   has_many :videos
+  has_many :playlists
+  has_many :day_playlists, :through => :playlists
+  has_many :day_playlist_trackers, :through => :day_playlists, :source => :tracker
+  has_many :day_videos, :through => :videos
+  has_many :day_video_trackers, :through => :day_videos, :source => :tracker
+  has_many :facebook_infos
+  has_many :twitter_infos
+  has_many :day_facebook_infos, :through => :facebook_infos
+  has_many :day_twitter_infos,  :through => :twitter_infos
+  has_many :statuses
 
   class << self
-    def search_import (user_id = YOUTUBE[:officialcomedy][:user_id])
-        import YoutubeClient.youtube_client.profile(user_id)
+    def search_import(channel)
+      user_id = YOUTUBE[channel.to_sym][:user_id]
+      import YoutubeClient.youtube_client(channel).profile(user_id)
     end
   end
 

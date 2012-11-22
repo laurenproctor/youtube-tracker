@@ -26,6 +26,20 @@ namespace :db do
         p.save
       end
     end
+
+    channel = Channel.find_by_username('officialcomedy')
+
+    Playlist.find_each() do |p|
+      unless p.channel_id
+        p.channel_id = channel.id
+        p.save
+      end
+    end
+    DayPlaylistTracker.find_each() do |p|
+      playlist = Playlist.find_by_unique_id p.unique_id
+      p.playlist_id = playlist.id
+      p.save
+    end
   end
 
 end

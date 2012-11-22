@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121121165147) do
+ActiveRecord::Schema.define(:version => 20121122170116) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(:version => 20121121165147) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.datetime "age_from"
+    t.integer  "channel_id"
   end
 
   add_index "playlists", ["title"], :name => "index_playlists_on_title"
@@ -219,6 +220,7 @@ ActiveRecord::Schema.define(:version => 20121121165147) do
     t.datetime "imported_date"
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
+    t.integer  "channel_id"
   end
 
   create_table "trackers", :force => true do |t|
@@ -242,6 +244,7 @@ ActiveRecord::Schema.define(:version => 20121121165147) do
     t.string   "trackable_type"
     t.integer  "trackable_id"
     t.integer  "video_id"
+    t.integer  "playlist_id"
   end
 
   create_table "twitter_infos", :force => true do |t|

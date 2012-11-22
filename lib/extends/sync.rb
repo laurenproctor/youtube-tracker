@@ -58,7 +58,8 @@ class Sync
 			end
 		end
 
-		def sync_detail_video(video, start_date='2006-01-01', end_date=Date.today.to_s)
+		def sync_detail_video(video, end_date=Date.today)
+      start_date = video.published_at
 			channel = video.channel
 			return false if channel.blank?
 			client = GoogleApiClient.youtube_analytics_client channel.username
@@ -66,8 +67,8 @@ class Sync
 	    channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
 	    visitCount = client.execute(:api_method => analytics.reports.query,
 	    	:parameters => {
-	      	'start-date' => start_date,
-	      	'end-date' => end_date,
+	      	'start-date' => start_date.strftime("%Y-%m-%d"),
+	      	'end-date' => end_date.strftime("%Y-%m-%d"),
 	      	ids: 'channel==' + channelId,
 	      	dimensions: 'day',
 	      	metrics: 'views,comments,favoritesAdded,likes,dislikes,shares',
@@ -101,14 +102,14 @@ class Sync
 			sync_videos(channel)
 		end
 
-
 		private
 		def videos(channel)
+      client = YoutubeClient.youtube_client(channel.username)
       total_pages = 1
       page = 1
       videos = []
       begin
-        results = YoutubeClient.youtube_client.videos_by(:user => channel.unique_id, :page => page)
+        results = client.videos_by(:user => channel.unique_id, :page => page)
         videos += (results.videos rescue [])
         page += 1
         total_pages = results.total_pages if total_pages == 1

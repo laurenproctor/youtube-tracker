@@ -9,12 +9,13 @@ class Video < ActiveRecord::Base
 
   class << self
 
-    def search_import
+    def search_import channel
+        client = YoutubeClient.youtube_client(channel.username)
         total_pages = 1
         page = 1
         begin
-          find = YoutubeClient.youtube_client.videos_by(:user => YOUTUBE[:user_id], :page => page)
-          import find.videos
+          find = client.videos_by(:user => channel.username, :page => page)
+          import find.videos, channel
           page += 1
           total_pages = find.total_pages if total_pages == 1
         end while page <= find.total_pages

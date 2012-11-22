@@ -20,7 +20,7 @@ class HomeController < ApplicationController
 
   def channel
     today = Date.today.to_datetime
-    params[:user_id] = 'networka' unless params[:user_id]
+    params[:user_id] = 'officialcomedy' unless params[:user_id]
 
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
 =begin
