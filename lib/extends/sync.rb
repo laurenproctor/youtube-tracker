@@ -1,6 +1,7 @@
 class Sync
 
 	class << self
+=begin
 		# attr :client, :analytics, :youtube, :playlists, :listItems, :videos
 
 		def authorize!(channel)
@@ -37,6 +38,7 @@ class Sync
 
 		end
 		# END authorize!
+=end
 
 		def sync_videos(channel)
 			yvideos = videos(channel)
@@ -58,12 +60,11 @@ class Sync
 			end
 		end
 
-		def sync_detail_video(video, end_date=Date.today)
+		def sync_detail_video(client, analytics, video, end_date=Date.today)
       start_date = video.published_at
 			channel = video.channel
 			return false if channel.blank?
-			client = GoogleApiClient.youtube_analytics_client channel.username
-	    analytics  = client.discovered_api('youtubeAnalytics','v1')
+
 	    channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
 	    visitCount = client.execute(:api_method => analytics.reports.query,
 	    	:parameters => {
@@ -98,25 +99,21 @@ class Sync
 		end
 		# END-DEF sync_detail_video
 
-		def sync(channel)
-			sync_videos(channel)
-		end
-
 		private
-		def videos(channel)
-      client = YoutubeClient.youtube_client(channel.username)
-      total_pages = 1
-      page = 1
-      videos = []
-      begin
-        results = client.videos_by(:user => channel.unique_id, :page => page)
-        videos += (results.videos rescue [])
-        page += 1
-        total_pages = results.total_pages if total_pages == 1
-      end while page <= results.total_pages
-      puts "import successfully #{ page -1 } / #{ total_pages}"
-			videos
-		end
+		  def videos(channel)
+        client = YoutubeClient.youtube_client(channel.username)
+        total_pages = 1
+        page = 1
+        videos = []
+        begin
+          results = client.videos_by(:user => channel.unique_id, :page => page)
+          videos += (results.videos rescue [])
+          page += 1
+          total_pages = results.total_pages if total_pages == 1
+        end while page <= results.total_pages
+        puts "import successfully #{ page -1 } / #{ total_pages}"
+			  videos
+		  end
 
 
 	end

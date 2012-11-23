@@ -8,9 +8,11 @@ class SyncVideo
     end
 
     def import_detail_videos
-      Channel.find_each() do |p|
-        p.videos.find_each do |v|
-          Sync.sync_detail_video(v)
+      Channel.find_each() do |channel|
+        client = GoogleApiClient.youtube_analytics_client channel.username
+	      analytics  = client.discovered_api('youtubeAnalytics','v1')
+        channel.videos.find_each do |v|
+          Sync.sync_detail_video(client, analytics, v)
         end
       end
     end

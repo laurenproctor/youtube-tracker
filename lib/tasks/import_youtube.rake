@@ -1,13 +1,15 @@
 task :import_youtube => :environment do
-   Channel.search_import
+  SyncChannel.import_channels
+  SyncFacebookInfo.import_facebook_infos
+  SyncTwitterInfo.import_twitter_infos
 
-   Video.search_import
-   DayVideoTracker.track
+  SyncStatus.import_statuses
+  SyncPlaylist.import_playlists
 
-   Playlist.search_import
-   DayPlaylistTracker.track
+  SyncVideo.import_videos
 
-   FacebookInfo.search_import
-   TwitterInfo.search_import
+  SyncVideo.import_detail_videos
+  SyncVideo.track_videos
+  SyncPlaylist.track_playlists
 end
 

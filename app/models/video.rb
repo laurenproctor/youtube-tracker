@@ -6,7 +6,7 @@ class Video < ActiveRecord::Base
 
   belongs_to :channel
   has_many :day_videos
-
+=begin
   class << self
 
     def search_import channel
@@ -33,10 +33,10 @@ class Video < ActiveRecord::Base
   end
 
   private
-    def self.import(youtube_videos)
+    def self.import(youtube_videos, channel)
       today = Date.today.to_datetime
       youtube_videos.each_with_index do |p, index|
-        params = { :title => p.title, :unique_id => p.unique_id,
+        params = { :title => p.title, :unique_id => p.unique_id, :channel_id => channel.id,
             :categories => p.categories.try(:to_json), :description => p.description,
             :keywords => p.keywords.try(:to_json), :player_url => p.player_url,
             :published_at => p.published_at,:uploaded_at => p.uploaded_at,
@@ -49,21 +49,22 @@ class Video < ActiveRecord::Base
             :rating_average => p.rating.try(:average) || 0,
             :rating_max => p.rating.try(:max) || 0, :rating_min => p.rating.try(:min) || 0
         }
-        unless video = Video.find_by_unique_id(p.unique_id)
+        unless video = channel.videos.find_by_unique_id(p.unique_id)
           v = Video.create( params)
           param2s.merge!(:video_id => v.id)
         else
           video.update_attributes(params)
           param2s.merge!(:video_id => video.id)
         end
-        yesterday_video = DayVideo.find_by_unique_id_and_imported_date(p.unique_id, today - 1.day)
+        yesterday_video = channel.day_videos.find_by_unique_id_and_imported_date(p.unique_id, today - 1.day)
         param2s.merge!(:day_view_count => p.view_count - yesterday_video.view_count) if yesterday_video
-        unless day_video = DayVideo.find_by_unique_id_and_imported_date(p.unique_id, today)
+        unless day_video = channel.day_videos.find_by_unique_id_and_imported_date(p.unique_id, today)
           DayVideo.create param2s
         else
           day_video.update_attributes param2s
         end
       end
     end
+=end
 end
 
