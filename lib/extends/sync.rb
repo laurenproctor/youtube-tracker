@@ -61,7 +61,7 @@ class Sync
 		end
 
 		def sync_detail_video(client, analytics, video, end_date=Date.today)
-      start_date = video.published_at
+      start_date = video.published_at - 10.days
 			channel = video.channel
 			return false if channel.blank?
 
