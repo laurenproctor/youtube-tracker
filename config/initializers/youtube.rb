@@ -47,13 +47,13 @@ FACEBOOK = {
   :api_url => 'http://graph.facebook.com/?ids=',
   :user_id => 'OfficialComedy',
   :networka => {
-    :user_id => 'officialcomedy'
+    :user_id => 'NetworkA'
   },
   :officialcomedy => {
     :user_id => 'officialcomedy'
   },
   :look => {
-    :user_id => 'officialcomedy'
+    :user_id => 'OfficialLookTV'
   }
 }
 
