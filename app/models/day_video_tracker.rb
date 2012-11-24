@@ -11,7 +11,7 @@ class DayVideoTracker < Tracker
         # today = Date.today.to_datetime
         today = DayVideo.select('max(imported_date) as imported_date').map(&:imported_date).first
         day_videos = channel.day_videos.
-          where(:imported_date => today).order('view_count desc')
+          where(:imported_date => today).order('week_views desc')
         day_videos.each_with_index do |p, index|
           params = {
               :unique_id => p.video.unique_id, :name => p.video.title, :this_week_rank => index + 1,

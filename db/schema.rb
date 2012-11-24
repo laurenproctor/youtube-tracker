@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121124142909) do
+ActiveRecord::Schema.define(:version => 20121124155040) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -115,13 +115,23 @@ ActiveRecord::Schema.define(:version => 20121124142909) do
     t.string   "state"
     t.integer  "rating_min"
     t.integer  "rating_max"
-    t.decimal  "rating_average", :precision => 8, :scale => 7
+    t.decimal  "rating_average",         :precision => 8, :scale => 7
     t.integer  "rater_count"
     t.integer  "likes"
     t.integer  "dislikes"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.date     "report_date"
+    t.integer  "day_comments"
+    t.integer  "day_favorites_added"
+    t.integer  "day_favorites_removed"
+    t.integer  "day_likes"
+    t.integer  "day_dislikes"
+    t.integer  "day_shares"
+    t.integer  "day_subscribers_gained"
+    t.integer  "day_subscribers_lost"
+    t.integer  "week_views"
+    t.integer  "report_date_wday"
   end
 
   add_index "day_videos", ["day_view_count"], :name => "index_day_videos_on_day_view_count"
@@ -182,6 +192,7 @@ ActiveRecord::Schema.define(:version => 20121124142909) do
     t.datetime "updated_at",         :null => false
     t.datetime "published_at"
     t.datetime "uploaded_at"
+    t.date     "report_date"
   end
 
   add_index "playlist_videos", ["day_view_count"], :name => "index_playlist_videos_on_day_view_count"
