@@ -23,16 +23,17 @@ class HomeController < ApplicationController
     params[:user_id] = 'officialcomedy' unless params[:user_id]
 
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
-=begin
-    @top_videos = DayVideoTracker.
-      top(today).order('this_week_rank asc')
-    @top_video = @top_videos.first
-    @top_in_day = DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
-      where(:imported_date => today.beginning_of_week .. today).
-      order('day_view_count desc').first
-=end
+    params[:sort] = 'this_week_rank' unless params[:sort]
+    direction = sort_direction
+    if params[:sort] == 'uploaded_at'
+      if direction == "asc"
+        direction = "desc"
+      else
+        direction = "asc"
+      end
+    end
     @top_videos = DayVideoTracker.joins(:video).where('videos.channel_id =?', @channel.id).
-      top(today).order('this_week_rank asc')
+      top(today).order(sort_column(DayVideoTracker, 'this_week_rank') + " " + direction)
     @top_video = @top_videos.first
     @top_in_day = DayVideo.joins(:video).where('videos.channel_id =?', @channel.id).
       where(:imported_date => today.beginning_of_week .. today).

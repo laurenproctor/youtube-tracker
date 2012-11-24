@@ -4,12 +4,11 @@ module ApplicationHelper
     sort_col = sort_column model
     css_class = column == sort_col ? "current sorting_#{sort_direction}" : "sorting"
     direction = column == sort_col && sort_direction == "asc" ? "desc" : "asc"
-    # raw "<div class='#{css_class}'>#{link_to(title, params.merge(:sort => column, :direction => direction, :page => nil))}</div>"
-    return title
+    raw "<div class='#{css_class}'>#{link_to(title, params.merge(:sort => column, :direction => direction, :page => nil, :format => :js), :remote => true)}</div>"
   end
 
-  def sort_column(model)
-    model.column_names.include?(params[:sort]) ? params[:sort] : 'id'
+  def sort_column(model, default_sort_col = 'id')
+    model.column_names.include?(params[:sort]) ? params[:sort] : default_sort_col
   end
 
   def sort_direction

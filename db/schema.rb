@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121122170116) do
+ActiveRecord::Schema.define(:version => 20121124031925) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -232,7 +232,7 @@ ActiveRecord::Schema.define(:version => 20121122170116) do
     t.integer  "weeks_on_chart"
     t.integer  "total_aggregate_views"
     t.integer  "this_week_views"
-    t.string   "weekly_percent_views"
+    t.decimal  "weekly_percent_views",  :precision => 10, :scale => 4
     t.decimal  "time_since_upload",     :precision => 10, :scale => 0
     t.integer  "comments"
     t.integer  "shares"

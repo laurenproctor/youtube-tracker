@@ -1,7 +1,12 @@
-.container.pull-left#channel_name
+.container.pull-left
   - if @channel
-    = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
-    = @channel.username_display.try(:titleize)
+    #channel_name
+      = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
+      = @channel.username_display.try(:titleize)
+    %br
+    #tracked_since
+      == Tracked Since: #{Date.parse('2012-09-01').strftime('%B %d, %Y')} &nbsp; &nbsp;&nbsp;
+      == Updated: #{(@channel.day_channels.last.data_date).strftime('%A %m-%d-%Y at %I:%M%p')}
 .clear-both
 .pull-right#form-download
   = form_tag(export_csv_path(:format => :csv), :class => :form) do |f|

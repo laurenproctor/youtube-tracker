@@ -4,7 +4,7 @@ class DayVideoTracker < Tracker
       # param date: beginning_of_day
       def top date
         trackers = DayVideoTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date - 3.day .. date).
-          order('tracked_date desc, this_week_rank ').limit(25)
+          order('tracked_date desc ').limit(25)
       end
 
       def track channel
