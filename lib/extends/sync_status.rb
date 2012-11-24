@@ -22,7 +22,8 @@ class SyncStatus
         averageViewDuration = avg_view_duration(client, analytics, channelId, startDate, endDate)
         estimatedMinutesWatched = estimated_minutes_watched(client, analytics, channelId, startDate, endDate)
 
-        params = { :imported_date => today, :user_id => channel.username,
+        params = { :channel_id => channel.id, :imported_date => today, :user_id => channel.username,
+                   :report_date => today - 1.day,
                    :avg_view_duration => averageViewDuration, :minutes_watched => estimatedMinutesWatched,
                    :lifetime_views => lifetime_views, :subscribers => subscribersGained,
                    :fb_likes => facebook_likes, :instagram_followers => nil, :tumblr_followers => nil,
@@ -45,16 +46,11 @@ class SyncStatus
           'start-date' => startDate,
           'end-date' => endDate,
           ids: 'channel==' + channelId,
-          dimensions: 'day',
           metrics: 'views,subscribersGained'
         })
         lifetime_views    = 0
         subscribersGained = 0
-        averageViewDuration = 0
-        estimatedMinutesWatched = 0
-        print visitCount.data.column_headers.map { |c|
-          c.name
-        }.join("\t")
+
         visitCount.data.rows.each do |r|
           lifetime_views += r[1]
           subscribersGained += r[2]
@@ -82,13 +78,12 @@ class SyncStatus
           'start-date' => startDate,
           'end-date' => endDate,
           ids: 'channel==' + channelId,
-          dimensions: 'day',
           metrics: 'estimatedMinutesWatched'
         })
         estimatedMinutesWatched = 0
 
         visitCount.data.rows.each do |r|
-          estimatedMinutesWatched += r[1]
+          estimatedMinutesWatched += r[0]
         end
         return estimatedMinutesWatched
       end

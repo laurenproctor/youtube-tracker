@@ -1,6 +1,6 @@
 class FacebookInfo < ActiveRecord::Base
   attr_accessible :category, :cover_id, :description, :link, :name,
-                  :unique_id, :username, :website, :channel_id
+                  :unique_id, :username, :website, :channel_id, :report_date
 
   belongs_to :channel
   has_many :day_facebook_infos
@@ -24,6 +24,7 @@ class FacebookInfo < ActiveRecord::Base
       }
       param2s = {
           :unique_id => params[:unique_id], :imported_date => today,
+          :report_date => today - 1.day,
           :likes => info['likes'], :talking_about_count => info['talking_about_count']
       }
       unless facebook_info = channel.facebook_infos.find_by_unique_id(params[:unique_id])

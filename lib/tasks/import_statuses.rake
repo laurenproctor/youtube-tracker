@@ -21,7 +21,7 @@ task :import_statuses => :environment do
     averageViewDuration = avg_view_duration(client, analytics, channelId, startDate, endDate)
     estimatedMinutesWatched = estimated_minutes_watched(client, analytics, channelId, startDate, endDate)
 
-    params = { :imported_date => today, :user_id => channel,
+    params = { :imported_date => today, :user_id => channel,:report_date => today - 1.day,
                :avg_view_duration => averageViewDuration, :minutes_watched => estimatedMinutesWatched,
                :lifetime_views => lifetime_views, :subscribers => subscribersGained,
                :fb_likes => facebook_likes, :instagram_followers => nil, :tumblr_followers => nil,
@@ -80,13 +80,12 @@ def estimated_minutes_watched (client, analytics, channelId, startDate, endDate)
     'start-date' => startDate,
     'end-date' => endDate,
     ids: 'channel==' + channelId,
-    dimensions: 'day',
     metrics: 'estimatedMinutesWatched'
   })
   estimatedMinutesWatched = 0
 
   visitCount.data.rows.each do |r|
-    estimatedMinutesWatched += r[1]
+    estimatedMinutesWatched += r[0]
   end
   return estimatedMinutesWatched
 end

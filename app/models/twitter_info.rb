@@ -22,6 +22,7 @@ class TwitterInfo < ActiveRecord::Base
       }
       param2s = {
           :unique_id => params[:unique_id], :imported_date => today,
+          :report_date => today - 1.day,
           :favourites_count => info['favourites_count'], :followers_count => info['followers_count'],
           :friends_count => info['friends_count'], :listed_count => info['listed_count'],
           :statuses_count => info['statuses_count'],

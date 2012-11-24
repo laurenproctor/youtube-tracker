@@ -72,13 +72,14 @@ class Sync
 	      	'end-date' => end_date.strftime("%Y-%m-%d"),
 	      	ids: 'channel==' + channelId,
 	      	dimensions: 'day',
+          sort: 'day',
 	      	metrics: 'views,comments,favoritesAdded,likes,dislikes,shares',
 	      	filters: "video==" + video.unique_id
 	    })
       total_view_count = 0;
-	    # puts visitCount.data.inspect
-	    visitCount.data.rows.sort_by{|d,v| Date.parse(d)}.each do |r|
-				puts r.inspect
+	    #visitCount.data.rows.sort_by{|d,v| Date.parse(d)}.each do |r|
+      visitCount.data.rows.each do |r|
+				# puts r.inspect
         next_date = r[0].to_datetime + 1.day
 
         day_video = video.day_videos.find_or_create_by_imported_date(next_date)

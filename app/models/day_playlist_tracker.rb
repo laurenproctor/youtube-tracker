@@ -19,7 +19,9 @@ class DayPlaylistTracker < Tracker
           params = {
               :unique_id => p.playlist.unique_id, :name => p.playlist.title, :this_week_rank => index + 1,
               :total_aggregate_views => p.view_count, :uploaded_at => p.playlist.published_at,
-              :comments => p.comment_count, :shares => 0, :tracked_date => today, :playlist_id => p.playlist.id
+              :comments => p.comment_count, :shares => 0,
+              :report_date => today - 1.day,
+              :tracked_date => today, :playlist_id => p.playlist.id
             }
           this_week_days = today.beginning_of_week .. today
           last_week_tracker = channel.day_playlist_trackers.

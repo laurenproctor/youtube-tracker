@@ -29,6 +29,7 @@ class Channel < ActiveRecord::Base
           :location => channel.location, :avatar => channel.avatar
       }
       param2s = { :unique_id => channel.user_id, :imported_date => today,
+          :report_date => today - 1.day,
           :subscribers => channel.subscribers, :view_count => channel.view_count,
           :upload_count => channel.upload_count, :upload_views => channel.upload_views
       }

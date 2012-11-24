@@ -57,6 +57,7 @@ class Playlist < ActiveRecord::Base
            dv[:rating_average]  += vd.rating.try(:average) || 0
         end
         param2s = { :unique_id => yt_playlist.playlist_id, :imported_date => today,
+            :report_date => today - 1.day,
             :day_view_count => dv[:day_view_count], :view_count => dv[:view_count],
             :comment_count => dv[:comment_count], :favorite_count => dv[:favorite_count],
             :dislikes => dv[:dislikes], :likes => dv[:likes], :rater_count => dv[:rater_count],

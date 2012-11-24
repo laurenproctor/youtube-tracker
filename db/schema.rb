@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121124031925) do
+ActiveRecord::Schema.define(:version => 20121124142909) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20121124031925) do
     t.datetime "imported_date"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.date     "report_date"
   end
 
   add_index "day_channels", ["channel_id"], :name => "index_day_channels_on_channel_id"
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20121124031925) do
     t.integer  "talking_about_count"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.date     "report_date"
   end
 
   add_index "day_facebook_infos", ["facebook_info_id"], :name => "index_day_facebook_infos_on_facebook_info_id"
@@ -73,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20121124031925) do
     t.datetime "created_at",                                      :null => false
     t.datetime "updated_at",                                      :null => false
     t.text     "video_unique_ids"
+    t.date     "report_date"
   end
 
   add_index "day_playlists", ["day_view_count"], :name => "index_day_playlists_on_day_view_count"
@@ -94,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20121124031925) do
     t.integer  "statuses_count"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
+    t.date     "report_date"
   end
 
   add_index "day_twitter_infos", ["imported_date"], :name => "index_day_twitter_infos_on_imported_date"
@@ -221,6 +225,7 @@ ActiveRecord::Schema.define(:version => 20121124031925) do
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
     t.integer  "channel_id"
+    t.date     "report_date"
   end
 
   create_table "trackers", :force => true do |t|
@@ -245,6 +250,7 @@ ActiveRecord::Schema.define(:version => 20121124031925) do
     t.integer  "trackable_id"
     t.integer  "video_id"
     t.integer  "playlist_id"
+    t.date     "report_date"
   end
 
   create_table "twitter_infos", :force => true do |t|

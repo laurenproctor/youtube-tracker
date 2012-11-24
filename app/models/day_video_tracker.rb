@@ -16,6 +16,7 @@ class DayVideoTracker < Tracker
           params = {
               :unique_id => p.video.unique_id, :name => p.video.title, :this_week_rank => index + 1,
               :total_aggregate_views => p.view_count, :uploaded_at => p.video.uploaded_at,
+              :report_date => today - 1.day,
               :comments => p.comment_count, :shares => 0, :tracked_date => today, :video_id => p.video.id
             }
           this_week_days = today.beginning_of_week .. today
