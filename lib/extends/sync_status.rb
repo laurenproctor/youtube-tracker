@@ -52,8 +52,8 @@ class SyncStatus
         subscribersGained = 0
 
         visitCount.data.rows.each do |r|
-          lifetime_views += r[1]
-          subscribersGained += r[2]
+          lifetime_views += r[0]
+          subscribersGained += r[1]
         end
         return lifetime_views, subscribersGained
       end
@@ -63,12 +63,12 @@ class SyncStatus
           'start-date' => startDate,
           'end-date' => endDate,
           ids: 'channel==' + channelId,
-          dimensions: 'day',
+          # dimensions: 'day',
           metrics: 'averageViewDuration'
         })
         averageViewDuration = 0
         visitCount.data.rows.each do |r|
-          averageViewDuration += r[1]
+          averageViewDuration += r[0]
         end
         return averageViewDuration
       end
