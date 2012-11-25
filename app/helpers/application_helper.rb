@@ -15,8 +15,21 @@ module ApplicationHelper
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
 
-  def seconds_in_human seconds
-    (Time.mktime(0) + seconds).strftime("%H:%M")
+  def seconds_in_human secs
+    s = []
+    2.times.each do
+      if secs > 0
+        secs, n = secs.divmod 60
+        s.unshift "#{n.to_i}"
+      end
+    end
+    s.unshift "#{secs}" if secs > 0
+    s.join(':')
+    unless s.blank?
+      s.join(':')
+    else
+      '0'
+    end
   end
 end
 

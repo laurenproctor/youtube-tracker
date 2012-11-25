@@ -25,13 +25,11 @@
     %br
     VSCR (%)
   %li
-    /= @top_in_day.data_date.strftime('%A')
-    Not Available
+    = @top_in_day.report_date.strftime('%A')
     %br
     Top Day of Week - Views
   %li
-    /= @top_video.trackable.video.title
-    Not Available
+    = @top_video.trackable.video.title
     %br
     Top Video - Views
 

@@ -5,16 +5,14 @@ class DayPlaylistTracker < Tracker
   class << self
       # param date: beginning_of_day
       def top date
-        trackers = DayPlaylistTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date)
-        if trackers.blank?
-          trackers = DayPlaylistTracker.where(:this_week_rank => 1 .. 25, :tracked_date => date - 1.day)
-        end
-        trackers
+        trackers = DayPlaylistTracker.where(:this_week_rank => 1 .. 25,
+          :tracked_date => date - 3.day .. date).
+          order('updated_at desc ').limit(25)
       end
 
       def track channel
         today = Date.today.to_datetime
-        day_playlists = channel.day_playlists.where(:imported_date => today).order('week_views desc')
+        day_playlists = channel.day_playlists.where(:imported_date => today).order('view_count  desc')
         day_playlists.each_with_index do |p, index|
           params = {
               :unique_id => p.playlist.unique_id, :name => p.playlist.title, :this_week_rank => index + 1,
