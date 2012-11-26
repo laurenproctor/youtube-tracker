@@ -42,15 +42,19 @@ namespace :db do
     end
 
     DayVideoTracker.find_each() do |p|
-      p.percent_change_views = p.weekly_percent_views.try(:to_f)
-      p.weekly_percent_views = nil
-      p.save
+      unless p.percent_change_views
+        p.percent_change_views = p.weekly_percent_views.try(:to_f)
+        p.weekly_percent_views = nil
+        p.save
+      end
     end
 
     DayPlaylistTracker.find_each() do |p|
-      p.percent_change_views = p.weekly_percent_views.try(:to_f)
-      p.weekly_percent_views = nil
-      p.save
+      unless p.percent_change_views
+        p.percent_change_views = p.weekly_percent_views.try(:to_f)
+        p.weekly_percent_views = nil
+        p.save
+      end
     end
   end
 

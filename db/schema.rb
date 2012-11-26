@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121126032918) do
+ActiveRecord::Schema.define(:version => 20121126042441) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -173,6 +173,17 @@ ActiveRecord::Schema.define(:version => 20121126032918) do
 
   add_index "facebook_infos", ["unique_id"], :name => "index_facebook_infos_on_unique_id"
   add_index "facebook_infos", ["username"], :name => "index_facebook_infos_on_username"
+
+  create_table "goals", :force => true do |t|
+    t.integer  "time_left_days"
+    t.date     "time_left"
+    t.integer  "views"
+    t.integer  "subscribers"
+    t.string   "view_time"
+    t.integer  "facebook_likes"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "playlist_videos", :force => true do |t|
     t.string   "playlist_unique_id"
