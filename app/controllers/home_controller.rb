@@ -19,7 +19,7 @@ class HomeController < ApplicationController
   end
 
   def channel
-    today = Date.today.to_datetime
+    today = Date.today.to_datetime - 1.day
     params[:user_id] = 'officialcomedy' unless params[:user_id]
 
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
@@ -33,7 +33,7 @@ class HomeController < ApplicationController
       end
     end
     @top_videos = @channel.day_video_trackers.
-    where(:this_week_rank => 1 .. 25, :tracked_date => today - 3.day .. today).
+    where(:this_week_rank => 1 .. 25, :report_date => today - 3.day .. today).
     order('report_date desc ').limit(25).
     order(sort_column(DayVideoTracker, 'this_week_rank') + " " + direction)
 
