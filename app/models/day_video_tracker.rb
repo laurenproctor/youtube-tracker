@@ -23,7 +23,7 @@ class DayVideoTracker < Tracker
               :unique_id => p.video.unique_id, :name => p.video.title,
               :this_week_rank => index + 1,
               :total_aggregate_views => p.view_count, :uploaded_at => p.video.uploaded_at,
-              :report_date => today ,
+              :report_date => today, :report_date_wday => today.wday,
               :comments => p.comment_count, :shares => 0, :tracked_date => today + 1.day,
               :video_id => p.video.id
             }
