@@ -3,7 +3,7 @@ class Tracker < ActiveRecord::Base
   attr_accessible :this_week_views, :time_since_upload, :total_aggregate_views, :type,
                   :unique_id, :weeks_on_chart, :trackable_id,
                   :comments, :shares, :tracked_date, :videos_in_series, :trackable,
-                  :video_id, :report_date, :percent_change_views, :report_date_wday
+                  :video_id, :report_date, :percent_change_views, :report_date_wday, :peak_position
 
   belongs_to :trackable, :polymorphic => true
 
