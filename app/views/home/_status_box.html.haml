@@ -58,7 +58,7 @@
     %br
     Top Day of Week - Views
   %li
-    = @top_video.trackable.video.title
+    = @top_video ? @top_video.title : 'Not Available'
     %br
     Top Video - Views
 

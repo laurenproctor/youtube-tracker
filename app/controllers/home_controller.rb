@@ -38,7 +38,6 @@ class HomeController < ApplicationController
     order('report_date desc ').limit(25).
     order(sort_column(DayVideoTracker, 'this_week_rank') + " " + direction)
 
-    @top_video = @top_videos.first
     @top_in_day = @channel.day_videos.
       where(:report_date => today.beginning_of_week .. today).
       order('day_view_count desc').first
@@ -55,6 +54,13 @@ class HomeController < ApplicationController
 
     @status = @channel.statuses.where(:report_date => today - 1.day .. today).order('created_at desc').first
     @avg_last_30 = @channel.statuses.avg_30_days(Date.today).first
+    begin
+      client = YoutubeClient.youtube_client(@channel.username)
+      @top_video = client.videos_by(:user => @channel.username, :page => 1,
+        :max_results => 1, :order_by => 'viewCount').videos.first
+    rescue Exception => e
+      logger.info e.message
+    end
   end
 
   def export_csv
