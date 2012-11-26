@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121125165740) do
+ActiveRecord::Schema.define(:version => 20121126032918) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -263,6 +263,7 @@ ActiveRecord::Schema.define(:version => 20121125165740) do
     t.integer  "playlist_id"
     t.date     "report_date"
     t.integer  "peak_position"
+    t.decimal  "percent_change_views",  :precision => 10, :scale => 4
   end
 
   create_table "twitter_infos", :force => true do |t|

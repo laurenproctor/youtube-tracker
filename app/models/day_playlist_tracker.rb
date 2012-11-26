@@ -49,10 +49,10 @@ class DayPlaylistTracker < Tracker
           ago_7_day_tracker = channel.day_playlist_trackers.
               find_by_unique_id_and_tracked_date(p.unique_id, today - 7.days)
           if ago_7_day_tracker && ago_7_day_tracker.this_week_views != 0
-            params[:weekly_percent_views] =  ( params[:this_week_views] - ago_7_day_tracker.this_week_views) *
+            params[:percent_change_views] =  ( params[:this_week_views] - ago_7_day_tracker.this_week_views) *
               100 / ago_7_day_tracker.this_week_views
           else
-            params[:weekly_percent_views] = 0
+            params[:percent_change_views] = 0
           end
           params[:trackable] = p
           params[:videos_in_series] = p.video_count
