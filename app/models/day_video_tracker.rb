@@ -61,6 +61,11 @@ class DayVideoTracker < Tracker
           else
             params[:percent_change_views] = 0
           end
+
+          params[:peak_position] = channel.day_video_trackers.
+            where(:unique_id => p.unique_id).
+            where('trackers.report_date_wday = 0').
+            map(&:this_week_rank).min
           params[:trackable] = p
           unless tracker = channel.day_video_trackers.find_by_unique_id_and_report_date(p.unique_id, today)
             DayVideoTracker.create params

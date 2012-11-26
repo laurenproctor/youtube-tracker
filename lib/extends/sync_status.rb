@@ -15,7 +15,7 @@ class SyncStatus
         plus_followers = JSON.parse(open("#{GOOGLE[:api_url]}/#{GOOGLE[channel.username.to_sym][:user_id]}?key=#{GOOGLE[channel.username.to_sym][:api_key]}").read)['plusOneCount']
         client = GoogleApiClient.youtube_analytics_client channel.username
         analytics  = client.discovered_api('youtubeAnalytics','v1')
-        startDate  = day_channel.channel.join_date.strftime("%Y-%m-%d")
+        startDate  = (day_channel.channel.join_date - 7.days).strftime("%Y-%m-%d")
         endDate    = Time.now.strftime("%Y-%m-%d")
         channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
         lifetime_views, subscribersGained = views_subscribers(client, analytics, channelId, startDate, endDate)
