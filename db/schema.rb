@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121126095018) do
+ActiveRecord::Schema.define(:version => 20121126121604) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -232,12 +232,12 @@ ActiveRecord::Schema.define(:version => 20121126095018) do
   add_index "playlists", ["unique_id"], :name => "index_playlists_on_unique_id"
 
   create_table "statuses", :force => true do |t|
-    t.decimal  "lifetime_views",      :precision => 10, :scale => 0
-    t.decimal  "avg_views",           :precision => 10, :scale => 4
-    t.decimal  "minutes_watched",     :precision => 10, :scale => 0
-    t.decimal  "avg_view_duration",   :precision => 10, :scale => 4
-    t.decimal  "subscribers",         :precision => 10, :scale => 0
-    t.decimal  "vscr",                :precision => 10, :scale => 4
+    t.decimal  "lifetime_views",          :precision => 10, :scale => 0
+    t.decimal  "avg_views",               :precision => 10, :scale => 4
+    t.decimal  "minutes_watched",         :precision => 10, :scale => 0
+    t.decimal  "avg_view_duration",       :precision => 10, :scale => 4
+    t.decimal  "subscribers",             :precision => 10, :scale => 0
+    t.decimal  "vscr",                    :precision => 10, :scale => 4
     t.integer  "fb_likes"
     t.integer  "twitter_followers"
     t.integer  "plus_followers"
@@ -245,10 +245,21 @@ ActiveRecord::Schema.define(:version => 20121126095018) do
     t.integer  "instagram_followers"
     t.string   "user_id"
     t.datetime "imported_date"
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
     t.integer  "channel_id"
     t.date     "report_date"
+    t.decimal  "day_avg_views",           :precision => 10, :scale => 4
+    t.decimal  "day_avg_view_duration",   :precision => 10, :scale => 4
+    t.decimal  "day_vscr",                :precision => 10, :scale => 4
+    t.decimal  "day_views",               :precision => 10, :scale => 0
+    t.decimal  "day_minutes_watched",     :precision => 10, :scale => 0
+    t.decimal  "day_subscribers",         :precision => 10, :scale => 0
+    t.integer  "day_fb_likes"
+    t.integer  "day_twitter_followers"
+    t.integer  "day_plus_followers"
+    t.integer  "day_tumblr_followers"
+    t.integer  "day_instagram_followers"
   end
 
   create_table "trackers", :force => true do |t|

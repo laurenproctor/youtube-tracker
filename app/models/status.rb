@@ -8,5 +8,21 @@ class Status < ActiveRecord::Base
 
   belongs_to :channel
 
+  class << self
+    def avg_30_days(date = Date.today)
+      Status.where(:report_date => date - 30.days .. date).
+        select('avg(day_avg_views) as day_avg_views').
+        select('avg(day_vscr) as day_vscr').
+        select('avg(day_avg_view_duration) as day_avg_view_duration').
+        select('avg(day_views) as day_views').
+        select('avg(day_minutes_watched) as day_minutes_watched').
+        select('avg(day_subscribers) as day_subscribers').
+        select('avg(day_fb_likes) as day_fb_likes').
+        select('avg(day_twitter_followers) as day_twitter_followers').
+        select('avg(day_plus_followers) as day_plus_followers').
+        select('avg(day_tumblr_followers) as day_tumblr_followers').
+        select('avg(day_instagram_followers) as day_instagram_followers')
+    end
+  end
 end
 

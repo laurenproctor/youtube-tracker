@@ -54,6 +54,7 @@ class HomeController < ApplicationController
     twitter_info_chart seven_days
 
     @status = @channel.statuses.where(:report_date => today - 1.day .. today).order('created_at desc').first
+    @avg_last_30 = @channel.statuses.avg_30_days(Date.today).first
   end
 
   def export_csv

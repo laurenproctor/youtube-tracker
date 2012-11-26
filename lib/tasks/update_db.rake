@@ -56,6 +56,25 @@ namespace :db do
         p.save
       end
     end
+
+    Channel.find_each() do |channel|
+      statuses = channel.statuses.order(:report_date)
+      statuses.each_with_index do |p, index|
+        attrs = {
+          :day_avg_views => index == 0 ? 0 : (statuses[index].avg_views - statuses[index - 1].avg_views),
+          :day_avg_view_duration => index == 0 ? 0 : (statuses[index].avg_view_duration - statuses[index - 1].avg_view_duration) ,
+          :day_vscr => index == 0 ? 0 : (statuses[index].vscr - statuses[index - 1].vscr),
+          :day_views => index == 0 ? 0 : (statuses[index].lifetime_views - statuses[index - 1].lifetime_views),
+          :day_minutes_watched => index == 0 ? 0 : (statuses[index].minutes_watched - statuses[index - 1].minutes_watched),
+          :day_subscribers => index == 0 ? 0 : (statuses[index].subscribers - statuses[index - 1].subscribers),
+          :day_fb_likes => index == 0 ? 0 : (statuses[index].fb_likes - statuses[index - 1].fb_likes),
+          :day_twitter_followers => index == 0 ? 0 : (statuses[index].twitter_followers - statuses[index - 1].twitter_followers),
+          :day_plus_followers => index == 0 ? 0 : (statuses[index].plus_followers - statuses[index - 1].plus_followers)
+        }
+        p.update_attributes attrs
+      end
+    end
+
   end
 
 end
