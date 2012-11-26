@@ -1,6 +1,7 @@
 class ChangeViewTimeForGoals < ActiveRecord::Migration
    def change
-    change_column :goals, :view_time, :integer
+    remove_column :goals, :view_time
+    add_column :goals, :view_time, :integer
   end
 end
 
