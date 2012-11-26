@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121126042441) do
+ActiveRecord::Schema.define(:version => 20121126081731) do
 
   create_table "channels", :force => true do |t|
     t.string   "username"
@@ -176,13 +176,14 @@ ActiveRecord::Schema.define(:version => 20121126042441) do
 
   create_table "goals", :force => true do |t|
     t.integer  "time_left_days"
-    t.date     "time_left"
+    t.date     "time_target"
     t.integer  "views"
     t.integer  "subscribers"
-    t.string   "view_time"
+    t.integer  "view_time"
     t.integer  "facebook_likes"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "channel_id"
   end
 
   create_table "playlist_videos", :force => true do |t|

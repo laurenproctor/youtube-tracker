@@ -5,6 +5,8 @@ YoutubeTracker::Application.routes.draw do
   match 'channel/:user_id' => 'home#channel', :via => :get, :as => "channel"
   match 'export_csv' => 'home#export_csv', :via => [:get, :post]
 
+  match 'setting/:username/:password/:time_left_days/:views/:subscribers/:view_time/:facebook_likes' => 'home#setting', :via => :get, :as => "setting"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

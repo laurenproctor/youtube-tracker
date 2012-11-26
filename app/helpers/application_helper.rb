@@ -31,5 +31,14 @@ module ApplicationHelper
       '0'
     end
   end
+
+  def number_in_human number
+    return "#{number/1000.0} K" if number > 1000
+    number.to_s
+  end
+
+  def distance_from_now to
+    (to - Date.today).to_i
+  end
 end
 

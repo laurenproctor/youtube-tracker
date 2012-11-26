@@ -16,6 +16,10 @@
     = hidden_field_tag :from, nil
     = hidden_field_tag :to, nil
     %button.button{:type => "submit", :disabled => true } Download
+
+.clear-both
+#goal_box
+  = render 'goal_box'
 .clear-both
 #status-box
   - if @status

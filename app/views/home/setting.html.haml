@@ -1,0 +1,19 @@
+- if @goal
+  .page-header
+    %h1= @goal.channel.username_display
+  %table.table.table-striped.table-bordered
+    %thead
+      %tr
+        %th Time Left Until Goal
+        %th Video Views
+        %th Subscribers
+        %th View Time
+        %th Facebook Likes
+    %tbody
+      %tr
+        %td= pluralize(@goal.time_left_days, 'Day')
+        %td= @goal.views
+        %td= @goal.subscribers
+        %td= @goal.view_time
+        %td= @goal.facebook_likes
+

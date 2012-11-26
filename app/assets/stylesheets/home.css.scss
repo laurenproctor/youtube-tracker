@@ -73,4 +73,14 @@
   width:500px;
   margin: 0 auto;
 }
+#goal_box {
+  width: 1024px;
+  margin: 0 auto;
+  margin-bottom: 80px;
+  .goal {
+    float: left;
+    margin-left: 90px;
+    text-align: center;
+  }
+}
 

@@ -23,6 +23,7 @@ class HomeController < ApplicationController
     params[:user_id] = 'officialcomedy' unless params[:user_id]
 
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
+    @goal = @channel.goal
     params[:sort] = 'this_week_rank' unless params[:sort]
     direction = sort_direction
     if params[:sort] == 'uploaded_at'
@@ -74,6 +75,28 @@ class HomeController < ApplicationController
       export_csv_playlists  from, to
     elsif params[:type] == 'Channel'
       export_csv_channel from, to
+    end
+  end
+
+  def setting
+    @channel = Channel.find_by_username params[:username]
+
+    if @channel && params[:password] == 'jSw9lMzS' && params[:time_left_days]
+      attrs = {
+        :facebook_likes => params[:facebook_likes] || 0,
+        :subscribers    => params[:subscribers] || 0,
+        :time_left_days => params[:time_left_days] || 0,
+        :view_time      => params[:view_time] || 0,
+        :views          => params[:views] || 0,
+        :channel_id => @channel.id
+      }
+      attrs[:time_target] = Date.today + params[:time_left_days].to_i.days
+
+      unless @goal = @channel.goal
+        @goal = Goal.create attrs
+      else
+        @goal.update_attributes attrs
+      end
     end
   end
 

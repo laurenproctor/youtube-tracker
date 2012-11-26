@@ -13,6 +13,7 @@ class Channel < ActiveRecord::Base
   has_many :day_facebook_infos, :through => :facebook_infos
   has_many :day_twitter_infos,  :through => :twitter_infos
   has_many :statuses
+  has_one  :goal
 
   class << self
     def search_import(channel)
