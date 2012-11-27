@@ -1,20 +1,12 @@
 class HomeController < ApplicationController
 
   def index
-    today = Date.today.to_datetime
-    @channel = Channel.find_by_username YOUTUBE[:user_id]
-    @top_videos = DayVideoTracker.top(today).order('this_week_rank asc')
-    @top_playlists = DayPlaylistTracker.top(today).order('this_week_rank asc')
+    today = Date.today.to_datetime - 1.day
+    params[:user_id] = 'officialcomedy' unless params[:user_id]
 
-    seven_days = Time.now - 7.days .. Time.now
+    @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
 
-    subscribers_chart seven_days
 
-    avg_views_chart seven_days
-
-    facebook_info_chart seven_days
-
-    twitter_info_chart seven_days
 
   end
 
