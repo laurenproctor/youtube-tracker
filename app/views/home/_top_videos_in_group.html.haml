@@ -1,0 +1,29 @@
+%table.table.table-striped.table-bordered.sortable
+  %thead
+    %tr
+      %th= sortable DayVideoTracker, 'this_week_rank', 'This Week Rank'
+      %th= sortable DayVideoTracker, 'last_week_rank', 'Last Week Rank'
+      %th= sortable DayVideoTracker, 'name', 'Video Name'
+
+      %th= sortable DayVideoTracker, 'weeks_on_chart', 'Weeks on Chart'
+
+      %th= sortable DayVideoTracker, 'this_week_views', "This Week's Views"
+      %th= sortable DayVideoTracker, 'percent_change_views', 'Plus or Minus Views'
+      %th= sortable DayVideoTracker, 'peak_position', "Peak Position"
+      %th= sortable DayVideoTracker, 'uploaded_at', 'Time Since Upload'
+      %th= sortable DayVideoTracker, 'total_aggregate_views', 'Total Aggregate Views'
+  %tbody
+    - @top_videos.each do |p|
+      %tr
+        %td= p.this_week_rank
+        %td= p.last_week_rank
+
+        %td= p.name
+        %td= pluralize(p.weeks_on_chart, 'week')
+
+        %td= number_with_delimiter(p.this_week_views)
+        %td== #{ p.percent_change_views } %
+        %td= p.peak_position
+        %td= time_ago_in_words p.uploaded_at if p.uploaded_at
+        %td= number_with_delimiter(p.total_aggregate_views)
+

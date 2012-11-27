@@ -1,5 +1,5 @@
 YoutubeTracker::Application.routes.draw do
-  root :to => "home#channel"
+  root :to => "home#index"
 
   match 'channel' => 'home#channel'
   match 'channel/:user_id' => 'home#channel', :via => :get, :as => "channel"

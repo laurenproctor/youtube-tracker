@@ -1,11 +1,11 @@
-class TrackVideoLifetimeJob
+class TrackVideoLifetimeJob  < Struct.new(:from_date, :to_date)
   def perform
 
     begin
       Channel.find_each() do |channel|
         dates = channel.day_videos.order('report_date asc').map(&:report_date).uniq
         dates.each do |date|
-          DayVideoTracker.track_at_date(channel, date)
+          DayVideoTracker.track_at_date(channel, date) if date <= to_date && date >= from_date
         end
       end
     rescue Exception => e
@@ -14,7 +14,7 @@ class TrackVideoLifetimeJob
       puts error_msg
     ensure
       if failure
-        Delayed::Job.enqueue TrackVideoLifetimeJob.new, 2, Time.now + 20.minutes
+        Delayed::Job.enqueue TrackVideoLifetimeJob.new(from_date, to_date), 2, Time.now + 20.minutes
       end
 
     end

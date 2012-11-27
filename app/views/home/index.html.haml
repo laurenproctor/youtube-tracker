@@ -1,13 +1,13 @@
 .container.pull-left
   .row
-    #home_img.span2
+    #home_img.span2.pull-left
       = image_tag('icon_bedrocket.png')
-    .row
-      #home_name.span9
+    .row#channel_name_row
+      #channel_name.span2
         Bedrocket
-      .aa
+      #channels-in-logo.span8
         (Look TV, Network A, Official Comedy)
-    #tracked_since.span9
+    #tracked_since.span9.offset2
       == Updated: #{(Channel.first.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
 .clear-both
 
