@@ -1,0 +1,7 @@
+$("#top_videos").html("#{escape_javascript(render("top_videos_in_group"))}");
+$('#loading-image').hide();
+:erb
+  $('#top_videos thead a').click(function(){
+    $('#loading-image').show();
+  })
+

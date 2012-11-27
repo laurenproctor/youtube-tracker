@@ -21,7 +21,7 @@ class SyncStatus
         lifetime_views, subscribersGained = views_subscribers(client, analytics, channelId, startDate, endDate)
         averageViewDuration = avg_view_duration(client, analytics, channelId, startDate, endDate)
         estimatedMinutesWatched = estimated_minutes_watched(client, analytics, channelId, startDate, endDate)
-
+        yesterday_status = channel.statuses.find_by_imported_date(today - 1.day)
         params = { :channel_id => channel.id, :imported_date => today, :user_id => channel.username,
                    :report_date => today - 1.day,
                    :avg_view_duration => averageViewDuration, :minutes_watched => estimatedMinutesWatched,
@@ -36,6 +36,22 @@ class SyncStatus
           Status.create params
         else
           status.update_attributes params
+        end
+        if yesterday_status
+          attrs = {
+            :day_avg_views => (status.avg_views - yesterday_status.avg_views),
+            :day_avg_view_duration => (status.avg_view_duration -
+               yesterday_status.avg_view_duration) ,
+            :day_vscr => (status.vscr - yesterday_status.vscr),
+            :day_views => (status.lifetime_views - yesterday_status.lifetime_views),
+            :day_minutes_watched => (status.minutes_watched - yesterday_status.minutes_watched),
+            :day_subscribers => (status.subscribers - yesterday_status.subscribers),
+            :day_fb_likes => (status.fb_likes - yesterday_status.fb_likes),
+            :day_twitter_followers => (status.twitter_followers -
+               yesterday_status.twitter_followers),
+            :day_plus_followers => (status.plus_followers - yesterday_status.plus_followers)
+          }
+          status.update_attributes attrs
         end
       end
     end

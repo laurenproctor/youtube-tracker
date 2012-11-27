@@ -11,7 +11,7 @@
         %th Facebook Likes
     %tbody
       %tr
-        %td= pluralize(@goal.time_left_days, 'Day')
+        %td= @goal.time_target.strftime('%a %b %d, %Y')
         %td= @goal.views
         %td= @goal.subscribers
         %td= @goal.view_time

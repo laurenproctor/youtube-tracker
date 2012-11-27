@@ -1,6 +1,6 @@
 - if @goal
   .goal
-    = pluralize(distance_from_now(@goal.time_target), 'Day')
+    = @goal.time_target.strftime('%a %b %d')
     %br
     Time Left Until Goal
   .goal

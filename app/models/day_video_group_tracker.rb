@@ -23,7 +23,7 @@ class DayVideoGroupTracker < Tracker
               :total_aggregate_views => p.view_count, :uploaded_at => p.video.uploaded_at,
               :report_date => today, :report_date_wday => today.wday,
               :comments => p.comment_count, :shares => 0, :tracked_date => today + 1.day,
-              :video_id => p.video.id
+              :video_id => p.video.id, :channel_name => p.video.channel.username_display.titleize
             }
           this_week_days = today.beginning_of_week .. today
           last_week_tracker = DayVideoGroupTracker.find_by_unique_id_and_report_date(p.unique_id,
@@ -35,7 +35,7 @@ class DayVideoGroupTracker < Tracker
           end
 
           yesterday_tracker = DayVideoGroupTracker.find_by_unique_id_and_report_date(p.unique_id, today - 1.day)
-          if params[:this_week_rank] <= 25
+          if params[:this_week_rank] <= 5
             if last_week_tracker.nil? || yesterday_tracker.nil?
               params[:weeks_on_chart] = 1
             elsif last_week_tracker.weeks_on_chart == yesterday_tracker.weeks_on_chart

@@ -1,23 +1,24 @@
 %table.table.table-striped.table-bordered.sortable
   %thead
     %tr
-      %th= sortable DayVideoTracker, 'this_week_rank', 'This Week Rank'
-      %th= sortable DayVideoTracker, 'last_week_rank', 'Last Week Rank'
-      %th= sortable DayVideoTracker, 'name', 'Video Name'
+      %th= sortable DayVideoGroupTracker, 'this_week_rank', 'This Week Rank'
+      %th= sortable DayVideoGroupTracker, 'last_week_rank', 'Last Week Rank'
+      %th= sortable DayVideoGroupTracker, 'channel_name', 'Channel Name'
+      %th= sortable DayVideoGroupTracker, 'name', 'Video Name'
 
-      %th= sortable DayVideoTracker, 'weeks_on_chart', 'Weeks on Chart'
+      %th= sortable DayVideoGroupTracker, 'weeks_on_chart', 'Weeks on Chart'
 
-      %th= sortable DayVideoTracker, 'this_week_views', "This Week's Views"
-      %th= sortable DayVideoTracker, 'percent_change_views', 'Plus or Minus Views'
-      %th= sortable DayVideoTracker, 'peak_position', "Peak Position"
-      %th= sortable DayVideoTracker, 'uploaded_at', 'Time Since Upload'
-      %th= sortable DayVideoTracker, 'total_aggregate_views', 'Total Aggregate Views'
+      %th= sortable DayVideoGroupTracker, 'this_week_views', "This Week's Views"
+      %th= sortable DayVideoGroupTracker, 'percent_change_views', 'Plus or Minus Views'
+      %th= sortable DayVideoGroupTracker, 'peak_position', "Peak Position"
+      %th= sortable DayVideoGroupTracker, 'uploaded_at', 'Time Since Upload'
+      %th= sortable DayVideoGroupTracker, 'total_aggregate_views', 'Total Aggregate Views'
   %tbody
     - @top_videos.each do |p|
       %tr
         %td= p.this_week_rank
         %td= p.last_week_rank
-
+        %td= p.channel_name
         %td= p.name
         %td= pluralize(p.weeks_on_chart, 'week')
 
