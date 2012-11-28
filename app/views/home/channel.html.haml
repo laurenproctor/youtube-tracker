@@ -21,10 +21,18 @@
 - if @status
   = render 'status_box'
 .clear-both
-#avg_views_chart_div
-#subscribers_chart_div
-#facebook_info_chart_div
-#twitter_info_chart_div
+.container
+  .row
+    .span6
+      #avg_views_chart_div
+    .span6
+      #subscribers_chart_div
+.container
+  .row
+    .span6
+      #facebook_info_chart_div
+    .span6
+      #twitter_info_chart_div
 .clear-both
 .table-title#top-videos-title Top Videos
 #top_videos
@@ -60,7 +68,7 @@
         chart.draw(data, options);
       }
     </script>
-    
+
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart2);

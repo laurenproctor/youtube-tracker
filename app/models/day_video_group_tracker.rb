@@ -35,7 +35,7 @@ class DayVideoGroupTracker < Tracker
           end
 
           yesterday_tracker = DayVideoGroupTracker.find_by_unique_id_and_report_date(p.unique_id, today - 1.day)
-          if params[:this_week_rank] <= 5
+          if params[:this_week_rank] <= 25
             if last_week_tracker.nil? || yesterday_tracker.nil?
               params[:weeks_on_chart] = 1
             elsif last_week_tracker.weeks_on_chart == yesterday_tracker.weeks_on_chart

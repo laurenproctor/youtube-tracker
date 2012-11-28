@@ -39,7 +39,7 @@
       .row-fluid
         .span12
           = yield
-    
+
       %footer
         %p &copy; YoutubeTracker 2012
     /
@@ -47,3 +47,5 @@
       \==================================================
     / Placed at the end of the document so the pages load faster
     = javascript_include_tag "application"
+    = yield :javascript
+
