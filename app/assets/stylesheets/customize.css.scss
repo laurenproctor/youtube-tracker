@@ -18,11 +18,40 @@ body{
 	}
 	.number{
 		font-weight: bolder;
+		font-size: 150%;
+		span{
+			background: url(decrease.png) top right no-repeat;
+			background-size: 18px 18px;
+			padding-right: 25px;
+		}
+		&.increase{
+			span{
+				background: url(increase.png) top right no-repeat;
+			}
+		}
+
 	}
 	.desc{
 		color: #707070;
 	}
-	.goals .span3{
-		text-align: center;
+	.goals{ 
+		padding: 15px 0px;
+		.span3{
+			text-align: center;
+		}
+	}
+	.status-box{
+		margin-top: 10px;
+		border: 1px solid #000;
+		padding: 20px 10px;
+		.line{border: 1px solid #666;}
+		> .row{
+			margin-left: 0px;
+			.span3{
+				text-align: center;
+				margin-bottom: 20px;
+				margin-top: 20px; 
+			}
+		}
 	}
 }

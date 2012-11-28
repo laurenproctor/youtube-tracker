@@ -1,100 +1,84 @@
-.container-fluid#status-box
-  %ul.unstyled
-    %li
-      = number_with_delimiter @status.lifetime_views
-      - if @status.day_views  >= @avg_last_30.day_views
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      Lifetime Views
-    %li
-      = number_with_delimiter number_with_precision(@status.avg_views, :precision => 0)
-      - if @status.day_avg_views  >= @avg_last_30.day_avg_views
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      AVG Views Per Video
-    %li
-      = number_with_delimiter @status.minutes_watched
-      - if @status.day_minutes_watched  >= @avg_last_30.day_minutes_watched
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      Total Minutes Watched
-    %li
-      = seconds_in_human @status.avg_view_duration
-      - if @status.day_avg_view_duration  >= @avg_last_30.day_avg_view_duration
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      AVG View Duration
-    %li
-      = number_with_delimiter @status.subscribers
-      - if @status.day_subscribers  >= @avg_last_30.day_subscribers
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      Total Subscribers
-    %li
-      = @status.vscr
-      \%
-      - if @status.day_vscr  >= @avg_last_30.day_vscr
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      VSCR (%)
-    %li
-      = @top_in_day ? @top_in_day.report_date.strftime('%A') : 'No Available'
-      - if @top_in_day
-        - if @status.day_views  >= @avg_last_30.day_views
-          = image_tag 'images/sort_asc.png'
-        - else
-          = image_tag 'images/sort_desc.png'
-      %br
-      Top Day of Week - Views
-    %li
-      = @top_video ? @top_video.title : 'Not Available'
-      %br
-      Top Video - Views
+.container-fluid.status-box
+  .row
+    .span3
+      .number{class: "#{@status.day_views  >= @avg_last_30.day_views ? 'increase' : 'decrease'}"}
+        = number_with_delimiter @status.lifetime_views
+        %span
+      .desc
+        Lifetime Views
+    .span3
+      .number{class: "#{@status.day_avg_views  >= @avg_last_30.day_avg_views ? 'increase' : 'decrease'}"}
+        = number_with_delimiter number_with_precision(@status.avg_views, :precision => 0)
+        %span
+      .desc
+        AVG Views Per Video
+    .span3
+      .number{class: "#{@status.day_minutes_watched  >= @avg_last_30.day_minutes_watched ? 'increase' : 'decrease'}"}
+        = number_with_delimiter @status.minutes_watched
+        %span
+      .desc
+        Total Minutes Watched
+    .span3
+      .number{class: "#{@status.day_avg_view_duration  >= @avg_last_30.day_avg_view_duration ? 'increase' : 'decrease'}"}
+        = seconds_in_human @status.avg_view_duration
+        %span
+      .desc
+        AVG View Duration
+  .row
+    .span3
+      .number{class: "#{@status.day_subscribers  >= @avg_last_30.day_subscribers ? 'increase' : 'decrease'}"}
+        = number_with_delimiter @status.subscribers
+        %span
+      .desc
+        Total Subscribers
+    .span3
+      .number{class: "#{@status.day_vscr  >= @avg_last_30.day_vscr ? 'increase' : 'decrease'}"}
+        = @status.vscr
+        \%
+        %span
+      .desc
+        VSCR (%)
+    .span3
+      .number{class: "#{@top_in_day && (@status.day_views  >= @avg_last_30.day_views) ? 'increase' : 'decrease'}"}
+        = @top_in_day ? @top_in_day.report_date.strftime('%A') : 'No Available'
+        %span
+      .desc
+        Top Day of Week - Views
+    .span3
+      .number
+        = @top_video ? @top_video.title : 'Not Available'
+      .desc
+        Top Video - Views
 
   .line
-  %ul.unstyled
-    %li
-      = number_with_delimiter @status.fb_likes
-      - if @status.day_fb_likes  >= @avg_last_30.day_fb_likes
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      Facebook Likes
-    %li
-      = number_with_delimiter @status.twitter_followers
-      - if @status.day_twitter_followers  >= @avg_last_30.day_twitter_followers
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      Twitter Followers
-    %li
-      Not Available
-      %br
-      Tumblr Followers
-    %li
-      Not Available
-      %br
-      Instagram Followers
-    %li
-      = number_with_delimiter @status.plus_followers
-      - if @status.day_plus_followers  >= @avg_last_30.day_plus_followers
-        = image_tag 'images/sort_asc.png'
-      - else
-        = image_tag 'images/sort_desc.png'
-      %br
-      Google+ Followers
+  .row
+    .span3
+      .number{class: "#{@status.day_fb_likes  >= @avg_last_30.day_fb_likes ? 'increase' : 'decrease'}"}
+        = number_with_delimiter @status.fb_likes
+        %span
+      .desc
+        Facebook Likes
+    .span3
+      .number{class: "#{@status.day_twitter_followers  >= @avg_last_30.day_twitter_followers ? 'increase' : 'decrease'}"}
+        = number_with_delimiter @status.twitter_followers
+        %span
+      .desc
+        Twitter Followers
+    .span3
+      .number
+        Not Available
+      .desc
+        Tumblr Followers
+    .span3
+      .number
+        Not Available
+      .desc
+        Instagram Followers
+  .row
+    .span3
+      .number{class: "#{@status.day_plus_followers  >= @avg_last_30.day_plus_followers ? 'increase' : 'decrease'}"}
+        = number_with_delimiter @status.plus_followers
+        %span
+      .desc
+        Google+ Followers
 
