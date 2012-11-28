@@ -10,6 +10,9 @@ body.home{
     height: 1000px;
     margin: auto;
     li{ 
+      &:hover{
+        background-color: #666;
+      }
       width: 48%;
       height: 48%;
       background-color: #000;
