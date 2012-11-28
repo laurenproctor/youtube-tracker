@@ -21,6 +21,7 @@ class SyncVideo
       Channel.find_each() do |p|
         DayVideoTracker.track p
       end
+      DayVideoGroupTracker.track
     end
   end
 end
