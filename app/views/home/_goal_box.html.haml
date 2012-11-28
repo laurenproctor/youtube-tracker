@@ -1,22 +1,22 @@
 - if @goal
-  .goal
-    = @goal.time_target.strftime('%a %b %d')
-    %br
-    Time Left Until Goal
-  .goal
-    = number_in_human @goal.views
-    %br
-    Video Views
-  .goal
-    = number_in_human @goal.subscribers
-    %br
-    Subscribers
-  .goal
-    = seconds_in_human @goal.view_time
-    %br
-    View Time
-  .goal
-    = number_in_human @goal.facebook_likes
-    %br
-    Facebook Likes
+  .container-fuild.goals
+    %h3.section-name
+      == Goals For #{@goal.time_target.strftime('%a %b %d')}
+    .row-fluid
+      .span3
+        .number= number_in_human @goal.views
+        .desc
+          Video Views
+      .span3
+        .number= number_in_human @goal.subscribers
+        .desc
+          Subscribers
+      .span3
+        .number= seconds_in_human @goal.view_time
+        .desc
+          View Time
+      .span3
+        .number= number_in_human @goal.facebook_likes
+        .desc
+          Facebook Likes
 

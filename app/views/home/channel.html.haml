@@ -7,7 +7,7 @@
     .span12
       == Tracked Since: #{Date.parse('2012-09-01').strftime('%B %d, %Y')} &nbsp; &nbsp;&nbsp;
       == Updated: #{(@channel.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
-.container
+.container.hide
   .pull-right#form-download
     = form_tag(export_csv_path(:format => :csv), :class => :form) do |f|
       = select_tag 'type', options_for_select(["Video","Playlist","Channel"])
@@ -17,13 +17,9 @@
       = hidden_field_tag :to, nil
       %button.btn{:type => "submit", :disabled => true } Download
 
-.clear-both
-#goal_box
-  = render 'goal_box'
-.clear-both
-#status-box
-  - if @status
-    = render 'status_box'
+= render 'goal_box'
+- if @status
+  = render 'status_box'
 .clear-both
 #avg_views_chart_div
 #subscribers_chart_div
@@ -33,31 +29,6 @@
 .table-title#top-videos-title Top Videos
 #top_videos
   = render 'top_videos'
-
-- content_for :javascript do
-  :javascript
-    $(document).ready(function(){
-      $('input#from_copy.ui-date-picker').datepicker({
-        altField: $('input#from'),
-        altFormat: "yy-mm-dd",
-        dateFormat: "mm/dd/yy",
-        showOn: 'both',
-        buttonImageOnly: true,
-        buttonImage: "#{image_path('calendar.png')}" });
-
-      $('input#to_copy.ui-date-picker').datepicker({
-        altField: $('input#to'),
-        altFormat: "yy-mm-dd",
-        dateFormat: "mm/dd/yy",
-        showOn: 'both',
-        buttonImageOnly: true,
-        buttonImage: "#{image_path('calendar.png')}" });
-      $('#top_videos thead a').click(function(){
-        $('#loading-image').show();
-      })
-    });
-
-
 
 - content_for :javascript do
   :erb
@@ -89,6 +60,7 @@
         chart.draw(data, options);
       }
     </script>
+    
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart2);

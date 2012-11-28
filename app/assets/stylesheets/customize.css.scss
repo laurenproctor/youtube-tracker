@@ -6,11 +6,23 @@ body{
 			min-width: 678px;
 			margin: auto;
 		}
-		
+
 	}
 	> .container-fluid{
 		max-width: 1170px;
 		min-width: 678px;
 		margin: auto;
+	}
+	.section-name{
+		color: #666;
+	}
+	.number{
+		font-weight: bolder;
+	}
+	.desc{
+		color: #707070;
+	}
+	.goals .span3{
+		text-align: center;
 	}
 }
