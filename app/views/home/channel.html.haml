@@ -1,5 +1,5 @@
-%div
-  - if @channel
+- if @channel
+  .container
     .span12
       %h1
         = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
@@ -7,15 +7,15 @@
     .span12
       == Tracked Since: #{Date.parse('2012-09-01').strftime('%B %d, %Y')} &nbsp; &nbsp;&nbsp;
       == Updated: #{(@channel.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
-.clear-both
-.pull-right#form-download
-  = form_tag(export_csv_path(:format => :csv), :class => :form) do |f|
-    = select_tag 'type', options_for_select(["Video","Playlist","Channel"])
-    = text_field_tag :from_copy, nil, :class => 'ui-date-picker'
-    = text_field_tag :to_copy, nil, :class => 'ui-date-picker'
-    = hidden_field_tag :from, nil
-    = hidden_field_tag :to, nil
-    %button.button{:type => "submit", :disabled => true } Download
+.container
+  .pull-right#form-download
+    = form_tag(export_csv_path(:format => :csv), :class => :form) do |f|
+      = select_tag 'type', options_for_select(["Video","Playlist","Channel"])
+      = text_field_tag :from_copy, nil, :class => 'ui-date-picker', "data-datepicker" => "datepicker"
+      = text_field_tag :to_copy, nil, :class => 'ui-date-picker', "data-datepicker" => "datepicker"
+      = hidden_field_tag :from, nil
+      = hidden_field_tag :to, nil
+      %button.btn{:type => "submit", :disabled => true } Download
 
 .clear-both
 #goal_box
