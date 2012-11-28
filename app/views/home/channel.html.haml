@@ -1,10 +1,10 @@
-.container.pull-left
+%div
   - if @channel
-    #channel_name
-      = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
-      = @channel.username_display.try(:titleize)
-    %br
-    #tracked_since
+    .span12
+      %h1
+        = image_tag(@channel && !@channel.avatar.blank? ? @channel.avatar  : 'icon_user.png')
+        = @channel.username_display.try(:titleize)
+    .span12
       == Tracked Since: #{Date.parse('2012-09-01').strftime('%B %d, %Y')} &nbsp; &nbsp;&nbsp;
       == Updated: #{(@channel.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
 .clear-both

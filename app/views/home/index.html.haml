@@ -1,16 +1,15 @@
-.container.pull-left
-  .row
-    #home_img.span2.pull-left
-      = image_tag('icon_bedrocket.png')
-    .row#channel_name_row
-      #channel_name.span2
-        Bedrocket
-      #channels-in-logo.span8
+%div
+  .span2
+    = image_tag('icon_bedrocket.png')
+  .span9
+    %h2
+      Bedrocket
+      %small
         (Look TV, Network A, Official Comedy)
-    #tracked_since.span9.offset2
-      == Updated: #{(Channel.first.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
-.clear-both
-.table-title#top-videos-title Top Videos
+    %div  
+    == Updated: #{(Channel.first.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
+.clearfix
+%h3 Top Videos
 #top_videos
   = render 'top_videos_in_group'
 

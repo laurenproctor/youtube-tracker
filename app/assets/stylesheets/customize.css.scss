@@ -1,0 +1,16 @@
+body{
+	.navbar.navbar-fluid-top .navbar-inner{
+		min-width: 678px;
+		> .container-fluid{
+			max-width: 1170px;
+			min-width: 678px;
+			margin: auto;
+		}
+		
+	}
+	> .container-fluid{
+		max-width: 1170px;
+		min-width: 678px;
+		margin: auto;
+	}
+}
