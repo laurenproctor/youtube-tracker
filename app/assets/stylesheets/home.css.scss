@@ -2,94 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#header-wrapper {
-  border-bottom: 1px solid;
-  margin-top: 15px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  li {
-    float: left;
-    margin-left: 20px;
-  }
-}
-#loading-image{
-  text-align: center;
-  z-index: 999;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  display: none;
-}
-.table-title {
-  margin-bottom: 20px;
-}
-
-#top-videos-title {
-  margin-top:70px;
-}
-#form-download {
-  margin-top:50px;
-  margin-bottom:50px;
-  button {
-    margin-bottom:8px;
-  }
-}
-#top_videos {
-  margin-bottom:70px;
-}
-#channel_name{
-  font-size:30px;
-}
-#avg_views_chart_div,
-#subscribers_chart_div,
-#facebook_info_chart_div,
-#twitter_info_chart_div {
-  float:left;
-}
-#status-box {
-  width:1024px;
-  margin: 0 auto;
-  display:table;
-  border: 1px solid;
-  margin-top:10px;
-  ul{
-    display: table;
-    margin-bottom: 45px;
-    li {
-      text-align:center;
-      width:250px;
-      height:50px;
-      float:left;
-      margin-top:50px;
-    }
-    li:nth-child(4n + 1) {
-      margin-left: 0px;
+body.home{
+  padding: 20px;
+  h2{ padding: 30px 10px;}
+  .logos{
+    width: 1024px;
+    height: 1000px;
+    margin: auto;
+    li{ 
+      width: 48%;
+      height: 48%;
+      background-color: #000;
+      float: left;
+      margin: 1%;
+      text-align: center;
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+      > .middle{
+        margin-top: 42%;
+      }
     }
   }
-
 }
-.line {
-  border: 1px  solid;
-  width:500px;
-  margin: 0 auto;
-}
-#goal_box {
-  width: 1024px;
-  margin: 0 auto;
-  margin-bottom: 80px;
-  .goal {
-    float: left;
-    margin-left: 90px;
-    text-align: center;
-  }
-}
-#channels-in-logo {
-  margin-left: -25px;
-}
-#channel_name_row {
-  margin-top: 20px;
-}
-#tracked_since {
-  margin-top: -20px;
-}
-

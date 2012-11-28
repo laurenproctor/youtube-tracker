@@ -1,6 +1,10 @@
 class HomeController < ApplicationController
 
   def index
+    render :layout => false
+  end
+
+  def bedrocket
     today = TimeUtil.today - 1.day
     params[:user_id] = 'officialcomedy' unless params[:user_id]
 

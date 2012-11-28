@@ -1,0 +1,18 @@
+%div
+  .span2
+    = image_tag('icon_bedrocket.png')
+  .span9
+    %h2
+      Bedrocket
+      %small
+        (Look TV, Network A, Official Comedy)
+    %div  
+    == Updated: #{(Channel.first.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
+.clearfix
+%h3 Top Videos
+#top_videos
+  = render 'top_videos_in_group'
+
+/
+  = link_to 'setting', setting_path(username: 'look', password: 'jSw9lMzS', time_left: '2012-12-24', views: 7000000, subscribers: 100000, view_time:200, facebook_likes: 100000)
+

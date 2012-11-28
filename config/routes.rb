@@ -1,6 +1,6 @@
 YoutubeTracker::Application.routes.draw do
   root :to => "home#index"
-
+  match 'bedrocket' => 'home#bedrocket'
   match 'channel' => 'home#channel'
   match 'channel/:user_id' => 'home#channel', :via => :get, :as => "channel"
   match 'export_csv' => 'home#export_csv', :via => [:get, :post]

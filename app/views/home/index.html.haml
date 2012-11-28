@@ -1,18 +1,33 @@
-%div
-  .span2
-    = image_tag('icon_bedrocket.png')
-  .span9
-    %h2
-      Bedrocket
-      %small
-        (Look TV, Network A, Official Comedy)
-    %div  
-    == Updated: #{(Channel.first.day_channels.last.report_date).strftime('%A %m-%d-%Y at %I:%M%p')}
-.clearfix
-%h3 Top Videos
-#top_videos
-  = render 'top_videos_in_group'
+!!! 5
+%html(lang="en")
+  %head
+    %meta(charset="utf-8")
+    %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    %title= content_for?(:title) ? yield(:title) : "YoutubeTracker"
+    = csrf_meta_tags
+    / Le HTML5 shim, for IE6-8 support of HTML elements
+    /[if lt IE 9]
+      = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
+    = stylesheet_link_tag "application", :media => "all"
+    %link(href="images/apple-touch-icon-144x144.png" rel="apple-touch-icon-precomposed" sizes="144x144")
+    %link(href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon-precomposed" sizes="114x114")
+    %link(href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon-precomposed" sizes="72x72")
+    %link(href="images/apple-touch-icon.png" rel="apple-touch-icon-precomposed")
+    %link(href="images/favicon.ico" rel="shortcut icon")
 
-/
-  = link_to 'setting', setting_path(username: 'look', password: 'jSw9lMzS', time_left: '2012-12-24', views: 7000000, subscribers: 100000, view_time:200, facebook_likes: 100000)
 
+  %body.home
+    .container-fluid
+      .row-fluid
+        .span12
+          %h2 Pick Your Channel
+          .logos
+            %li
+              .middle= link_to(image_tag('logos/bedrock_logo.png'), bedrocket_path, title: "Bedrock")
+            %li
+              .middle= link_to(image_tag('logos/looktv_icon.png'), channel_path(:user_id => 'look'), title: "Look TV")
+            %li
+              .middle= link_to(image_tag('logos/network_a_icon.png'), channel_path(:user_id => 'networka'), title: "Network A")
+            %li
+              .middle= link_to(image_tag('logos/officialcomedy_icon.png'), channel_path(:user_id => 'officialcomedy'), title: "Official Comedy")
