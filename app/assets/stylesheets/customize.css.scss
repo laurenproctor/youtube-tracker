@@ -20,13 +20,13 @@ body{
 		font-weight: bolder;
 		font-size: 150%;
 		span{
-			background: url(decrease.png) top right no-repeat;
-			background-size: 18px 18px;
+			background: url(decrease.png) center no-repeat;
+			background-size: 16px 16px;
 			padding-right: 25px;
 		}
 		&.increase{
 			span{
-				background: url(increase.png) top right no-repeat;
+				background: url(increase.png) center no-repeat;
 			}
 		}
 
@@ -35,7 +35,7 @@ body{
 		color: #707070;
 	}
 	.goals{ 
-		padding: 15px 0px;
+		padding: 15px 0px 25px 0px;
 		.span3{
 			text-align: center;
 		}
