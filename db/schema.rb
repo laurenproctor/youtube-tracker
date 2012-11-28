@@ -179,10 +179,10 @@ ActiveRecord::Schema.define(:version => 20121127150309) do
     t.date     "time_target"
     t.integer  "views"
     t.integer  "subscribers"
-    t.integer  "view_time"
     t.integer  "facebook_likes"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "view_time"
     t.integer  "channel_id"
   end
 
@@ -271,7 +271,7 @@ ActiveRecord::Schema.define(:version => 20121127150309) do
     t.integer  "weeks_on_chart"
     t.integer  "total_aggregate_views"
     t.integer  "this_week_views"
-    t.decimal  "weekly_percent_views",  :precision => 10, :scale => 4
+    t.string   "weekly_percent_views"
     t.decimal  "time_since_upload",     :precision => 10, :scale => 0
     t.integer  "comments"
     t.integer  "shares"
@@ -305,14 +305,6 @@ ActiveRecord::Schema.define(:version => 20121127150309) do
 
   add_index "twitter_infos", ["screen_name"], :name => "index_twitter_infos_on_screen_name"
   add_index "twitter_infos", ["unique_id"], :name => "index_twitter_infos_on_unique_id"
-
-  create_table "users", :force => true do |t|
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "videos", :force => true do |t|
     t.string   "unique_id"

@@ -240,6 +240,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   json
+  less-rails
   mysql2
   pg
   rails (= 3.2.8)
@@ -248,6 +249,7 @@ DEPENDENCIES
   ruby_parser
   sass-rails
   simple_form
+  therubyracer
   thin
   twitter-bootstrap-rails (= 2.1.5)
   uglifier (>= 1.0.3)
