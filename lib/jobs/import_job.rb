@@ -11,13 +11,13 @@ class ImportJob
       Delayed::Job.enqueue ImportVideoJob.new
     rescue Exception => e
       failure = true
-      error_msg = "#{Time.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
+      error_msg = "#{TimeUtil.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
       puts error_msg
     ensure
       if failure
-        Delayed::Job.enqueue ImportJob.new, 2, Time.now + 20.minutes
+        Delayed::Job.enqueue ImportJob.new, 2, TimeUtil.now + 20.minutes
       else
-        Delayed::Job.enqueue ImportJob.new, 2, Time.now.beginning_of_day + 1.day + 30.minutes
+        Delayed::Job.enqueue ImportJob.new, 2, TimeUtil.today + 1.day + 30.minutes
       end
 
     end

@@ -9,7 +9,7 @@ class Status < ActiveRecord::Base
   belongs_to :channel
 
   class << self
-    def avg_30_days(date = Date.today)
+    def avg_30_days(date = DateUtil.today)
       Status.where(:report_date => date - 30.days .. date).
         select('avg(day_avg_views) as day_avg_views').
         select('avg(day_vscr) as day_vscr').

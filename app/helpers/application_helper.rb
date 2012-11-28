@@ -38,7 +38,7 @@ module ApplicationHelper
   end
 
   def distance_from_now to
-    (to - Date.today).to_i
+    (to - DateUtil.today).to_i
   end
 end
 

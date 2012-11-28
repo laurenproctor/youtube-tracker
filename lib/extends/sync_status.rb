@@ -1,7 +1,7 @@
 class SyncStatus
 
   class << self
-    def import_statuses(today = Date.today.to_datetime)
+    def import_statuses(today = TimeUtil.today)
       Channel.find_each() do |channel|
 
         unless day_channel = channel.day_channels.find_by_unique_id_and_imported_date(channel.unique_id, today)
@@ -16,7 +16,7 @@ class SyncStatus
         client = GoogleApiClient.youtube_analytics_client channel.username
         analytics  = client.discovered_api('youtubeAnalytics','v1')
         startDate  = (day_channel.channel.join_date - 7.days).strftime("%Y-%m-%d")
-        endDate    = Time.now.strftime("%Y-%m-%d")
+        endDate    = TimeUtil.today.strftime("%Y-%m-%d")
         channelId  = YOUTUBE[channel.username.to_sym][:channel_id]
         lifetime_views, subscribersGained = views_subscribers(client, analytics, channelId, startDate, endDate)
         averageViewDuration = avg_view_duration(client, analytics, channelId, startDate, endDate)
@@ -27,13 +27,22 @@ class SyncStatus
                    :avg_view_duration => averageViewDuration, :minutes_watched => estimatedMinutesWatched,
                    :lifetime_views => lifetime_views, :subscribers => subscribersGained,
                    :fb_likes => facebook_likes, :instagram_followers => nil, :tumblr_followers => nil,
-                   :twitter_followers => twitter_followers, :plus_followers => plus_followers
+                   :twitter_followers => twitter_followers, :plus_followers => plus_followers,
+                   :day_avg_views => 0,
+                   :day_avg_view_duration => 0,
+                   :day_vscr  => 0,
+                   :day_views => 0,
+                   :day_minutes_watched => 0,
+                   :day_subscribers => 0,
+                   :day_fb_likes => 0,
+                   :day_twitter_followers => 0,
+                   :day_plus_followers => 0
         }
         params[:avg_views] = params[:lifetime_views] / day_channel.upload_count if day_channel.upload_count > 0
         params[:vscr] = subscribersGained * 100.0 / lifetime_views if lifetime_views > 0
 
         unless status = channel.statuses.find_by_imported_date(today)
-          Status.create params
+          status = Status.create params
         else
           status.update_attributes params
         end

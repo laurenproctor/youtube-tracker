@@ -1,5 +1,5 @@
 task :import_statuses => :environment do
-  today = Date.today.to_datetime
+  today = TimeUtil.today
   %w(officialcomedy networka look).each do |p|
     Channel.search_import YOUTUBE[p.to_sym][:user_id]
   end
@@ -15,7 +15,7 @@ task :import_statuses => :environment do
     client = GoogleApiClient.youtube_analytics_client channel
     analytics  = client.discovered_api('youtubeAnalytics','v1')
     startDate  = day_channel.channel.join_date.strftime("%Y-%m-%d")
-    endDate    = Time.now.strftime("%Y-%m-%d")
+    endDate    = TimeUtil.now.strftime("%Y-%m-%d")
     channelId  = YOUTUBE[channel.to_sym][:channel_id]
     lifetime_views, subscribersGained = views_subscribers(client, analytics, channelId, startDate, endDate)
     averageViewDuration = avg_view_duration(client, analytics, channelId, startDate, endDate)

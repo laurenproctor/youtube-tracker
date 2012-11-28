@@ -14,7 +14,7 @@ class TwitterInfo < ActiveRecord::Base
   private
 
     def self.import(info, channel)
-      today = Date.today.to_datetime
+      today = TimeUtil.today
       params = {
           :unique_id => "#{info['screen_name']}_#{info['id']}", :location => info['location'],
           :screen_name => info['screen_name'], :description => info['description'],

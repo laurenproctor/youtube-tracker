@@ -24,7 +24,7 @@ class Video < ActiveRecord::Base
   end
 
   def last_info
-    DayVideo.find_by_unique_id_and_imported_date(self.unique_id, Date.today.to_datetime)
+    DayVideo.find_by_unique_id_and_imported_date(self.unique_id, TimeUtil.today)
   end
 
   def avg_views_per_day imported_date_range
@@ -34,7 +34,7 @@ class Video < ActiveRecord::Base
 
   private
     def self.import(youtube_videos, channel)
-      today = Date.today.to_datetime
+      today = TimeUtil.today
       youtube_videos.each_with_index do |p, index|
         params = { :title => p.title, :unique_id => p.unique_id, :channel_id => channel.id,
             :categories => p.categories.try(:to_json), :description => p.description,
