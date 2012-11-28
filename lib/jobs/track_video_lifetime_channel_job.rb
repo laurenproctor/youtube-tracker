@@ -8,11 +8,11 @@ class TrackVideoLifetimeChannelJob  < Struct.new(:channel, :from_date, :to_date)
       end
     rescue Exception => e
       failure = true
-      error_msg = "#{TimeUtil.now} ERROR (Job#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
+      error_msg = "#{Time.now} ERROR (Job#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
       puts error_msg
     ensure
       if failure
-        Delayed::Job.enqueue TrackVideoLifetimeChannelJob.new(channel, from_date, to_date), 2, TimeUtil.now + 20.minutes
+        Delayed::Job.enqueue TrackVideoLifetimeChannelJob.new(channel, from_date, to_date), 2, Time.now + 20.minutes
       end
 
     end
