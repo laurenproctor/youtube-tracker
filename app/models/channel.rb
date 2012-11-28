@@ -24,7 +24,7 @@ class Channel < ActiveRecord::Base
 
   private
     def self.import(channel)
-      today = Date.today.to_datetime
+      today = TimeUtil.today
       params = { :unique_id => channel.user_id, :username => channel.username,
           :username_display => channel.username_display, :join_date => channel.join_date,
           :location => channel.location, :avatar => channel.avatar

@@ -9,11 +9,11 @@ class ImportVideoJob
       SyncPlaylist.track_playlists
     rescue Exception => e
       failure = true
-      error_msg = "#{Time.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
+      error_msg = "#{TimeUtil.now} ERROR (ImportJob#perform): #{e.message} - (#{e.class})\n#{(e.backtrace or []).join("\n")}"
       puts error_msg
     ensure
       if failure
-        Delayed::Job.enqueue ImportVideoJob.new, 2, Time.now + 20.minutes
+        Delayed::Job.enqueue ImportVideoJob.new, 2, TimeUtil.now + 20.minutes
       end
 
     end

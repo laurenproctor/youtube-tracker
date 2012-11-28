@@ -15,7 +15,7 @@ class FacebookInfo < ActiveRecord::Base
   private
 
     def self.import(info, channel)
-      today = Date.today.to_datetime
+      today = TimeUtil.today
       params = {
           :unique_id => "#{info['username']}_#{info['id']}", :cover_id => "#{info['cover']['cover_id']}",
           :category => info['category'], :description => info['description'],

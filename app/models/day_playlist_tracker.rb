@@ -11,7 +11,7 @@ class DayPlaylistTracker < Tracker
       end
 
       def track channel
-        today = Date.today.to_datetime
+        today = TimeUtil.today
         day_playlists = channel.day_playlists.where(:imported_date => today).order('view_count  desc')
         day_playlists.each_with_index do |p, index|
           params = {

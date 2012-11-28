@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    today = Date.today.to_datetime - 1.day
+    today = TimeUtil.today - 1.day
     params[:user_id] = 'officialcomedy' unless params[:user_id]
 
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
@@ -22,7 +22,7 @@ class HomeController < ApplicationController
   end
 
   def channel
-    today = Date.today.to_datetime - 1.day
+    today = TimeUtil.today - 1.day
     params[:user_id] = 'officialcomedy' unless params[:user_id]
 
     @channel = Channel.find_by_username YOUTUBE[params[:user_id].to_sym][:user_id].downcase
@@ -45,7 +45,7 @@ class HomeController < ApplicationController
       where(:report_date => today.beginning_of_week .. today).
       order('day_view_count desc').first
 
-    seven_days = Time.now - 7.days .. Time.now
+    seven_days = TimeUtil.today - 7.days .. TimeUtil.today
 
     subscribers_chart seven_days
 
@@ -56,7 +56,7 @@ class HomeController < ApplicationController
     twitter_info_chart seven_days
 
     @status = @channel.statuses.where(:report_date => today - 1.day .. today).order('created_at desc').first
-    @avg_last_30 = @channel.statuses.avg_30_days(Date.today).first
+    @avg_last_30 = @channel.statuses.avg_30_days(DateUtil.today).first
     begin
       client = YoutubeClient.youtube_client(@channel.username)
       @top_video = client.videos_by(:user => @channel.username, :page => 1,
@@ -101,7 +101,7 @@ class HomeController < ApplicationController
         :views          => params[:views] || 0,
         :channel_id => @channel.id
       }
-      attrs[:time_left_days] = (params[:time_left].to_date - Date.today).to_i
+      attrs[:time_left_days] = (params[:time_left].to_date - DateUtil.today).to_i
 
       unless @goal = @channel.goal
         @goal = Goal.create attrs

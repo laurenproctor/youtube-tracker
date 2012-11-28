@@ -14,7 +14,6 @@ class DayVideoTracker < Tracker
       end
 
       def track_at_date(channel, date)
-        # today = Date.today.to_datetime
         today = date
         day_videos = channel.day_videos.
           where(:report_date => today).order('week_views desc')

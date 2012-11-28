@@ -42,7 +42,7 @@ class Sync
 
 		def sync_videos(channel)
 			yvideos = videos(channel)
-      today = Date.today.to_datetime
+      today = TimeUtil.today
 			yvideos.each do |v|
 				video = channel.videos.find_or_create_by_unique_id(v.unique_id)
         attrs = { 	:title => v.title,
@@ -60,7 +60,7 @@ class Sync
 			end
 		end
 
-		def sync_detail_video(client, analytics, video, end_date=Date.today)
+		def sync_detail_video(client, analytics, video, end_date = DateUtil.today)
       start_date = video.published_at - 10.days
 			channel = video.channel
 			return false if channel.blank?
