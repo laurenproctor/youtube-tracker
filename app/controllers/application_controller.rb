@@ -3,5 +3,9 @@ class ApplicationController < ActionController::Base
   # inherit_resources
 
   include ApplicationHelper
+
+  lock :actions=>["home"]
+
+    
 end
 

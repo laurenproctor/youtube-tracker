@@ -1,0 +1,19 @@
+<!doctype html>
+%head
+  %title Bedrocket Tracker
+  %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+  = stylesheet_link_tag :login
+%body.login
+  %h1 Welcome to Bedrocket Tracker
+  %form
+    %h1 Enter Password
+    .inset
+      %p
+        %label{:for => "password"} PASSWORD
+        %input#password{:name => "password", :placeholder => "Password", :type => "password"}/
+      %p
+        %input#remember{:name => "remember", :type => "checkbox"}/
+        %label{:for => "remember"} Remember me for 14 days
+    %p.p-container
+      %span Forgot password?
+      %input#go{:name => "go", :type => "submit", :value => "Log in"}/
