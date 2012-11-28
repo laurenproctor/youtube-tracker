@@ -19,14 +19,18 @@ body{
 	.number{
 		font-weight: bolder;
 		font-size: 150%;
-		span{
-			background: url(decrease.png) center no-repeat;
-			background-size: 16px 16px;
-			padding-right: 25px;
+		&.decrease{
+		  span{
+			  background: url(decrease.png) center no-repeat;
+			  background-size: 16px 16px;
+			  padding-right: 25px;
+		  }
 		}
 		&.increase{
 			span{
 				background: url(increase.png) center no-repeat;
+			  background-size: 16px 16px;
+			  padding-right: 25px;
 			}
 		}
 
@@ -34,7 +38,7 @@ body{
 	.desc{
 		color: #707070;
 	}
-	.goals{ 
+	.goals{
 		padding: 15px 0px 25px 0px;
 		.span3{
 			text-align: center;
@@ -54,8 +58,9 @@ body{
 			.span3{
 				text-align: center;
 				margin-bottom: 20px;
-				margin-top: 20px; 
+				margin-top: 20px;
 			}
 		}
 	}
 }
+
