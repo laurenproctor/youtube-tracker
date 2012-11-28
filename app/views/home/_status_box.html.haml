@@ -40,7 +40,7 @@
         VSCR (%)
     .span3
       .number{class: "#{@top_in_day && (@status.day_views  >= @avg_last_30.day_views) ? 'increase' : 'decrease'}"}
-        = @top_in_day ? @top_in_day.report_date.strftime('%A') : 'No Available'
+        = @top_in_day ? @top_in_day.report_date.strftime('%A') : 'Coming Soon'
         %span
       .desc
         Top Day of Week - Views
@@ -66,12 +66,12 @@
         Twitter Followers
     .span3
       .number
-        Not Available
+        Coming Soon
       .desc
         Tumblr Followers
     .span3
       .number
-        Not Available
+        Coming Soon
       .desc
         Instagram Followers
   .row
